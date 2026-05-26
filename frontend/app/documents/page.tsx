@@ -111,7 +111,7 @@ export default function MyDocumentsPage() {
           </div>
 
           {/* Subject */}
-          <div className="flex flex-col gap-1.5 w-full lg:w-[180px]">
+          <div className="flex flex-col gap-1.5 w-full lg:w-[220px]">
             <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
               Subject
             </label>
@@ -133,7 +133,7 @@ export default function MyDocumentsPage() {
           </div>
 
           {/* Status */}
-          <div className="flex flex-col gap-1.5 w-full lg:w-[150px]">
+          <div className="flex flex-col gap-1.5 w-full lg:w-[200px]">
             <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Status</label>
             <select
               id="filter-status"

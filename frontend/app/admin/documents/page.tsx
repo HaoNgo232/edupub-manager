@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import {
   listDocuments,
@@ -193,7 +194,7 @@ export default function AdminDocumentsPage() {
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-1.5 w-full lg:w-[180px]">
+              <div className="flex flex-col gap-1.5 w-full lg:w-[220px]">
                 <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
                   Subject
                 </label>
@@ -214,7 +215,7 @@ export default function AdminDocumentsPage() {
                 </select>
               </div>
 
-              <div className="flex flex-col gap-1.5 w-full lg:w-[150px]">
+              <div className="flex flex-col gap-1.5 w-full lg:w-[200px]">
                 <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
                   Status
                 </label>
@@ -340,7 +341,14 @@ function AdminDocumentRow({ doc }: { doc: DocumentResponse }) {
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
             {doc.owner.avatarUrl ? (
-              <img src={doc.owner.avatarUrl} alt="" className="w-full h-full object-cover" />
+              <Image
+                src={doc.owner.avatarUrl}
+                alt=""
+                width={28}
+                height={28}
+                className="w-full h-full object-cover"
+                unoptimized
+              />
             ) : (
               <span className="material-symbols-outlined text-[14px] text-[#76777b]">person</span>
             )}

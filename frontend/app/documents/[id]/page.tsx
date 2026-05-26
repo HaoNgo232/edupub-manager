@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getDocument, deleteDocument, DocumentResponse, ApiError } from '../../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 import StatusBadge from '../../../components/StatusBadge';
@@ -177,10 +178,13 @@ export default function DocumentDetailPage() {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden">
                     {doc.owner.avatarUrl ? (
-                      <img
+                      <Image
                         src={doc.owner.avatarUrl}
                         alt={doc.owner.fullName}
+                        width={40}
+                        height={40}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     ) : (
                       <span className="material-symbols-outlined text-[20px] text-[#76777b]">
@@ -256,7 +260,13 @@ export default function DocumentDetailPage() {
             {doc.coverImageUrl ? (
               <div className="border border-graphite-border overflow-hidden bg-white">
                 <div className="aspect-[3/4] bg-[#e9e8e4] relative">
-                  <img src={doc.coverImageUrl} alt="Cover" className="w-full h-full object-cover" />
+                  <Image
+                    src={doc.coverImageUrl}
+                    alt="Cover"
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
                 </div>
                 <p className="font-label-sm text-[#76777b] px-4 py-3 text-center uppercase tracking-widest">
                   Cover Image

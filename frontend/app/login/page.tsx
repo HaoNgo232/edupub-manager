@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import { ApiError } from '../../lib/api';
@@ -204,10 +205,13 @@ export default function Login() {
 
         {/* Decorative Illustration */}
         <div className="hidden lg:block absolute right-[-100px] top-1/2 -translate-y-1/2 opacity-10 rotate-3 pointer-events-none">
-          <img
+          <Image
             alt="Antique scientific journal illustration"
             className="w-[600px] grayscale"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv_6-2sL41d5BiHDQfUpdHNXX3QkO5lhgycgmlPrjMY8HG2kr2OoKrR7GZCd5HcJR2xBLo-Ubn1vm48eVFazagQlfw5dgDCBe7RJ_xd_3GXMWnV97wAXB3cjU8HaDPhsfzz-C6NJu-dxfhMpZvDq-QLdtoy63iuqDjelXninMMv3FuOnUVijaKcYTgIRBGmxv3xI3Bs969kNxU67J2ZpO4300vJzec_pwxPcsJHMwpI9r4BidNXApjqZUkqCyGLQ1fkx5TuDpRZQj0"
+            width={600}
+            height={600}
+            unoptimized
           />
         </div>
       </main>

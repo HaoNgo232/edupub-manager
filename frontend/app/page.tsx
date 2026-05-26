@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useAuth } from './context/AuthContext';
 import { ApiError } from '../lib/api';
 
@@ -137,10 +138,13 @@ export default function Home() {
             {/* Avatar Section */}
             <div className="flex-shrink-0">
               {user.avatarUrl ? (
-                <img
+                <Image
                   src={user.avatarUrl}
                   alt={user.fullName}
+                  width={96}
+                  height={96}
                   className="w-24 h-24 rounded-full object-cover border border-graphite-border bg-white"
+                  unoptimized
                 />
               ) : (
                 <div className="w-24 h-24 rounded-full border border-graphite-border bg-white flex items-center justify-center">
