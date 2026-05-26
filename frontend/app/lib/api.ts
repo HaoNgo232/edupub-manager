@@ -146,3 +146,124 @@ export async function updateMyProfile(data: UpdateMyProfileRequest): Promise<Use
     body: JSON.stringify(data),
   });
 }
+
+// ─── Feature 02: Documents ────────────────────────────────────────────────────
+
+export type DocumentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+
+export type Subject =
+  | 'MATH'
+  | 'LITERATURE'
+  | 'ENGLISH'
+  | 'PHYSICS'
+  | 'CHEMISTRY'
+  | 'BIOLOGY'
+  | 'HISTORY'
+  | 'GEOGRAPHY'
+  | 'OTHER';
+
+export interface DocumentOwner {
+  id: string;
+  email: string;
+  fullName: string;
+  role: Role;
+  avatarUrl: string | null;
+}
+
+export interface DocumentResponse {
+  id: string;
+  title: string;
+  description: string | null;
+  subject: Subject;
+  gradeLevel: number;
+  status: DocumentStatus;
+  coverImageUrl: string | null;
+  fileUrl: string | null;
+  ownerId: string;
+  owner: DocumentOwner;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface DocumentListResponse {
+  items: DocumentResponse[];
+  meta: PaginationMeta;
+}
+
+export interface CreateDocumentRequest {
+  title: string;
+  description?: string;
+  subject: Subject;
+  gradeLevel: number;
+  status?: DocumentStatus;
+  coverImageUrl?: string;
+  fileUrl?: string;
+}
+
+export interface UpdateDocumentRequest {
+  title?: string;
+  description?: string;
+  subject?: Subject;
+  gradeLevel?: number;
+  status?: DocumentStatus;
+  coverImageUrl?: string;
+  fileUrl?: string;
+}
+
+export interface ListDocumentsParams {
+  q?: string;
+  subject?: Subject;
+  status?: DocumentStatus;
+  gradeLevel?: number;
+  page?: number;
+  limit?: number;
+  sortBy?: 'createdAt' | 'updatedAt' | 'title' | 'gradeLevel';
+  sortOrder?: 'asc' | 'desc';
+}
+
+export async function listDocuments(params: ListDocumentsParams = {}): Promise<DocumentListResponse> {
+  const query = new URLSearchParams();
+  if (params.q) query.set('q', params.q);
+  if (params.subject) query.set('subject', params.subject);
+  if (params.status) query.set('status', params.status);
+  if (params.gradeLevel !== undefined) query.set('gradeLevel', String(params.gradeLevel));
+  if (params.page !== undefined) query.set('page', String(params.page));
+  if (params.limit !== undefined) query.set('limit', String(params.limit));
+  if (params.sortBy) query.set('sortBy', params.sortBy);
+  if (params.sortOrder) query.set('sortOrder', params.sortOrder);
+  const qs = query.toString();
+  return apiFetch<DocumentListResponse>(`/documents${qs ? `?${qs}` : ''}`);
+}
+
+export async function getDocument(id: string): Promise<DocumentResponse> {
+  return apiFetch<DocumentResponse>(`/documents/${id}`);
+}
+
+export async function createDocument(data: CreateDocumentRequest): Promise<DocumentResponse> {
+  return apiFetch<DocumentResponse>('/documents', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateDocument(id: string, data: UpdateDocumentRequest): Promise<DocumentResponse> {
+  return apiFetch<DocumentResponse>(`/documents/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteDocument(id: string): Promise<{ message: string }> {
+  return apiFetch<{ message: string }>(`/documents/${id}`, {
+    method: 'DELETE',
+  });
+}

@@ -97,13 +97,35 @@ export default function Home() {
 
       {/* Main Ruled Dashboard Container */}
       <main className="flex-grow w-full max-w-page-max-width px-margin-edge py-12 mx-auto relative z-10">
-        <div className="mb-8">
-          <h1 className="font-scholarly text-headline-xl text-[#0f1115] mb-2">
-            Welcome back, {firstName}
-          </h1>
-          <p className="font-body-md text-on-surface-variant">
-            Manage your credentials and academic details.
-          </p>
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="font-scholarly text-headline-xl text-[#0f1115] mb-2">
+              Welcome back, {firstName}
+            </h1>
+            <p className="font-body-md text-on-surface-variant">
+              Manage your credentials and academic details.
+            </p>
+          </div>
+          <div className="flex gap-4">
+            <button
+              id="btn-nav-my-documents"
+              onClick={() => router.push('/documents')}
+              className="bg-[#E4554A] text-white font-label-md py-3 px-6 hover:brightness-95 transition-all active:scale-[0.99] flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined">description</span>
+              My Documents
+            </button>
+            {user.role === 'ADMIN' && (
+              <button
+                id="btn-nav-admin-documents"
+                onClick={() => router.push('/admin/documents')}
+                className="bg-[#030509] text-white font-label-md py-3 px-6 hover:brightness-95 transition-all active:scale-[0.99] flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined">admin_panel_settings</span>
+                Admin Panel
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

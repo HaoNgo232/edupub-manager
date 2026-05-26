@@ -135,19 +135,51 @@ The container startup script and seeding script create two default accounts for 
 
 ---
 
-## Code Quality & Verification (Backend)
+## Features & User Guide (Feature 02)
 
-We enforce strict TypeScript configurations and code style linting rules.
+EduPub Manager supports educational document creation and strict access control rules (Ownership separation):
+- **User Role (USER)**: Can view, create, edit, and delete only their own documents. Any attempt to read or modify other users' documents will be rejected with a `404 Not Found` response.
+- **Admin Role (ADMIN)**: Full administrative access. Admins can view, edit, or delete any document in the system.
 
-- Check Linter Warnings:
+### Interactive UI Guide
+1. **Accessing the Dashboard**:
+   - Log in using a test account above. You will be redirected to the Home Profile page (`/`).
+   - Click the **My Documents** button (or **Admin Panel** if logged in as an administrator) to open the manuscript workspace.
+2. **Managing Your Documents (USER)**:
+   - **List View (`/documents`)**: View your list of documents, complete with pagination, a search bar (checks titles & descriptions), and filters by **Subject** or **Status**.
+   - **Create (`/documents/new`)**: Click the "New Document" button. Select a status (`Draft`, `Published`, `Archived`) using the custom selection cards, choose the subject and grade, then fill in details.
+   - **Details (`/documents/:id`)**: Displays all metadata, cover image preview, download links for attachments, and ownership context.
+   - **Edit (`/documents/:id/edit`)**: Modify metadata or update cover/file links.
+   - **Delete**: Click "Delete" on the detail page to open the custom confirmation dialog.
+3. **System Administration (ADMIN)**:
+   - **Admin Console (`/admin/documents`)**: Displays all manuscripts across the entire system. Includes an **Owner column** showing creator avatar and email, along with system-wide manuscript stats cards.
+
+---
+
+## Code Quality & Verification
+
+### 1. Backend Verification
+From the `backend/` directory, you can run:
+- **Lint Check**:
   ```bash
   npm run lint
   ```
-- Code Style Formatter (Prettier):
+- **Code Formatter (Prettier):**
   ```bash
   npm run format
   ```
-- Unit Tests:
+- **Unit Tests**:
   ```bash
   npm run test
   ```
+- **E2E Integration Tests**:
+  ```bash
+  npm run test:e2e
+  ```
+
+### 2. Frontend UI Verification (Playwright E2E)
+From the `frontend/` directory, ensure both local dev servers are active and execute:
+```bash
+PLAYWRIGHT_BASE_URL=http://localhost:3000 npx playwright test
+```
+*Note: If running inside Docker, target the frontend mapped port instead (e.g. `http://localhost:3001`).*
