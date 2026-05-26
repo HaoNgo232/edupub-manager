@@ -18,6 +18,7 @@ import StatusBadge from '../../../components/StatusBadge';
 import {
   SUBJECT_FILTER_OPTIONS,
   STATUS_FILTER_OPTIONS,
+  SUBJECT_ICONS,
 } from '../../lib/constants/documents.constants';
 
 export default function AdminDocumentsPage() {
@@ -283,7 +284,8 @@ export default function AdminDocumentsPage() {
 
             {!loading && !error && data && data.items.length > 0 && (
               <>
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full text-left border-collapse" id="admin-documents-table">
                     <thead>
                       <tr className="border-b border-graphite-border bg-[#f4f4f0]">
@@ -305,6 +307,16 @@ export default function AdminDocumentsPage() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+
+                {/* Mobile Card List */}
+                <div
+                  className="md:hidden divide-y divide-graphite-border"
+                  id="admin-documents-mobile-list"
+                >
+                  {data.items.map((doc) => (
+                    <AdminDocumentCard key={doc.id} doc={doc} />
+                  ))}
                 </div>
 
                 {/* Pagination */}
@@ -392,6 +404,87 @@ function AdminDocumentRow({ doc }: { doc: DocumentResponse }) {
         </div>
       </td>
     </tr>
+  );
+}
+
+function AdminDocumentCard({ doc }: { doc: DocumentResponse }) {
+  return (
+    <div className="p-5 hover:bg-[#faf9f5] transition-colors flex flex-col gap-4">
+      {/* Title */}
+      <div className="flex items-start gap-3">
+        <span className="material-symbols-outlined text-[22px] text-[#76777b] mt-0.5 shrink-0">
+          {SUBJECT_ICONS[doc.subject] ?? 'article'}
+        </span>
+        <div className="flex-grow min-w-0">
+          <Link
+            href={`/documents/${doc.id}`}
+            className="font-label-md font-semibold text-[#030509] hover:text-[#E4554A] transition-colors break-words text-[15px]"
+          >
+            {doc.title}
+          </Link>
+        </div>
+      </div>
+
+      {/* Owner info */}
+      <div className="flex items-center gap-2.5 py-2 px-3 bg-[#f5f5f0] border border-graphite-border rounded-sm">
+        <div className="w-8 h-8 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
+          {doc.owner.avatarUrl ? (
+            <Image
+              src={doc.owner.avatarUrl}
+              alt=""
+              width={32}
+              height={32}
+              className="w-full h-full object-cover"
+              unoptimized
+            />
+          ) : (
+            <span className="material-symbols-outlined text-[16px] text-[#76777b]">person</span>
+          )}
+        </div>
+        <div className="min-w-0">
+          <p className="font-label-md font-semibold text-[#030509] truncate text-xs">
+            {doc.owner.fullName}
+          </p>
+          <p className="font-label-sm text-[#76777b] truncate text-[11px]">{doc.owner.email}</p>
+        </div>
+      </div>
+
+      {/* Attributes & Status */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[#76777b] font-label-md">
+          <span>{doc.subject}</span>
+          <span className="text-[#d1d5db]">•</span>
+          <span>Grade {doc.gradeLevel}</span>
+          <span className="text-[#d1d5db]">•</span>
+          <span>
+            {new Date(doc.updatedAt).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+            })}
+          </span>
+        </div>
+        <StatusBadge status={doc.status} />
+      </div>
+
+      {/* Actions */}
+      <div className="flex items-center gap-2 mt-2 pt-3 border-t border-[#f5f5f0]">
+        <Link
+          href={`/documents/${doc.id}`}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 border border-graphite-border bg-white text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded font-label-md transition-all active:scale-[0.98]"
+        >
+          <span className="material-symbols-outlined text-[18px]">visibility</span>
+          <span>View</span>
+        </Link>
+        <Link
+          href={`/documents/${doc.id}/edit`}
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 border border-graphite-border bg-white text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded font-label-md transition-all active:scale-[0.98]"
+        >
+          <span className="material-symbols-outlined text-[18px]">edit</span>
+          <span>Edit</span>
+        </Link>
+      </div>
+    </div>
   );
 }
 
