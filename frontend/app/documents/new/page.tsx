@@ -2,31 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  createDocument,
-  CreateDocumentRequest,
-  DocumentStatus,
-  Subject,
-  ApiError,
-} from '../../../lib/api';
-
-const SUBJECTS: { value: Subject; label: string }[] = [
-  { value: 'MATH', label: 'Mathematics' },
-  { value: 'LITERATURE', label: 'Literature' },
-  { value: 'ENGLISH', label: 'English' },
-  { value: 'PHYSICS', label: 'Physics' },
-  { value: 'CHEMISTRY', label: 'Chemistry' },
-  { value: 'BIOLOGY', label: 'Biology' },
-  { value: 'HISTORY', label: 'History' },
-  { value: 'GEOGRAPHY', label: 'Geography' },
-  { value: 'OTHER', label: 'Other' },
-];
-
-const STATUSES: { value: DocumentStatus; label: string; desc: string }[] = [
-  { value: 'DRAFT', label: 'Draft', desc: 'Not visible to others yet' },
-  { value: 'PUBLISHED', label: 'Published', desc: 'Visible and accessible' },
-  { value: 'ARCHIVED', label: 'Archived', desc: 'Archived, read-only' },
-];
+import { createDocument, CreateDocumentRequest, Subject, ApiError } from '../../../lib/api';
+import { SUBJECT_OPTIONS, STATUS_OPTIONS } from '../../lib/constants/documents.constants';
 
 const initialForm: CreateDocumentRequest = {
   title: '',
@@ -149,7 +126,7 @@ export default function NewDocumentPage() {
               onChange={(e) => update('subject', e.target.value as Subject)}
               className={inputClass}
             >
-              {SUBJECTS.map((s) => (
+              {SUBJECT_OPTIONS.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}
                 </option>
@@ -175,7 +152,7 @@ export default function NewDocumentPage() {
         {/* Status */}
         <FormField label="Status" htmlFor="doc-status">
           <div className="grid grid-cols-3 gap-2">
-            {STATUSES.map((s) => (
+            {STATUS_OPTIONS.map((s) => (
               <button
                 key={s.value}
                 type="button"
@@ -188,7 +165,7 @@ export default function NewDocumentPage() {
                 }`}
               >
                 <p className="font-label-md font-bold text-[#030509]">{s.label}</p>
-                <p className="font-label-sm text-[#76777b] mt-0.5">{s.desc}</p>
+                <p className="font-label-sm text-[#76777b] mt-0.5">{s.description}</p>
               </button>
             ))}
           </div>

@@ -11,38 +11,11 @@ import {
   ApiError,
 } from '../../lib/api';
 import StatusBadge from '../../components/StatusBadge';
-
-const SUBJECTS: { value: Subject | ''; label: string }[] = [
-  { value: '', label: 'All Subjects' },
-  { value: 'MATH', label: 'Mathematics' },
-  { value: 'LITERATURE', label: 'Literature' },
-  { value: 'ENGLISH', label: 'English' },
-  { value: 'PHYSICS', label: 'Physics' },
-  { value: 'CHEMISTRY', label: 'Chemistry' },
-  { value: 'BIOLOGY', label: 'Biology' },
-  { value: 'HISTORY', label: 'History' },
-  { value: 'GEOGRAPHY', label: 'Geography' },
-  { value: 'OTHER', label: 'Other' },
-];
-
-const STATUSES: { value: DocumentStatus | ''; label: string }[] = [
-  { value: '', label: 'All Status' },
-  { value: 'DRAFT', label: 'Draft' },
-  { value: 'PUBLISHED', label: 'Published' },
-  { value: 'ARCHIVED', label: 'Archived' },
-];
-
-const SUBJECT_ICONS: Record<Subject, string> = {
-  MATH: 'calculate',
-  LITERATURE: 'menu_book',
-  ENGLISH: 'translate',
-  PHYSICS: 'science',
-  CHEMISTRY: 'biotech',
-  BIOLOGY: 'eco',
-  HISTORY: 'history_edu',
-  GEOGRAPHY: 'public',
-  OTHER: 'article',
-};
+import {
+  SUBJECT_FILTER_OPTIONS,
+  STATUS_FILTER_OPTIONS,
+  SUBJECT_ICONS,
+} from '../lib/constants/documents.constants';
 
 export default function MyDocumentsPage() {
   const [data, setData] = useState<DocumentListResponse | null>(null);
@@ -151,7 +124,7 @@ export default function MyDocumentsPage() {
               }}
               className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
             >
-              {SUBJECTS.map((s) => (
+              {SUBJECT_FILTER_OPTIONS.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}
                 </option>
@@ -171,7 +144,7 @@ export default function MyDocumentsPage() {
               }}
               className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
             >
-              {STATUSES.map((s) => (
+              {STATUS_FILTER_OPTIONS.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.label}
                 </option>

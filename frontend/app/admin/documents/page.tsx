@@ -14,26 +14,10 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import SideNav from '../../../components/SideNav';
 import StatusBadge from '../../../components/StatusBadge';
-
-const SUBJECTS: { value: Subject | ''; label: string }[] = [
-  { value: '', label: 'All Subjects' },
-  { value: 'MATH', label: 'Mathematics' },
-  { value: 'LITERATURE', label: 'Literature' },
-  { value: 'ENGLISH', label: 'English' },
-  { value: 'PHYSICS', label: 'Physics' },
-  { value: 'CHEMISTRY', label: 'Chemistry' },
-  { value: 'BIOLOGY', label: 'Biology' },
-  { value: 'HISTORY', label: 'History' },
-  { value: 'GEOGRAPHY', label: 'Geography' },
-  { value: 'OTHER', label: 'Other' },
-];
-
-const STATUSES: { value: DocumentStatus | ''; label: string }[] = [
-  { value: '', label: 'All Status' },
-  { value: 'DRAFT', label: 'Draft' },
-  { value: 'PUBLISHED', label: 'Published' },
-  { value: 'ARCHIVED', label: 'Archived' },
-];
+import {
+  SUBJECT_FILTER_OPTIONS,
+  STATUS_FILTER_OPTIONS,
+} from '../../lib/constants/documents.constants';
 
 export default function AdminDocumentsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -222,7 +206,7 @@ export default function AdminDocumentsPage() {
                   }}
                   className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
                 >
-                  {SUBJECTS.map((s) => (
+                  {SUBJECT_FILTER_OPTIONS.map((s) => (
                     <option key={s.value} value={s.value}>
                       {s.label}
                     </option>
@@ -243,7 +227,7 @@ export default function AdminDocumentsPage() {
                   }}
                   className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
                 >
-                  {STATUSES.map((s) => (
+                  {STATUS_FILTER_OPTIONS.map((s) => (
                     <option key={s.value} value={s.value}>
                       {s.label}
                     </option>
