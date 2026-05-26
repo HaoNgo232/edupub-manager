@@ -177,9 +177,8 @@ export default function Register() {
             <button
               type="submit"
               disabled={submitting}
-              className={`w-full bg-[#E4554A] text-white py-4 text-[14px] font-semibold tracking-[0.02em] transition-all hover:bg-[#c93e34] active:scale-[0.99] flex justify-center items-center gap-2 ${
-                submitting ? 'opacity-80 cursor-wait' : ''
-              }`}
+              className={`w-full bg-[#E4554A] text-white py-4 text-[14px] font-semibold tracking-[0.02em] transition-all hover:bg-[#c93e34] active:scale-[0.99] flex justify-center items-center gap-2 ${submitting ? 'opacity-80 cursor-wait' : ''
+                }`}
             >
               {submitting ? (
                 <>
@@ -207,8 +206,6 @@ export default function Register() {
             </div>
           </form>
         </div>
-
-
       </main>
 
       {/* Footer */}
@@ -217,7 +214,7 @@ export default function Register() {
           <div className="mb-3 md:mb-0">
             <span className="text-[14px] font-bold text-[#030509]">EduPub Manager</span>
             <p className="text-[12px] text-[#46464b] mt-0.5">
-              © 2024 EduPub Manager. Scholarly Excellence.
+              © 2026 EduPub Manager. Scholarly Excellence.
             </p>
           </div>
           <div className="flex gap-6">

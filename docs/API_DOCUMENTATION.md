@@ -433,3 +433,262 @@ email: user@edupub.test
 password: User@123456
 role: USER
 ```
+
+## Feature 02: Document CRUD & Ownership Rules
+
+### Common Types
+
+```ts
+export type DocumentStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
+
+export type Subject =
+  | 'MATH'
+  | 'LITERATURE'
+  | 'ENGLISH'
+  | 'PHYSICS'
+  | 'CHEMISTRY'
+  | 'BIOLOGY'
+  | 'HISTORY'
+  | 'GEOGRAPHY'
+  | 'OTHER';
+
+export type DocumentOwner = {
+  id: string;
+  email: string;
+  fullName: string;
+  role: Role;
+  avatarUrl: string | null;
+};
+
+export type DocumentResponse = {
+  id: string;
+  title: string;
+  description: string | null;
+  subject: Subject;
+  gradeLevel: number;
+  status: DocumentStatus;
+  coverImageUrl: string | null;
+  fileUrl: string | null;
+  ownerId: string;
+  owner: DocumentOwner;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+};
+
+export type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+};
+
+export type DocumentListResponse = {
+  items: DocumentResponse[];
+  meta: PaginationMeta;
+};
+```
+
+---
+
+## Document Endpoints
+
+All endpoints require authentication:
+```http
+Authorization: Bearer <accessToken>
+```
+
+### POST /documents
+Creates a new document.
+- **Permissions**: Both `USER` and `ADMIN` can create.
+- **Rule**: The `ownerId` is always set from the JWT payload `sub`. If a client sends `ownerId` in the body, it is completely ignored.
+
+#### Request Body
+```ts
+export type CreateDocumentRequest = {
+  title: string; // required, string, min length 3, max length 200
+  description?: string; // optional, string, max length 2000
+  subject: Subject; // required, must match Subject enum
+  gradeLevel: number; // required, integer, min 1, max 12
+  status?: DocumentStatus; // optional, default: 'DRAFT'
+  coverImageUrl?: string; // optional, valid URL format
+  fileUrl?: string; // optional, valid URL format
+};
+```
+
+Example request:
+```json
+{
+  "title": "Sách Toán lớp 10",
+  "description": "Tài liệu ôn tập chương hàm số",
+  "subject": "MATH",
+  "gradeLevel": 10,
+  "status": "DRAFT",
+  "coverImageUrl": "https://example.com/cover.png",
+  "fileUrl": "https://example.com/document.pdf"
+}
+```
+
+#### Responses
+
+- **201 Created**: Returns the newly created document.
+```json
+{
+  "id": "e2a39281-a75d-40de-b003-ef37ad927e1f",
+  "title": "Sách Toán lớp 10",
+  "description": "Tài liệu ôn tập chương hàm số",
+  "subject": "MATH",
+  "gradeLevel": 10,
+  "status": "DRAFT",
+  "coverImageUrl": "https://example.com/cover.png",
+  "fileUrl": "https://example.com/document.pdf",
+  "ownerId": "df3566d8-471a-402b-804d-e805edae4b2d",
+  "owner": {
+    "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+    "email": "user@example.com",
+    "fullName": "Nguyen Van A",
+    "role": "USER",
+    "avatarUrl": null
+  },
+  "createdAt": "2026-05-26T17:15:00.000Z",
+  "updatedAt": "2026-05-26T17:15:00.000Z"
+}
+```
+
+- **400 Bad Request**: Validation errors.
+```json
+{
+  "message": [
+    "title must be longer than or equal to 3 characters",
+    "gradeLevel must not be greater than 12"
+  ],
+  "error": "Bad Request",
+  "statusCode": 400
+}
+```
+
+---
+
+### GET /documents
+Lists documents with filters and pagination.
+- **Permissions / Ownership Rules**:
+  - `USER`: Can only query/see documents where `ownerId === currentUser.id`.
+  - `ADMIN`: Can see all documents in the system.
+
+#### Query Parameters
+All query parameters are optional:
+- `q` (string): Matches search substring inside `title` and `description` (case-insensitive).
+- `subject` (Subject): Filters by subject.
+- `status` (DocumentStatus): Filters by status.
+- `gradeLevel` (number): Filters by exact grade (1 to 12).
+- `page` (number): Page number (default: `1`, min: `1`).
+- `limit` (number): Items per page (default: `10`, min: `1`, max: `100`).
+- `sortBy` (string): Field to sort (`createdAt` | `updatedAt` | `title` | `gradeLevel`). Default: `createdAt`.
+- `sortOrder` (string): Direction (`asc` | `desc`). Default: `desc`.
+
+#### Responses
+
+- **200 OK**: Returns a paginated list of items.
+```json
+{
+  "items": [
+    {
+      "id": "e2a39281-a75d-40de-b003-ef37ad927e1f",
+      "title": "Sách Toán lớp 10",
+      "description": "Tài liệu ôn tập chương hàm số",
+      "subject": "MATH",
+      "gradeLevel": 10,
+      "status": "PUBLISHED",
+      "coverImageUrl": "https://example.com/cover.png",
+      "fileUrl": "https://example.com/document.pdf",
+      "ownerId": "df3566d8-471a-402b-804d-e805edae4b2d",
+      "owner": {
+        "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+        "email": "user@example.com",
+        "fullName": "Nguyen Van A",
+        "role": "USER",
+        "avatarUrl": null
+      },
+      "createdAt": "2026-05-26T17:15:00.000Z",
+      "updatedAt": "2026-05-26T17:15:00.000Z"
+    }
+  ],
+  "meta": {
+    "total": 25,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 3,
+    "hasNextPage": true,
+    "hasPreviousPage": false
+  }
+}
+```
+
+---
+
+### GET /documents/:id
+Gets document details by ID.
+- **Permissions / Ownership Rules**:
+  - `USER`: Can only retrieve their own document. Attempting to retrieve another user's document or a non-existent document will return a `404 Not Found` to prevent data leaking.
+  - `ADMIN`: Can retrieve any document.
+
+#### Responses
+
+- **200 OK**: Returns the `DocumentResponse`.
+- **404 Not Found**: Document doesn't exist or doesn't belong to the current user (if requested by a `USER`).
+```json
+{
+  "message": "Document not found",
+  "error": "Not Found",
+  "statusCode": 404
+}
+```
+
+---
+
+### PATCH /documents/:id
+Updates document details by ID.
+- **Permissions / Ownership Rules**:
+  - `USER`: Can only edit their own document. Attempting to edit another user's document will return a `404 Not Found`.
+  - `ADMIN`: Can edit any document in the system.
+
+#### Request Body
+All fields are optional:
+```ts
+export type UpdateDocumentRequest = {
+  title?: string;
+  description?: string;
+  subject?: Subject;
+  gradeLevel?: number;
+  status?: DocumentStatus;
+  coverImageUrl?: string;
+  fileUrl?: string;
+};
+```
+Note: Fields like `id`, `ownerId`, `owner`, `createdAt`, and `updatedAt` are read-only and stripped/ignored if sent.
+
+#### Responses
+
+- **200 OK**: Returns the updated document.
+- **404 Not Found**: Document doesn't exist or is not owned by the current user (if requested by a `USER`).
+- **400 Bad Request**: Validation errors.
+
+---
+
+### DELETE /documents/:id
+Deletes a document by ID.
+- **Permissions / Ownership Rules**:
+  - `USER`: Can only delete their own document. Attempting to delete another user's document will return a `404 Not Found`.
+  - `ADMIN`: Can delete any document.
+
+#### Responses
+
+- **200 OK**: Deletion successful.
+```json
+{
+  "message": "Document deleted successfully"
+}
+```
+- **404 Not Found**: Document doesn't exist or is not owned by the current user (if requested by a `USER`).
+```

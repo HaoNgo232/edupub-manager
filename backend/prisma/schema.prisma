@@ -17,15 +17,59 @@ enum Role {
   ADMIN
 }
 
+enum DocumentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Subject {
+  MATH
+  LITERATURE
+  ENGLISH
+  PHYSICS
+  CHEMISTRY
+  BIOLOGY
+  HISTORY
+  GEOGRAPHY
+  OTHER
+}
+
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
+  id           String     @id @default(uuid())
+  email        String     @unique
   passwordHash String
   fullName     String
-  role         Role     @default(USER)
+  role         Role       @default(USER)
   avatarUrl    String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  documents    Document[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
   @@map("users")
 }
+
+model Document {
+  id            String         @id @default(uuid())
+  title         String
+  description   String?
+  subject       Subject
+  gradeLevel    Int
+  status        DocumentStatus @default(DRAFT)
+  coverImageUrl String?
+  fileUrl       String?
+
+  ownerId   String
+  owner     User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@index([subject])
+  @@index([status])
+  @@index([gradeLevel])
+  @@index([createdAt])
+  @@map("documents")
+}
+
