@@ -3,7 +3,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateDocumentDto } from './dto/create-document.dto';
 import { UpdateDocumentDto } from './dto/update-document.dto';
 import { QueryDocumentsDto } from './dto/query-documents.dto';
-import { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
+import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

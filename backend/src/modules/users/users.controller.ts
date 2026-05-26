@@ -3,7 +3,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { sanitizeUser } from '../utils/sanitize';
+import { sanitizeUser } from '../../utils/sanitize';
 import type { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 @Controller('users')

@@ -3,7 +3,7 @@ import { DocumentsService } from './documents.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { NotFoundException } from '@nestjs/common';
 import { Subject, DocumentStatus, Prisma } from '@prisma/client';
-import { JwtPayload } from '../../auth/interfaces/jwt-payload.interface';
+import { JwtPayload } from '../auth/interfaces/jwt-payload.interface';
 
 describe('DocumentsService', () => {
   let service: DocumentsService;
