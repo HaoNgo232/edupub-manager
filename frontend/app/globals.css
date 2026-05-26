@@ -18,6 +18,38 @@
   --spacing-margin-edge: 32px;
   --spacing-gutter: 24px;
   --spacing-page-max-width: 1140px;
+
+  --text-headline-xl: 48px;
+  --text-headline-xl--line-height: 56px;
+  --text-headline-xl--font-weight: 700;
+  --text-headline-xl--letter-spacing: -0.02em;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--font-weight: 600;
+  --text-headline-lg--letter-spacing: -0.01em;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-label-md: 14px;
+  --text-label-md--line-height: 20px;
+  --text-label-md--font-weight: 500;
+  --text-label-md--letter-spacing: 0.02em;
+
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--font-weight: 600;
+  --text-label-sm--letter-spacing: 0.05em;
 }
 
 .moleskine-ruled {
@@ -52,4 +84,55 @@ body {
 
 .max-w-page-max-width {
   max-width: 1140px !important;
+}
+
+/* Design System Typography Fallbacks for E2E and Local Dev Hot-Reloading */
+.font-scholarly {
+  font-family: 'Patrick Hand', cursive !important;
+}
+
+.text-headline-xl {
+  font-size: 48px !important;
+  line-height: 56px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.text-headline-lg {
+  font-size: 32px !important;
+  line-height: 40px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.text-headline-md, .font-headline-md {
+  font-size: 24px !important;
+  line-height: 32px !important;
+  font-weight: 600 !important;
+}
+
+.text-body-lg, .font-body-lg {
+  font-size: 18px !important;
+  line-height: 28px !important;
+  font-weight: 400 !important;
+}
+
+.text-body-md, .font-body-md {
+  font-size: 16px !important;
+  line-height: 24px !important;
+  font-weight: 400 !important;
+}
+
+.text-label-md, .font-label-md {
+  font-size: 14px !important;
+  line-height: 20px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.text-label-sm, .font-label-sm {
+  font-size: 12px !important;
+  line-height: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
 }

@@ -208,15 +208,7 @@ export default function Register() {
           </form>
         </div>
 
-        {/* Decorative "Margin" Illustration */}
-        <div className="mt-10 opacity-40 select-none flex flex-col items-center gap-1">
-          <span className="material-symbols-outlined text-[#76777b]" style={{ fontSize: '32px' }}>
-            edit_note
-          </span>
-          <span className="text-[11px] font-semibold text-[#76777b] uppercase tracking-[0.2em]">
-            Codex Digitalis
-          </span>
-        </div>
+
       </main>
 
       {/* Footer */}
