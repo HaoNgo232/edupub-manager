@@ -1,26 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 @import 'tailwindcss';
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf9f5;
+  --foreground: #1c1e24;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --color-paper-cream: #f5f5f0;
+  --color-graphite-border: #d1d5db;
+  --color-ink-black: #0f1115;
+  --color-on-surface-variant: #46464b;
+  --color-on-tertiary-container: #e5564b;
+  --font-scholarly: 'Patrick Hand', cursive;
+  --font-sans: 'Inter', sans-serif;
+  --spacing-margin-edge: 32px;
+  --spacing-gutter: 24px;
+  --spacing-page-max-width: 1140px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.moleskine-ruled {
+  background-image: linear-gradient(#d1d5db 1px, transparent 1px);
+  background-size: 100% 2rem;
+}
+
+.paper-texture {
+  background-image: radial-gradient(#d1d5db 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+}
+
+.ruled-line {
+  border-bottom: 1px solid #d1d5db;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Design System Spacing Fallbacks for E2E and Local Dev Hot-Reloading */
+.px-margin-edge {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}
+
+.gap-gutter {
+  gap: 24px !important;
+}
+
+.max-w-page-max-width {
+  max-width: 1140px !important;
 }
