@@ -1,98 +1,115 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# EduPub Manager API - Feature 01: Authentication & Role Foundation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend API for the EduPub Manager, built with **NestJS**, **TypeScript**, **PostgreSQL**, and **Prisma ORM**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This initial version establishes the foundational database schemas, authentication (JWT), user profile management, role verification, and database seeding.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠 Tech Stack
 
-## Project setup
+- **Framework**: NestJS 11
+- **Database**: PostgreSQL 16
+- **ORM**: Prisma ORM 7
+- **Authentication**: JWT (JSON Web Tokens)
+- **Security**: bcrypt (Password hashing), custom Route Guards
+- **Validation**: class-validator & class-transformer
 
+---
+
+## ⚙️ Prerequisites & Installation
+
+### 1. Database Setup
+Ensure you have a PostgreSQL database running. You can use the provided [docker-compose.yml](../docker-compose.yml) in the project root:
 ```bash
-$ npm install
+# Start PostgreSQL via Docker (if not already running)
+docker compose up -d
 ```
 
-## Compile and run the project
-
+### 2. Install Dependencies
+Navigate into the `backend/` directory and install the project packages:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+### 3. Environment Variables
+Create a `.env` file in the `backend/` directory by copying the template file:
 ```bash
-# unit tests
-$ npm run test
+cp .env.example .env
+```
+Ensure the `DATABASE_URL` in `.env` is configured correctly for your PostgreSQL instance.
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
+## 🚀 Running the App
+
+### 1. Run Database Migrations
+Synchronize your database schema with Prisma:
+```bash
+npx prisma migrate dev --name init
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 2. Generate Prisma Client
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npx prisma generate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 3. Seed Database
+Populate the database with the default Test Accounts (Admin & User):
+```bash
+npx prisma db seed
+```
 
-## Resources
+### 4. Start Development Server
+```bash
+npm run start:dev
+```
+The application will start on the port configured in `.env` (default is `http://localhost:3000`).
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🔑 Test Accounts
+The seeding script creates two default accounts for testing:
 
-## Support
+### 1. Regular User Account
+- **Email**: `user@edupub.test`
+- **Password**: `User@123456`
+- **Role**: `USER`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 2. Administrator Account
+- **Email**: `admin@edupub.test`
+- **Password**: `Admin@123456`
+- **Role**: `ADMIN`
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 📡 API Endpoints
 
-## License
+### 🔐 Authentication (`/auth`)
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+| Method | Endpoint | Description | Auth Required | Body Schema |
+| :--- | :--- | :--- | :---: | :--- |
+| **POST** | `/auth/register` | Register a new user | No | `{ email, password, fullName }` |
+| **POST** | `/auth/login` | Log in to an account | No | `{ email, password }` |
+| **GET** | `/auth/me` | Get currently logged-in user profile | **Yes (Bearer Token)** | *None* |
+
+### 👤 User Management (`/users`)
+
+| Method | Endpoint | Description | Auth Required | Body Schema |
+| :--- | :--- | :--- | :---: | :--- |
+| **GET** | `/users/me` | Retrieve the logged-in user's profile | **Yes (Bearer Token)** | *None* |
+| **PATCH** | `/users/me` | Update the logged-in user's profile (whitelisted fields: `fullName`, `avatarUrl`) | **Yes (Bearer Token)** | `{ fullName?, avatarUrl? }` |
+
+---
+
+## 🛡 Security Architecture
+
+### 1. Password Hashing
+Passwords are never stored in plain text. We use `bcrypt` with configurable salt rounds to generate cryptographically secure password hashes before persisting.
+
+### 2. Request Validation
+Incoming HTTP request bodies are strictly validated using class decorators. Any extra fields (like `role` or `passwordHash`) sent by users during profile update are stripped out automatically before database queries are made.
+
+### 3. Route Access Guards
+- **`JwtAuthGuard`**: Restricts endpoints to authenticated users only by verifying the Bearer token in the `Authorization` request header.
+- **`RolesGuard`**: Combined with the `@Roles(...Role[])` decorator, it restricts endpoint access based on role permissions (e.g. `ADMIN` or `USER`).
