@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getDocument, deleteDocument, DocumentResponse, ApiError } from '../../lib/api';
+import { getDocument, deleteDocument, DocumentResponse, ApiError } from '../../../lib/api';
 import { useAuth } from '../../context/AuthContext';
-import StatusBadge from '../../components/StatusBadge';
+import StatusBadge from '../../../components/StatusBadge';
 
 export default function DocumentDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -116,10 +116,7 @@ export default function DocumentDetailPage() {
               <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#460002]" />
               <div className="space-y-3 mb-6">
                 <StatusBadge status={doc.status} size="md" />
-                <h1
-                  id="document-title"
-                  className="text-headline-xl text-[#030509] leading-tight"
-                >
+                <h1 id="document-title" className="text-headline-xl text-[#030509] leading-tight">
                   {doc.title}
                 </h1>
               </div>
@@ -161,13 +158,17 @@ export default function DocumentDetailPage() {
                 <MetaRow
                   label="Created"
                   value={new Date(doc.createdAt).toLocaleDateString('en-GB', {
-                    day: '2-digit', month: 'short', year: 'numeric',
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
                   })}
                 />
                 <MetaRow
                   label="Updated"
                   value={new Date(doc.updatedAt).toLocaleDateString('en-GB', {
-                    day: '2-digit', month: 'short', year: 'numeric',
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
                   })}
                 />
               </MetaCard>
@@ -188,7 +189,9 @@ export default function DocumentDetailPage() {
                     )}
                   </div>
                   <div>
-                    <p className="font-label-md font-semibold text-[#030509]">{doc.owner.fullName}</p>
+                    <p className="font-label-md font-semibold text-[#030509]">
+                      {doc.owner.fullName}
+                    </p>
                     <p className="font-label-sm text-[#76777b]">{doc.owner.email}</p>
                     <span className="font-label-sm bg-[#e9e8e4] text-[#46464b] px-2 py-0.5 rounded mt-1 inline-block uppercase">
                       {doc.owner.role}
@@ -216,7 +219,9 @@ export default function DocumentDetailPage() {
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         picture_as_pdf
                       </span>
-                      <span className="font-label-md flex-1 text-[#030509] truncate">{doc.fileUrl}</span>
+                      <span className="font-label-md flex-1 text-[#030509] truncate">
+                        {doc.fileUrl}
+                      </span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
@@ -232,7 +237,9 @@ export default function DocumentDetailPage() {
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         image
                       </span>
-                      <span className="font-label-md flex-1 text-[#030509] truncate">{doc.coverImageUrl}</span>
+                      <span className="font-label-md flex-1 text-[#030509] truncate">
+                        {doc.coverImageUrl}
+                      </span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
@@ -249,11 +256,7 @@ export default function DocumentDetailPage() {
             {doc.coverImageUrl ? (
               <div className="border border-graphite-border overflow-hidden bg-white">
                 <div className="aspect-[3/4] bg-[#e9e8e4] relative">
-                  <img
-                    src={doc.coverImageUrl}
-                    alt="Cover"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={doc.coverImageUrl} alt="Cover" className="w-full h-full object-cover" />
                 </div>
                 <p className="font-label-sm text-[#76777b] px-4 py-3 text-center uppercase tracking-widest">
                   Cover Image
@@ -278,7 +281,9 @@ export default function DocumentDetailPage() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="font-label-md text-[#76777b]">Grade</span>
-                  <span className="font-label-md font-bold text-[#030509]">Grade {doc.gradeLevel}</span>
+                  <span className="font-label-md font-bold text-[#030509]">
+                    Grade {doc.gradeLevel}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="font-label-md text-[#76777b]">Subject</span>
@@ -345,8 +350,9 @@ function DeleteModal({
           <div>
             <h3 className="font-label-md font-bold text-[#030509] mb-1">Delete Document?</h3>
             <p className="font-label-md text-[#76777b]">
-              Are you sure you want to delete <strong className="text-[#030509]">"{title}"</strong>?
-              This action cannot be undone.
+              Are you sure you want to delete{' '}
+              <strong className="text-[#030509]">&quot;{title}&quot;</strong>? This action cannot be
+              undone.
             </p>
           </div>
         </div>

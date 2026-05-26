@@ -94,18 +94,12 @@ describe('DocumentsService', () => {
 
   describe('buildWhereClause', () => {
     it('should restrict to ownerId for non-admin users', () => {
-      const where: Prisma.DocumentWhereInput = service.buildWhereClause(
-        mockUserPayload,
-        {},
-      );
+      const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockUserPayload, {});
       expect(where.ownerId).toBe(mockUserPayload.sub);
     });
 
     it('should not restrict to ownerId for admin users', () => {
-      const where: Prisma.DocumentWhereInput = service.buildWhereClause(
-        mockAdminPayload,
-        {},
-      );
+      const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockAdminPayload, {});
       expect(where.ownerId).toBeUndefined();
     });
 
@@ -117,10 +111,7 @@ describe('DocumentsService', () => {
         q: 'calculus',
       };
 
-      const where: Prisma.DocumentWhereInput = service.buildWhereClause(
-        mockAdminPayload,
-        query,
-      );
+      const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockAdminPayload, query);
 
       expect(where.subject).toBe(Subject.MATH);
       expect(where.status).toBe(DocumentStatus.PUBLISHED);
@@ -137,10 +128,7 @@ describe('DocumentsService', () => {
       const mockDoc = { id: 'doc-1', ownerId: mockUserPayload.sub };
       mockPrismaService.document.findUnique.mockResolvedValue(mockDoc);
 
-      const result = await service.ensureDocumentAccessible(
-        'doc-1',
-        mockUserPayload,
-      );
+      const result = await service.ensureDocumentAccessible('doc-1', mockUserPayload);
       expect(result).toEqual(mockDoc);
     });
 
@@ -148,10 +136,7 @@ describe('DocumentsService', () => {
       const mockDoc = { id: 'doc-1', ownerId: 'other-user-uuid' };
       mockPrismaService.document.findUnique.mockResolvedValue(mockDoc);
 
-      const result = await service.ensureDocumentAccessible(
-        'doc-1',
-        mockAdminPayload,
-      );
+      const result = await service.ensureDocumentAccessible('doc-1', mockAdminPayload);
       expect(result).toEqual(mockDoc);
     });
 
@@ -167,9 +152,9 @@ describe('DocumentsService', () => {
       const mockDoc = { id: 'doc-1', ownerId: 'other-user-uuid' };
       mockPrismaService.document.findUnique.mockResolvedValue(mockDoc);
 
-      await expect(
-        service.ensureDocumentAccessible('doc-1', mockUserPayload),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.ensureDocumentAccessible('doc-1', mockUserPayload)).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

@@ -8,7 +8,7 @@ import {
   register as apiRegister,
   getMe,
   updateMyProfile,
-} from '../lib/api';
+} from '../../lib/api';
 
 interface AuthContextType {
   user: UserResponse | null;

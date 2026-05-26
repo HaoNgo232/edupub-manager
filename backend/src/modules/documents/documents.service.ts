@@ -80,11 +80,7 @@ export class DocumentsService {
     return this.ensureDocumentAccessible(documentId, currentUser);
   }
 
-  async update(
-    currentUser: JwtPayload,
-    documentId: string,
-    updateDocumentDto: UpdateDocumentDto,
-  ) {
+  async update(currentUser: JwtPayload, documentId: string, updateDocumentDto: UpdateDocumentDto) {
     await this.ensureDocumentAccessible(documentId, currentUser);
 
     return this.prisma.document.update({
@@ -147,9 +143,7 @@ export class DocumentsService {
     return where;
   }
 
-  buildOrderBy(
-    queryDto: QueryDocumentsDto,
-  ): Prisma.DocumentOrderByWithRelationInput {
+  buildOrderBy(queryDto: QueryDocumentsDto): Prisma.DocumentOrderByWithRelationInput {
     const sortBy = queryDto.sortBy || 'createdAt';
     const sortOrder = queryDto.sortOrder || 'desc';
     return {

@@ -118,10 +118,7 @@ describe('AuthController (e2e)', () => {
 
     it('should fail with 409 Conflict if registration email already exists', async () => {
       // First registration
-      await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(validUser)
-        .expect(201);
+      await request(app.getHttpServer()).post('/auth/register').send(validUser).expect(201);
 
       // Duplicate registration
       const response = await request(app.getHttpServer())
@@ -147,10 +144,7 @@ describe('AuthController (e2e)', () => {
 
     beforeEach(async () => {
       // Seed a user for login testing
-      await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(testUser)
-        .expect(201);
+      await request(app.getHttpServer()).post('/auth/register').send(testUser).expect(201);
     });
 
     it('should successfully log in and return user info (without passwordHash) and accessToken', async () => {
@@ -259,9 +253,7 @@ describe('AuthController (e2e)', () => {
     });
 
     it('should fail with 401 Unauthorized if token is missing', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/auth/me')
-        .expect(401);
+      const response = await request(app.getHttpServer()).get('/auth/me').expect(401);
 
       const body = response.body as TestResponse;
       expect(body).toEqual({

@@ -1,12 +1,4 @@
-import {
-  IsString,
-  IsOptional,
-  IsInt,
-  Min,
-  Max,
-  IsEnum,
-  IsIn,
-} from 'class-validator';
+import { IsString, IsOptional, IsInt, Min, Max, IsEnum, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 import { Subject, DocumentStatus } from '../../../generated/prisma';
 

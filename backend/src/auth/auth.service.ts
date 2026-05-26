@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -28,8 +24,7 @@ export class AuthService {
       throw new ConflictException('Email already exists');
     }
 
-    const saltRounds =
-      Number(this.configService.get<number>('BCRYPT_SALT_ROUNDS')) || 10;
+    const saltRounds = Number(this.configService.get<number>('BCRYPT_SALT_ROUNDS')) || 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
     const user = await this.usersService.create({

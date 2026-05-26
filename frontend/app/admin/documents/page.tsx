@@ -10,10 +10,10 @@ import {
   DocumentStatus,
   Subject,
   ApiError,
-} from '../../lib/api';
+} from '../../../lib/api';
 import { useAuth } from '../../context/AuthContext';
-import SideNav from '../../components/SideNav';
-import StatusBadge from '../../components/StatusBadge';
+import SideNav from '../../../components/SideNav';
+import StatusBadge from '../../../components/StatusBadge';
 
 const SUBJECTS: { value: Subject | ''; label: string }[] = [
   { value: '', label: 'All Subjects' },
@@ -79,6 +79,7 @@ export default function AdminDocumentsPage() {
   }, [search, subject, status, page]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!authLoading && user?.role === 'ADMIN') fetchDocs();
   }, [fetchDocs, authLoading, user]);
 
@@ -107,8 +108,12 @@ export default function AdminDocumentsPage() {
         {/* Top header */}
         <header className="sticky top-0 z-30 flex items-center justify-between px-4 md:px-8 py-4 bg-[#faf9f5] border-b border-graphite-border">
           <div className="flex items-center gap-2 font-label-md text-[#76777b] pl-12 md:pl-0">
-            <span className="material-symbols-outlined text-[18px] text-[#E4554A]">admin_panel_settings</span>
-            <span className="text-[#030509] font-semibold truncate max-w-[150px] sm:max-w-none">Admin — All Documents</span>
+            <span className="material-symbols-outlined text-[18px] text-[#E4554A]">
+              admin_panel_settings
+            </span>
+            <span className="text-[#030509] font-semibold truncate max-w-[150px] sm:max-w-none">
+              Admin — All Documents
+            </span>
           </div>
           <Link
             href="/documents/new"
@@ -133,7 +138,12 @@ export default function AdminDocumentsPage() {
           {data && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Total', value: data.meta.total, icon: 'description', color: 'text-[#030509]' },
+                {
+                  label: 'Total',
+                  value: data.meta.total,
+                  icon: 'description',
+                  color: 'text-[#030509]',
+                },
                 {
                   label: 'Showing',
                   value: data.items.length,
@@ -162,7 +172,9 @@ export default function AdminDocumentsPage() {
                   </span>
                   <div>
                     <p className={`font-label-md font-bold ${s.color}`}>{s.value}</p>
-                    <p className="font-label-sm text-[#76777b] uppercase tracking-widest">{s.label}</p>
+                    <p className="font-label-sm text-[#76777b] uppercase tracking-widest">
+                      {s.label}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -172,11 +184,17 @@ export default function AdminDocumentsPage() {
           {/* Filters */}
           <div className="bg-[#f5f5f0] border border-graphite-border p-5">
             <form
-              onSubmit={(e) => { e.preventDefault(); setPage(1); fetchDocs(); }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                setPage(1);
+                fetchDocs();
+              }}
               className="flex flex-col lg:flex-row lg:items-end gap-4"
             >
               <div className="flex flex-col gap-1.5 flex-grow w-full">
-                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Search</label>
+                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
+                  Search
+                </label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#76777b]">
                     search
@@ -192,29 +210,43 @@ export default function AdminDocumentsPage() {
                 </div>
               </div>
               <div className="flex flex-col gap-1.5 w-full lg:w-[180px]">
-                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Subject</label>
+                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
+                  Subject
+                </label>
                 <select
                   id="admin-filter-subject"
                   value={subject}
-                  onChange={(e) => { setSubject(e.target.value as Subject | ''); setPage(1); }}
+                  onChange={(e) => {
+                    setSubject(e.target.value as Subject | '');
+                    setPage(1);
+                  }}
                   className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
                 >
                   {SUBJECTS.map((s) => (
-                    <option key={s.value} value={s.value}>{s.label}</option>
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div className="flex flex-col gap-1.5 w-full lg:w-[150px]">
-                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Status</label>
+                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
+                  Status
+                </label>
                 <select
                   id="admin-filter-status"
                   value={status}
-                  onChange={(e) => { setStatus(e.target.value as DocumentStatus | ''); setPage(1); }}
+                  onChange={(e) => {
+                    setStatus(e.target.value as DocumentStatus | '');
+                    setPage(1);
+                  }}
                   className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
                 >
                   {STATUSES.map((s) => (
-                    <option key={s.value} value={s.value}>{s.label}</option>
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -270,14 +302,16 @@ export default function AdminDocumentsPage() {
                   <table className="w-full text-left border-collapse" id="admin-documents-table">
                     <thead>
                       <tr className="border-b border-graphite-border bg-[#f4f4f0]">
-                        {['Title', 'Owner', 'Subject', 'Grade', 'Status', 'Updated', 'Actions'].map((h) => (
-                          <th
-                            key={h}
-                            className="px-6 py-4 font-label-sm text-[#76777b] uppercase tracking-widest whitespace-nowrap"
-                          >
-                            {h}
-                          </th>
-                        ))}
+                        {['Title', 'Owner', 'Subject', 'Grade', 'Status', 'Updated', 'Actions'].map(
+                          (h) => (
+                            <th
+                              key={h}
+                              className="px-6 py-4 font-label-sm text-[#76777b] uppercase tracking-widest whitespace-nowrap"
+                            >
+                              {h}
+                            </th>
+                          ),
+                        )}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-graphite-border">
@@ -291,8 +325,8 @@ export default function AdminDocumentsPage() {
                 {/* Pagination */}
                 <div className="px-6 py-4 bg-[#f4f4f0] border-t border-graphite-border flex flex-col sm:flex-row items-center justify-between gap-3">
                   <span className="font-label-md text-[#76777b]">
-                    Showing {(page - 1) * LIMIT + 1}–
-                    {Math.min(page * LIMIT, data.meta.total)} of {data.meta.total} results
+                    Showing {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, data.meta.total)} of{' '}
+                    {data.meta.total} results
                   </span>
                   <AdminPagination meta={data.meta} page={page} onPageChange={setPage} />
                 </div>
@@ -334,13 +368,17 @@ function AdminDocumentRow({ doc }: { doc: DocumentResponse }) {
         </div>
       </td>
       <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">{doc.subject}</td>
-      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">Grade {doc.gradeLevel}</td>
+      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
+        Grade {doc.gradeLevel}
+      </td>
       <td className="px-6 py-4">
         <StatusBadge status={doc.status} />
       </td>
       <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
         {new Date(doc.updatedAt).toLocaleDateString('en-GB', {
-          day: '2-digit', month: 'short', year: 'numeric',
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
         })}
       </td>
       <td className="px-6 py-4 text-right">
@@ -380,25 +418,42 @@ function AdminPagination({
   );
   return (
     <div className="flex items-center gap-1">
-      <PBtn disabled={!meta.hasPreviousPage} onClick={() => onPageChange(page - 1)} icon="chevron_left" />
+      <PBtn
+        disabled={!meta.hasPreviousPage}
+        onClick={() => onPageChange(page - 1)}
+        icon="chevron_left"
+      />
       {pages.map((p) => (
         <button
           key={p}
           onClick={() => onPageChange(p)}
-          className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${p === page
+          className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${
+            p === page
               ? 'bg-[#460002] text-white'
               : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
-            }`}
+          }`}
         >
           {p}
         </button>
       ))}
-      <PBtn disabled={!meta.hasNextPage} onClick={() => onPageChange(page + 1)} icon="chevron_right" />
+      <PBtn
+        disabled={!meta.hasNextPage}
+        onClick={() => onPageChange(page + 1)}
+        icon="chevron_right"
+      />
     </div>
   );
 }
 
-function PBtn({ onClick, disabled, icon }: { onClick: () => void; disabled: boolean; icon: string }) {
+function PBtn({
+  onClick,
+  disabled,
+  icon,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  icon: string;
+}) {
   return (
     <button
       onClick={onClick}

@@ -24,26 +24,17 @@ export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Post()
-  create(
-    @CurrentUser() currentUser: JwtPayload,
-    @Body() createDocumentDto: CreateDocumentDto,
-  ) {
+  create(@CurrentUser() currentUser: JwtPayload, @Body() createDocumentDto: CreateDocumentDto) {
     return this.documentsService.create(currentUser, createDocumentDto);
   }
 
   @Get()
-  findAll(
-    @CurrentUser() currentUser: JwtPayload,
-    @Query() queryDto: QueryDocumentsDto,
-  ) {
+  findAll(@CurrentUser() currentUser: JwtPayload, @Query() queryDto: QueryDocumentsDto) {
     return this.documentsService.findAll(currentUser, queryDto);
   }
 
   @Get(':id')
-  findOne(
-    @CurrentUser() currentUser: JwtPayload,
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  findOne(@CurrentUser() currentUser: JwtPayload, @Param('id', ParseUUIDPipe) id: string) {
     return this.documentsService.findOne(currentUser, id);
   }
 
@@ -57,10 +48,7 @@ export class DocumentsController {
   }
 
   @Delete(':id')
-  remove(
-    @CurrentUser() currentUser: JwtPayload,
-    @Param('id', ParseUUIDPipe) id: string,
-  ) {
+  remove(@CurrentUser() currentUser: JwtPayload, @Param('id', ParseUUIDPipe) id: string) {
     return this.documentsService.remove(currentUser, id);
   }
 }

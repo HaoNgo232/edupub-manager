@@ -95,9 +95,7 @@ describe('UsersController (e2e)', () => {
     });
 
     it('should fail with 401 Unauthorized if token is missing', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/users/me')
-        .expect(401);
+      const response = await request(app.getHttpServer()).get('/users/me').expect(401);
 
       const body = response.body as TestErrorResponse;
       expect(body).toEqual({
@@ -187,9 +185,7 @@ describe('UsersController (e2e)', () => {
       expect(dbUserAfter?.email).toBe(testUser.email);
       expect(dbUserAfter?.role).toBe('USER');
       expect(dbUserAfter?.passwordHash).toBe(dbUserBefore?.passwordHash);
-      expect(dbUserAfter?.createdAt.toISOString()).toBe(
-        dbUserBefore?.createdAt.toISOString(),
-      );
+      expect(dbUserAfter?.createdAt.toISOString()).toBe(dbUserBefore?.createdAt.toISOString());
     });
 
     it('should fail with 400 Bad Request on validation errors (invalid avatarUrl format, short fullName)', async () => {

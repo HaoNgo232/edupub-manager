@@ -10,7 +10,7 @@ import {
   DocumentStatus,
   Subject,
   ApiError,
-} from '../../../lib/api';
+} from '../../../../lib/api';
 
 const SUBJECTS: { value: Subject; label: string }[] = [
   { value: 'MATH', label: 'Mathematics' },
@@ -123,7 +123,10 @@ export default function EditDocumentPage() {
           <span className="material-symbols-outlined text-[32px] text-[#ba1a1a]">error</span>
         </div>
         <p className="font-label-md text-[#ba1a1a] max-w-sm">{fetchError}</p>
-        <Link href="/documents" className="font-label-md text-[#E4554A] hover:underline flex items-center gap-1">
+        <Link
+          href="/documents"
+          className="font-label-md text-[#E4554A] hover:underline flex items-center gap-1"
+        >
           <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           Back to Documents
         </Link>
@@ -136,18 +139,20 @@ export default function EditDocumentPage() {
       {/* Page header */}
       <div>
         <h2 className="text-headline-lg text-[#030509]">Edit Document</h2>
-        <p className="font-label-md text-[#76777b] mt-1">
-          Update the details of your document.
-        </p>
+        <p className="font-label-md text-[#76777b] mt-1">Update the details of your document.</p>
       </div>
 
       {/* Error banner */}
       {errors.length > 0 && (
         <div className="p-4 border border-[#ba1a1a] bg-[#ffdad6] rounded-sm">
-          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">Please fix the following errors:</p>
+          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">
+            Please fix the following errors:
+          </p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((e, i) => (
-              <li key={i} className="font-label-md text-[#ba1a1a]">{e}</li>
+              <li key={i} className="font-label-md text-[#ba1a1a]">
+                {e}
+              </li>
             ))}
           </ul>
         </div>
@@ -201,7 +206,9 @@ export default function EditDocumentPage() {
               className={inputClass}
             >
               {SUBJECTS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
               ))}
             </select>
           </FormField>
@@ -230,10 +237,11 @@ export default function EditDocumentPage() {
                 type="button"
                 id={`status-${s.value.toLowerCase()}`}
                 onClick={() => update('status', s.value)}
-                className={`border p-3 text-left transition-all rounded-sm ${form.status === s.value
+                className={`border p-3 text-left transition-all rounded-sm ${
+                  form.status === s.value
                     ? 'border-[#460002] bg-white shadow-sm'
                     : 'border-graphite-border bg-white hover:border-[#76777b]'
-                  }`}
+                }`}
               >
                 <p className="font-label-md font-bold text-[#030509]">{s.label}</p>
                 <p className="font-label-sm text-[#76777b] mt-0.5">{s.desc}</p>
@@ -315,7 +323,10 @@ function FormField({
 }) {
   return (
     <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="font-label-sm text-[#76777b] uppercase tracking-widest block">
+      <label
+        htmlFor={htmlFor}
+        className="font-label-sm text-[#76777b] uppercase tracking-widest block"
+      >
         {label}
       </label>
       {children}

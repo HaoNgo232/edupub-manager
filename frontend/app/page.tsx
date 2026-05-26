@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from './context/AuthContext';
-import { ApiError } from './lib/api';
+import { ApiError } from '../lib/api';
 
 export default function Home() {
   const { user, loading, logout, updateProfile } = useAuth();

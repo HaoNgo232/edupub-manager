@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import { ApiError } from '../lib/api';
+import { ApiError } from '../../lib/api';
 
 export default function Register() {
   const { register } = useAuth();
@@ -177,8 +177,9 @@ export default function Register() {
             <button
               type="submit"
               disabled={submitting}
-              className={`w-full bg-[#E4554A] text-white py-4 text-[14px] font-semibold tracking-[0.02em] transition-all hover:bg-[#c93e34] active:scale-[0.99] flex justify-center items-center gap-2 ${submitting ? 'opacity-80 cursor-wait' : ''
-                }`}
+              className={`w-full bg-[#E4554A] text-white py-4 text-[14px] font-semibold tracking-[0.02em] transition-all hover:bg-[#c93e34] active:scale-[0.99] flex justify-center items-center gap-2 ${
+                submitting ? 'opacity-80 cursor-wait' : ''
+              }`}
             >
               {submitting ? (
                 <>

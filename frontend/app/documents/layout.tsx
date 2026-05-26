@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import SideNav from '../components/SideNav';
+import SideNav from '../../components/SideNav';
 
 export default function DocumentsLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -56,7 +56,7 @@ export default function DocumentsLayout({ children }: { children: React.ReactNod
               </>
             )}
           </nav>
- 
+
           {/* Right side: search + new button */}
           <div className="flex items-center gap-4">
             <Link

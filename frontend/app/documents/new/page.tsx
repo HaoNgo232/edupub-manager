@@ -8,7 +8,7 @@ import {
   DocumentStatus,
   Subject,
   ApiError,
-} from '../../lib/api';
+} from '../../../lib/api';
 
 const SUBJECTS: { value: Subject; label: string }[] = [
   { value: 'MATH', label: 'Mathematics' },
@@ -44,10 +44,8 @@ export default function NewDocumentPage() {
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const update = <K extends keyof CreateDocumentRequest>(
-    key: K,
-    value: CreateDocumentRequest[K],
-  ) => setForm((prev) => ({ ...prev, [key]: value }));
+  const update = <K extends keyof CreateDocumentRequest>(key: K, value: CreateDocumentRequest[K]) =>
+    setForm((prev) => ({ ...prev, [key]: value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,10 +86,14 @@ export default function NewDocumentPage() {
       {/* Error banner */}
       {errors.length > 0 && (
         <div className="p-4 border border-[#ba1a1a] bg-[#ffdad6] rounded-sm">
-          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">Please fix the following errors:</p>
+          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">
+            Please fix the following errors:
+          </p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((e, i) => (
-              <li key={i} className="font-label-md text-[#ba1a1a]">{e}</li>
+              <li key={i} className="font-label-md text-[#ba1a1a]">
+                {e}
+              </li>
             ))}
           </ul>
         </div>
@@ -148,7 +150,9 @@ export default function NewDocumentPage() {
               className={inputClass}
             >
               {SUBJECTS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
               ))}
             </select>
           </FormField>
@@ -264,7 +268,10 @@ function FormField({
 }) {
   return (
     <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="font-label-sm text-[#76777b] uppercase tracking-widest block">
+      <label
+        htmlFor={htmlFor}
+        className="font-label-sm text-[#76777b] uppercase tracking-widest block"
+      >
         {label}
       </label>
       {children}

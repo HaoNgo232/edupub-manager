@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Patch,
-  Body,
-  UseGuards,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Patch, Body, UseGuards, NotFoundException } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { UsersService } from './users.service';
@@ -28,10 +21,7 @@ export class UsersController {
   }
 
   @Patch('me')
-  async updateMe(
-    @CurrentUser() userPayload: JwtPayload,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
+  async updateMe(@CurrentUser() userPayload: JwtPayload, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.usersService.update(userPayload.sub, updateUserDto);
     return sanitizeUser(user);
   }

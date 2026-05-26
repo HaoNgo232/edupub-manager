@@ -9,8 +9,8 @@ import {
   DocumentStatus,
   Subject,
   ApiError,
-} from '../lib/api';
-import StatusBadge from '../components/StatusBadge';
+} from '../../lib/api';
+import StatusBadge from '../../components/StatusBadge';
 
 const SUBJECTS: { value: Subject | ''; label: string }[] = [
   { value: '', label: 'All Subjects' },
@@ -79,6 +79,7 @@ export default function MyDocumentsPage() {
   }, [search, subject, status, page]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchDocs();
   }, [fetchDocs]);
 
@@ -114,7 +115,7 @@ export default function MyDocumentsPage() {
           Create Document
         </Link>
       </div>
- 
+
       {/* Filter bar */}
       <div className="bg-[#f5f5f0] border border-graphite-border p-5">
         <form onSubmit={handleSearch} className="flex flex-col lg:flex-row lg:items-end gap-4">
@@ -135,37 +136,49 @@ export default function MyDocumentsPage() {
               />
             </div>
           </div>
- 
+
           {/* Subject */}
           <div className="flex flex-col gap-1.5 w-full lg:w-[180px]">
-            <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Subject</label>
+            <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
+              Subject
+            </label>
             <select
               id="filter-subject"
               value={subject}
-              onChange={(e) => { setSubject(e.target.value as Subject | ''); setPage(1); }}
+              onChange={(e) => {
+                setSubject(e.target.value as Subject | '');
+                setPage(1);
+              }}
               className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
             >
               {SUBJECTS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
               ))}
             </select>
           </div>
- 
+
           {/* Status */}
           <div className="flex flex-col gap-1.5 w-full lg:w-[150px]">
             <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Status</label>
             <select
               id="filter-status"
               value={status}
-              onChange={(e) => { setStatus(e.target.value as DocumentStatus | ''); setPage(1); }}
+              onChange={(e) => {
+                setStatus(e.target.value as DocumentStatus | '');
+                setPage(1);
+              }}
               className="bg-white border border-graphite-border py-2 px-3 font-label-md focus:border-[#030509] outline-none w-full"
             >
               {STATUSES.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
               ))}
             </select>
           </div>
- 
+
           {/* Buttons */}
           <div className="flex gap-2 w-full lg:w-auto mt-2 lg:mt-0">
             <button
@@ -234,8 +247,8 @@ export default function MyDocumentsPage() {
             {/* Pagination */}
             <div className="px-6 py-4 bg-[#f4f4f0] border-t border-graphite-border flex flex-col sm:flex-row items-center justify-between gap-3">
               <span className="font-label-md text-[#76777b]">
-                Showing {(page - 1) * LIMIT + 1}–
-                {Math.min(page * LIMIT, data.meta.total)} of {data.meta.total} results
+                Showing {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, data.meta.total)} of{' '}
+                {data.meta.total} results
               </span>
               <Pagination meta={data.meta} page={page} onPageChange={setPage} />
             </div>
@@ -264,9 +277,7 @@ function DocumentRow({ doc }: { doc: DocumentResponse }) {
           </Link>
         </div>
       </td>
-      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
-        {doc.subject}
-      </td>
+      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">{doc.subject}</td>
       <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
         Grade {doc.gradeLevel}
       </td>
@@ -275,7 +286,9 @@ function DocumentRow({ doc }: { doc: DocumentResponse }) {
       </td>
       <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
         {new Date(doc.updatedAt).toLocaleDateString('en-GB', {
-          day: '2-digit', month: 'short', year: 'numeric',
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
         })}
       </td>
       <td className="px-6 py-4 text-right">

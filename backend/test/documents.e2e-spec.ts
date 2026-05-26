@@ -193,10 +193,7 @@ describe('DocumentsController (e2e)', () => {
     });
 
     it('should fail with 401 Unauthorized if token is missing', async () => {
-      await request(app.getHttpServer())
-        .post('/documents')
-        .send(validDocument)
-        .expect(401);
+      await request(app.getHttpServer()).post('/documents').send(validDocument).expect(401);
     });
 
     it('should fail with 400 Bad Request on invalid fields', async () => {
@@ -526,9 +523,7 @@ describe('DocumentsController (e2e)', () => {
       const dbDocAfter = await prisma.document.findUnique({
         where: { id: user1DocId },
       });
-      expect(dbDocAfter?.createdAt.toISOString()).toBe(
-        dbDocBefore?.createdAt.toISOString(),
-      );
+      expect(dbDocAfter?.createdAt.toISOString()).toBe(dbDocBefore?.createdAt.toISOString());
     });
   });
 

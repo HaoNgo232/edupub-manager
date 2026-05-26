@@ -1,20 +1,25 @@
 'use client';
- 
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '../context/AuthContext';
- 
+import { useAuth } from '../app/context/AuthContext';
+
 const NAV_ITEMS = [
   { href: '/documents', icon: 'description', label: 'My Documents', roles: ['USER', 'ADMIN'] },
-  { href: '/admin/documents', icon: 'admin_panel_settings', label: 'All Documents', roles: ['ADMIN'] },
+  {
+    href: '/admin/documents',
+    icon: 'admin_panel_settings',
+    label: 'All Documents',
+    roles: ['ADMIN'],
+  },
 ];
- 
+
 export default function SideNav() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
- 
+
   return (
     <>
       {/* Floating Mobile Toggle Button */}
@@ -23,11 +28,9 @@ export default function SideNav() {
         className="fixed top-3.5 left-4 z-50 p-2 bg-[#f4f4f0] border border-graphite-border rounded-sm text-[#030509] hover:bg-[#e9e8e4] md:hidden flex items-center justify-center active:scale-[0.98]"
         aria-label="Toggle Navigation"
       >
-        <span className="material-symbols-outlined text-[20px]">
-          {isOpen ? 'close' : 'menu'}
-        </span>
+        <span className="material-symbols-outlined text-[20px]">{isOpen ? 'close' : 'menu'}</span>
       </button>
- 
+
       {/* Mobile Backdrop Overlay */}
       {isOpen && (
         <div
@@ -35,7 +38,7 @@ export default function SideNav() {
           className="fixed inset-0 bg-black/40 backdrop-blur-xs z-35 md:hidden"
         />
       )}
- 
+
       {/* Navigation Drawer */}
       <nav
         className={`fixed left-0 top-0 h-full flex flex-col py-8 z-40 bg-[#f4f4f0] border-r border-graphite-border w-64 transition-transform duration-200 ease-in-out md:translate-x-0 ${
@@ -54,12 +57,16 @@ export default function SideNav() {
               </span>
             </div>
             <div>
-              <h1 className="font-label-md font-bold text-[#030509] leading-none">EduPub Manager</h1>
-              <p className="font-label-sm text-[#76777b] uppercase tracking-widest mt-0.5">Scholarly Ed.</p>
+              <h1 className="font-label-md font-bold text-[#030509] leading-none">
+                EduPub Manager
+              </h1>
+              <p className="font-label-sm text-[#76777b] uppercase tracking-widest mt-0.5">
+                Scholarly Ed.
+              </p>
             </div>
           </div>
         </div>
- 
+
         {/* Nav Links */}
         <div className="flex-1 px-3 space-y-1">
           {NAV_ITEMS.filter((item) => user && item.roles.includes(user.role)).map((item) => {
@@ -82,7 +89,7 @@ export default function SideNav() {
             );
           })}
         </div>
- 
+
         {/* Bottom: User + Logout */}
         <div className="px-3 pt-4 border-t border-graphite-border space-y-1">
           {/* Profile link */}
