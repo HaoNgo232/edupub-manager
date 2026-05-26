@@ -10,7 +10,7 @@ import {
   IsUrl,
   IsEnum,
 } from 'class-validator';
-import { Subject, DocumentStatus } from '../../../generated/prisma';
+import { Subject, DocumentStatus } from '@prisma/client';
 
 export class CreateDocumentDto {
   @IsString()

@@ -1,4 +1,4 @@
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import * as bcrypt from 'bcrypt';
@@ -17,7 +17,7 @@ async function main() {
 
   console.log('Seeding database...');
 
-    const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
+  const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
   const adminPasswordHash = await bcrypt.hash('Admin@123456', saltRounds);
   const userPasswordHash = await bcrypt.hash('User@123456', saltRounds);
 

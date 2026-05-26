@@ -1,4 +1,4 @@
-import { User } from '../generated/prisma';
+import { User } from '@prisma/client';
 
 export function sanitizeUser(user: User): Omit<User, 'passwordHash'>;
 export function sanitizeUser(user: null): null;

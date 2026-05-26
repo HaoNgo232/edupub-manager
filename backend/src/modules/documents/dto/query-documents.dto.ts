@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsInt, Min, Max, IsEnum, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
-import { Subject, DocumentStatus } from '../../../generated/prisma';
+import { Subject, DocumentStatus } from '@prisma/client';
 
 export class QueryDocumentsDto {
   @IsString()
