@@ -1,344 +1,435 @@
-# NestJS API Documentation
+# EduPub Manager API Documentation
 
-This document describes the API endpoints, authentication mechanisms, guards, and validation rules for the backend application.
+This document is the frontend integration contract for Feature 01: Authentication & Role Foundation.
 
-## Authentication Overview
+Base URL depends on runtime config. Local backend from `backend/.env.example` uses:
 
-The backend uses JSON Web Token (JWT) authentication to secure endpoints. 
+```txt
+http://localhost:3001
+```
 
-### Authorization Header Format
-Secure endpoints require the token to be sent in the `Authorization` header using the `Bearer` scheme:
+All request and response bodies are JSON.
+
+## Common Types
+
+```ts
+export type Role = 'USER' | 'ADMIN';
+
+export type UserResponse = {
+  id: string;
+  email: string;
+  fullName: string;
+  role: Role;
+  avatarUrl: string | null;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+};
+
+export type AuthResponse = {
+  user: UserResponse;
+  accessToken: string;
+};
+
+export type JwtPayload = {
+  sub: string; // user id
+  email: string;
+  role: Role;
+  iat: number;
+  exp: number;
+};
+
+export type ValidationErrorResponse = {
+  message: string[];
+  error: 'Bad Request';
+  statusCode: 400;
+};
+
+export type ConflictErrorResponse = {
+  message: string;
+  error: 'Conflict';
+  statusCode: 409;
+};
+
+export type LoginUnauthorizedResponse = {
+  message: 'Invalid email or password';
+  error: 'Unauthorized';
+  statusCode: 401;
+};
+
+export type AuthUnauthorizedResponse = {
+  message: 'Unauthorized';
+  statusCode: 401;
+};
+```
+
+The backend never returns `passwordHash`.
+
+## Authentication
+
+Protected endpoints require this header:
+
 ```http
-Authorization: Bearer <your_jwt_access_token>
+Authorization: Bearer <accessToken>
 ```
 
-### JWT Payload Schema
-The payload encoded inside the access token contains:
-* `sub` (string): The unique user identifier (UUID).
-* `email` (string): The user's registered email address.
-* `role` (string): The user's authorization role, which can be `USER` or `ADMIN`.
+JWT payload contains `sub`, `email`, and `role`. The token also includes standard `iat` and `exp` claims.
 
-Example decrypted payload:
+Example decoded payload:
+
 ```json
 {
-  "sub": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-  "email": "test_1779767091239@example.com",
+  "sub": "df3566d8-471a-402b-804d-e805edae4b2d",
+  "email": "user@example.com",
   "role": "USER",
-  "iat": 1779767091,
-  "exp": 1779853491
+  "iat": 1779782987,
+  "exp": 1779869387
 }
 ```
 
----
+## Endpoints
 
-## Guards and Decorators
+### POST /auth/register
 
-The application implements NestJS guards and custom decorators to enforce route security, user retrieval, and request body validation.
+Creates a new user account and returns an access token.
 
-### 1. JwtAuthGuard
-* **Decorator**: `@UseGuards(JwtAuthGuard)`
-* **Behavior**: Validates that the incoming request contains a valid JWT in the `Authorization` header.
-  * If the header is missing or malformed, it rejects the request with an HTTP `401 Unauthorized` status and the message: `"Authorization token is missing"`.
-  * If the token has expired, is invalid, or contains an incorrect signature, it rejects the request with an HTTP `401 Unauthorized` status and the message: `"Invalid or expired authorization token"`.
-  * If the token is valid, it decodes the payload and attaches it to the request context (`request.user = payload`).
+Auth: not required.
 
-### 2. RolesGuard and @Roles(...) Decorator
-* **Decorator**: `@UseGuards(RolesGuard)` combined with `@Roles(Role.USER, Role.ADMIN)`
-* **Behavior**: Protects routes by enforcing Role-Based Access Control (RBAC). It reads the metadata key `'roles'` injected by `@Roles(...)` and compares it to the user's role extracted from the JWT payload.
-  * If the user object or the user's role is not found in the request, it throws `403 Forbidden` with the message: `"Access denied: User role not found"`.
-  * If the user's role does not match one of the allowed roles, it throws `403 Forbidden` with the message: `"Access denied: Insufficient permissions"`.
+Request body:
 
-### 3. @CurrentUser() Decorator
-* **Behavior**: A custom parameter decorator that extracts the validated `JwtPayload` object (`request.user`) and injects it directly into the controller handler arguments.
+```ts
+export type RegisterRequest = {
+  email: string; // required, valid email, unique
+  password: string; // required, min length 6
+  fullName: string; // required, min length 2, max length 100
+};
+```
 
-### 4. Input Validation & Whitelisting
-* **Behavior**: The application has a global `ValidationPipe` configured with:
-  ```typescript
-  new ValidationPipe({
-    whitelist: true,
-    transform: true,
-  })
-  ```
-  * `whitelist: true`: Properties that do not have validation decorators in the target DTO class are automatically stripped from the incoming request payload. For example, if a client tries to inject `"role": "ADMIN"` inside a `PATCH /users/me` request, the parameter is silently removed, ensuring that a regular user cannot elevate their privileges.
-  * `transform: true`: Automatically converts network-received payloads to their corresponding DTO classes.
+Client must not send `role`. If sent, it is ignored. New users are always created with `role: 'USER'`.
 
----
+Example request:
 
-## API Endpoints Reference
-
-### 1. Register User
-
-* **Method**: `POST`
-* **Path**: `/auth/register`
-* **Headers**:
-  * `Content-Type: application/json`
-
-#### Request Body Schema
-The request body must conform to `RegisterDto`:
-* `email` (string, required): Must be a valid email address.
-* `password` (string, required): Must be a string with a minimum length of 6 characters.
-* `fullName` (string, required): Must be a string with a length between 2 and 100 characters.
-
-#### Example Request Body
 ```json
 {
-  "email": "test_1779767091239@example.com",
-  "password": "password123",
-  "fullName": "John Doe"
+  "email": "user@example.com",
+  "password": "User@123456",
+  "fullName": "Nguyen Van A"
 }
 ```
 
-#### Success Response
-* **Status**: `201 Created`
-* **Body Schema**: Contains the sanitized user profile (without `passwordHash`) and the generated JWT `accessToken`.
-* **Example Response**:
+Success response: `201 Created`
+
+```ts
+export type RegisterResponse = AuthResponse;
+```
+
+Example response:
+
 ```json
 {
   "user": {
-    "id": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-    "email": "test_1779767091239@example.com",
-    "fullName": "John Doe",
+    "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+    "email": "user@example.com",
+    "fullName": "Nguyen Van A",
     "role": "USER",
     "avatarUrl": null,
-    "createdAt": "2026-05-26T03:44:51.333Z",
-    "updatedAt": "2026-05-26T03:44:51.333Z"
+    "createdAt": "2026-05-26T08:09:47.602Z",
+    "updatedAt": "2026-05-26T08:09:47.602Z"
   },
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "accessToken": "jwt-token"
 }
 ```
 
-#### Error Responses
-* **Status**: `409 Conflict` (Duplicate Email)
-  * **Description**: Returned if the email address is already registered.
-  * **Example Response**:
-  ```json
-  {
-    "message": "Email already registered",
-    "error": "Conflict",
-    "statusCode": 409
-  }
-  ```
-* **Status**: `400 Bad Request` (Validation Failures)
-  * **Description**: Returned if fields fail validation rules (e.g. invalid email format, short password, missing fields).
-  * **Example Response (Invalid Email)**:
-  ```json
-  {
-    "message": [
-      "Email must be a valid email address"
-    ],
-    "error": "Bad Request",
-    "statusCode": 400
-  }
-  ```
-  * **Example Response (Missing Fields)**:
-  ```json
-  {
-    "message": [
-      "Password is required",
-      "Password must be at least 6 characters long",
-      "Password must be a string",
-      "Full name is required",
-      "Full name cannot exceed 100 characters",
-      "Full name must be at least 2 characters long",
-      "Full name must be a string"
-    ],
-    "error": "Bad Request",
-    "statusCode": 400
-  }
-  ```
+Validation error response: `400 Bad Request`
 
----
-
-### 2. Login User
-
-* **Method**: `POST`
-* **Path**: `/auth/login`
-* **Headers**:
-  * `Content-Type: application/json`
-
-#### Request Body Schema
-The request body must conform to `LoginDto`:
-* `email` (string, required): Must be a valid email address.
-* `password` (string, required): Must be a string and cannot be empty.
-
-#### Example Request Body
 ```json
 {
-  "email": "test_1779767091239@example.com",
-  "password": "password123"
+  "message": [
+    "email must be an email",
+    "password must be longer than or equal to 6 characters",
+    "fullName must be longer than or equal to 2 characters"
+  ],
+  "error": "Bad Request",
+  "statusCode": 400
 }
 ```
 
-#### Success Response
-* **Status**: `201 Created`
-* **Body Schema**: Contains the sanitized user profile and the generated JWT `accessToken`.
-* **Example Response**:
+Duplicate email response: `409 Conflict`
+
+```json
+{
+  "message": "Email already exists",
+  "error": "Conflict",
+  "statusCode": 409
+}
+```
+
+### POST /auth/login
+
+Authenticates a user and returns an access token.
+
+Auth: not required.
+
+Request body:
+
+```ts
+export type LoginRequest = {
+  email: string; // required, valid email
+  password: string; // required
+};
+```
+
+Example request:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "User@123456"
+}
+```
+
+Success response: `200 OK`
+
+```ts
+export type LoginResponse = AuthResponse;
+```
+
+Example response:
+
 ```json
 {
   "user": {
-    "id": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-    "email": "test_1779767091239@example.com",
-    "fullName": "John Doe",
+    "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+    "email": "user@example.com",
+    "fullName": "Nguyen Van A",
     "role": "USER",
     "avatarUrl": null,
-    "createdAt": "2026-05-26T03:44:51.333Z",
-    "updatedAt": "2026-05-26T03:44:51.333Z"
+    "createdAt": "2026-05-26T08:09:47.602Z",
+    "updatedAt": "2026-05-26T08:09:47.602Z"
   },
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "accessToken": "jwt-token"
 }
 ```
 
-#### Error Responses
-* **Status**: `401 Unauthorized` (Invalid Credentials)
-  * **Description**: Returned if the email does not exist or the password does not match.
-  * **Example Response**:
-  ```json
-  {
-    "message": "Invalid email or password",
-    "error": "Unauthorized",
-    "statusCode": 401
-  }
-  ```
+Invalid credentials response: `401 Unauthorized`
 
----
+The backend intentionally does not reveal whether email or password was wrong.
 
-### 3. Get Auth Session (Me)
-
-* **Method**: `GET`
-* **Path**: `/auth/me`
-* **Headers**:
-  * `Authorization: Bearer <token>` (Required)
-
-#### Success Response
-* **Status**: `200 OK`
-* **Body Schema**: Returns the sanitized user profile associated with the token.
-* **Example Response**:
 ```json
 {
-  "id": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-  "email": "test_1779767091239@example.com",
-  "fullName": "John Doe",
+  "message": "Invalid email or password",
+  "error": "Unauthorized",
+  "statusCode": 401
+}
+```
+
+Validation error response: `400 Bad Request`
+
+```json
+{
+  "message": [
+    "email must be an email"
+  ],
+  "error": "Bad Request",
+  "statusCode": 400
+}
+```
+
+### GET /auth/me
+
+Returns the current authenticated user for auth bootstrap.
+
+Auth: required.
+
+Request body: none.
+
+Success response: `200 OK`
+
+```ts
+export type AuthMeResponse = UserResponse;
+```
+
+Example response:
+
+```json
+{
+  "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+  "email": "user@example.com",
+  "fullName": "Nguyen Van A",
   "role": "USER",
   "avatarUrl": null,
-  "createdAt": "2026-05-26T03:44:51.333Z",
-  "updatedAt": "2026-05-26T03:44:51.333Z"
+  "createdAt": "2026-05-26T08:09:47.602Z",
+  "updatedAt": "2026-05-26T08:09:47.602Z"
 }
 ```
 
-#### Error Responses
-* **Status**: `401 Unauthorized` (Missing Token)
-  * **Example Response**:
-  ```json
-  {
-    "message": "Authorization token is missing",
-    "error": "Unauthorized",
-    "statusCode": 401
-  }
-  ```
-* **Status**: `401 Unauthorized` (Invalid Token)
-  * **Example Response**:
-  ```json
-  {
-    "message": "Invalid or expired authorization token",
-    "error": "Unauthorized",
-    "statusCode": 401
-  }
-  ```
+Missing, malformed, invalid, or expired token response: `401 Unauthorized`
 
----
-
-### 4. Get User Profile
-
-* **Method**: `GET`
-* **Path**: `/users/me`
-* **Headers**:
-  * `Authorization: Bearer <token>` (Required)
-
-#### Success Response
-* **Status**: `200 OK`
-* **Body Schema**: Returns the sanitized user profile.
-* **Example Response**:
 ```json
 {
-  "id": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-  "email": "test_1779767091239@example.com",
-  "fullName": "John Doe",
+  "message": "Unauthorized",
+  "statusCode": 401
+}
+```
+
+### GET /users/me
+
+Returns the current user's profile in the users/profile domain.
+
+Auth: required.
+
+Request body: none.
+
+Success response: `200 OK`
+
+```ts
+export type GetMyProfileResponse = UserResponse;
+```
+
+Example response:
+
+```json
+{
+  "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+  "email": "user@example.com",
+  "fullName": "Nguyen Van A",
   "role": "USER",
   "avatarUrl": null,
-  "createdAt": "2026-05-26T03:44:51.333Z",
-  "updatedAt": "2026-05-26T03:44:51.333Z"
+  "createdAt": "2026-05-26T08:09:47.602Z",
+  "updatedAt": "2026-05-26T08:09:47.602Z"
 }
 ```
 
-#### Error Responses
-* **Status**: `401 Unauthorized` (Missing/Invalid Token)
-  * **Example Response**:
-  ```json
-  {
-    "message": "Authorization token is missing",
-    "error": "Unauthorized",
-    "statusCode": 401
-  }
-  ```
+Missing, malformed, invalid, or expired token response: `401 Unauthorized`
 
----
-
-### 5. Update User Profile
-
-* **Method**: `PATCH`
-* **Path**: `/users/me`
-* **Headers**:
-  * `Authorization: Bearer <token>` (Required)
-  * `Content-Type: application/json`
-
-#### Request Body Schema
-The request body must conform to `UpdateUserDto`:
-* `fullName` (string, optional): Must be between 2 and 100 characters.
-* `avatarUrl` (string, optional): Must be a valid URL format.
-
-Note: Extra fields not defined in the schema (e.g. `role`, `email`, `password`) will be silently ignored and stripped due to the `whitelist` setting.
-
-#### Example Request Body
 ```json
 {
-  "fullName": "John Updated"
+  "message": "Unauthorized",
+  "statusCode": 401
 }
 ```
 
-#### Success Response
-* **Status**: `200 OK`
-* **Body Schema**: Returns the updated sanitized user profile.
-* **Example Response**:
+### PATCH /users/me
+
+Updates the current user's profile.
+
+Auth: required.
+
+Request body:
+
+```ts
+export type UpdateMyProfileRequest = {
+  fullName?: string; // optional, min length 2, max length 100
+  avatarUrl?: string; // optional, valid URL
+};
+```
+
+The backend strips unsupported fields from the request body. Frontend must treat these fields as read-only:
+
+```ts
+type ReadonlyProfileFields = 'id' | 'email' | 'passwordHash' | 'role' | 'createdAt' | 'updatedAt';
+```
+
+Example request:
+
 ```json
 {
-  "id": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-  "email": "test_1779767091239@example.com",
-  "fullName": "John Updated",
+  "fullName": "Nguyen Gia Hao",
+  "avatarUrl": "https://example.com/avatar.png"
+}
+```
+
+Success response: `200 OK`
+
+```ts
+export type UpdateMyProfileResponse = UserResponse;
+```
+
+Example response:
+
+```json
+{
+  "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+  "email": "user@example.com",
+  "fullName": "Nguyen Gia Hao",
   "role": "USER",
-  "avatarUrl": null,
-  "createdAt": "2026-05-26T03:44:51.333Z",
-  "updatedAt": "2026-05-26T03:44:51.474Z"
+  "avatarUrl": "https://example.com/avatar.png",
+  "createdAt": "2026-05-26T08:09:47.602Z",
+  "updatedAt": "2026-05-26T08:09:47.749Z"
 }
 ```
 
-#### Example Whitelisting Test
-If a request is sent trying to modify read-only properties:
+Example request with ignored read-only fields:
+
 ```json
 {
-  "fullName": "John Updated 2",
+  "fullName": "Nguyen Gia Hao",
+  "avatarUrl": "https://example.com/avatar.png",
   "role": "ADMIN",
-  "email": "hacker@example.com"
+  "email": "hacked@example.com",
+  "passwordHash": "plain-text"
 }
 ```
-The application successfully updates the `fullName` but ignores `role` and `email`:
+
+Response keeps `email` and `role` unchanged:
+
 ```json
 {
-  "id": "0f4d4506-807c-41ac-9cfd-06e85927e629",
-  "email": "test_1779767091239@example.com",
-  "fullName": "John Updated 2",
+  "id": "df3566d8-471a-402b-804d-e805edae4b2d",
+  "email": "user@example.com",
+  "fullName": "Nguyen Gia Hao",
   "role": "USER",
-  "avatarUrl": null,
-  "createdAt": "2026-05-26T03:44:51.333Z",
-  "updatedAt": "2026-05-26T03:44:51.480Z"
+  "avatarUrl": "https://example.com/avatar.png",
+  "createdAt": "2026-05-26T08:09:47.602Z",
+  "updatedAt": "2026-05-26T08:09:47.749Z"
 }
+```
+
+Validation error response: `400 Bad Request`
+
+```json
+{
+  "message": [
+    "fullName must be longer than or equal to 2 characters",
+    "avatarUrl must be a URL address"
+  ],
+  "error": "Bad Request",
+  "statusCode": 400
+}
+```
+
+Missing, malformed, invalid, or expired token response: `401 Unauthorized`
+
+```json
+{
+  "message": "Unauthorized",
+  "statusCode": 401
+}
+```
+
+## Frontend Handling Notes
+
+- Store `accessToken` after successful register/login.
+- Send `Authorization: Bearer <accessToken>` for `/auth/me`, `/users/me`, and `PATCH /users/me`.
+- Use `/auth/me` for auth bootstrap and `/users/me` for profile screens.
+- Treat `email`, `role`, `createdAt`, and `updatedAt` as read-only in the profile UI.
+- For login failures, show one generic message because the backend always returns `"Invalid email or password"`.
+- For validation errors, render the `message: string[]` array.
+- For auth `401`, clear local auth state and route the user to login.
+
+## Seed Accounts
+
+Admin:
+
+```txt
+email: admin@edupub.test
+password: Admin@123456
+role: ADMIN
+```
+
+User:
+
+```txt
+email: user@edupub.test
+password: User@123456
+role: USER
 ```

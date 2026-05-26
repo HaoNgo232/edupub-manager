@@ -7,18 +7,18 @@ import {
 } from 'class-validator';
 
 export class RegisterDto {
-  @IsEmail({}, { message: 'Email must be a valid email address' })
-  @IsNotEmpty({ message: 'Email is required' })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 
-  @IsString({ message: 'Password must be a string' })
-  @MinLength(6, { message: 'Password must be at least 6 characters long' })
-  @IsNotEmpty({ message: 'Password is required' })
+  @IsString()
+  @MinLength(6)
+  @IsNotEmpty()
   password: string;
 
-  @IsString({ message: 'Full name must be a string' })
-  @MinLength(2, { message: 'Full name must be at least 2 characters long' })
-  @MaxLength(100, { message: 'Full name cannot exceed 100 characters' })
-  @IsNotEmpty({ message: 'Full name is required' })
+  @IsString()
+  @MinLength(2)
+  @MaxLength(100)
+  @IsNotEmpty()
   fullName: string;
 }

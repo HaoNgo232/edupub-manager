@@ -25,7 +25,7 @@ export class AuthService {
 
     const existingUser = await this.usersService.findOneByEmail(email);
     if (existingUser) {
-      throw new ConflictException('Email already registered');
+      throw new ConflictException('Email already exists');
     }
 
     const saltRounds =

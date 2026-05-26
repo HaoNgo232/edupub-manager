@@ -1,115 +1,76 @@
-# EduPub Manager API - Feature 01: Authentication & Role Foundation
+# EduPub Manager API
 
-This is the backend API for the EduPub Manager, built with **NestJS**, **TypeScript**, **PostgreSQL**, and **Prisma ORM**.
+## Tech stack
 
-This initial version establishes the foundational database schemas, authentication (JWT), user profile management, role verification, and database seeding.
+- NestJS
+- TypeScript
+- PostgreSQL
+- Prisma
+- JWT Authentication
+- Role-based authorization
+- bcrypt password hashing
+- class-validator and class-transformer
 
----
+## Setup
 
-## 🛠 Tech Stack
+1. Install dependencies
 
-- **Framework**: NestJS 11
-- **Database**: PostgreSQL 16
-- **ORM**: Prisma ORM 7
-- **Authentication**: JWT (JSON Web Tokens)
-- **Security**: bcrypt (Password hashing), custom Route Guards
-- **Validation**: class-validator & class-transformer
-
----
-
-## ⚙️ Prerequisites & Installation
-
-### 1. Database Setup
-Ensure you have a PostgreSQL database running. You can use the provided [docker-compose.yml](../docker-compose.yml) in the project root:
-```bash
-# Start PostgreSQL via Docker (if not already running)
-docker compose up -d
-```
-
-### 2. Install Dependencies
-Navigate into the `backend/` directory and install the project packages:
 ```bash
 npm install
 ```
 
-### 3. Environment Variables
-Create a `.env` file in the `backend/` directory by copying the template file:
+2. Copy env
+
 ```bash
 cp .env.example .env
 ```
-Ensure the `DATABASE_URL` in `.env` is configured correctly for your PostgreSQL instance.
 
----
+3. Start PostgreSQL
 
-## 🚀 Running the App
+From the repository root:
 
-### 1. Run Database Migrations
-Synchronize your database schema with Prisma:
 ```bash
-npx prisma migrate dev --name init
+docker compose up -d postgres
 ```
 
-### 2. Generate Prisma Client
+4. Run migration
+
 ```bash
-npx prisma generate
+npx prisma migrate dev
 ```
 
-### 3. Seed Database
-Populate the database with the default Test Accounts (Admin & User):
+5. Seed database
+
 ```bash
-npx prisma db seed
+npm run seed
 ```
 
-### 4. Start Development Server
+6. Start dev server
+
 ```bash
 npm run start:dev
 ```
-The application will start on the port configured in `.env` (default is `http://localhost:3000`).
 
----
+The API runs on the port configured by `PORT` in `.env`. The example env uses `http://localhost:3001`.
 
-## 🔑 Test Accounts
-The seeding script creates two default accounts for testing:
+## Test accounts
 
-### 1. Regular User Account
-- **Email**: `user@edupub.test`
-- **Password**: `User@123456`
-- **Role**: `USER`
+Admin:
 
-### 2. Administrator Account
-- **Email**: `admin@edupub.test`
-- **Password**: `Admin@123456`
-- **Role**: `ADMIN`
+- email: `admin@edupub.test`
+- password: `Admin@123456`
 
----
+User:
 
-## 📡 API Endpoints
+- email: `user@edupub.test`
+- password: `User@123456`
 
-### 🔐 Authentication (`/auth`)
+## Authentication endpoints
 
-| Method | Endpoint | Description | Auth Required | Body Schema |
-| :--- | :--- | :--- | :---: | :--- |
-| **POST** | `/auth/register` | Register a new user | No | `{ email, password, fullName }` |
-| **POST** | `/auth/login` | Log in to an account | No | `{ email, password }` |
-| **GET** | `/auth/me` | Get currently logged-in user profile | **Yes (Bearer Token)** | *None* |
+- `POST /auth/register`
+- `POST /auth/login`
+- `GET /auth/me`
+- `GET /users/me`
+- `PATCH /users/me`
 
-### 👤 User Management (`/users`)
-
-| Method | Endpoint | Description | Auth Required | Body Schema |
-| :--- | :--- | :--- | :---: | :--- |
-| **GET** | `/users/me` | Retrieve the logged-in user's profile | **Yes (Bearer Token)** | *None* |
-| **PATCH** | `/users/me` | Update the logged-in user's profile (whitelisted fields: `fullName`, `avatarUrl`) | **Yes (Bearer Token)** | `{ fullName?, avatarUrl? }` |
-
----
-
-## 🛡 Security Architecture
-
-### 1. Password Hashing
-Passwords are never stored in plain text. We use `bcrypt` with configurable salt rounds to generate cryptographically secure password hashes before persisting.
-
-### 2. Request Validation
-Incoming HTTP request bodies are strictly validated using class decorators. Any extra fields (like `role` or `passwordHash`) sent by users during profile update are stripped out automatically before database queries are made.
-
-### 3. Route Access Guards
-- **`JwtAuthGuard`**: Restricts endpoints to authenticated users only by verifying the Bearer token in the `Authorization` request header.
-- **`RolesGuard`**: Combined with the `@Roles(...Role[])` decorator, it restricts endpoint access based on role permissions (e.g. `ADMIN` or `USER`).
+Protected endpoints require an `Authorization: Bearer <accessToken>` header.
