@@ -155,3 +155,22 @@ All endpoints require authentication.
 }
 ```
 
+## Admin User Management Endpoints (Feature 03)
+
+All endpoints require JWT token and `ADMIN` role.
+
+- `GET /admin/users`: Get list of users.
+  - Query parameters:
+    - `q`: Search by `email` or `fullName` (case-insensitive).
+    - `role`: Filter by role (`USER` | `ADMIN`).
+    - `page`: Page number (default: 1, min: 1).
+    - `limit`: Items per page (default: 10, min: 1, max: 100).
+    - `sortBy`: Field to sort (`createdAt`, `updatedAt`, `email`, `fullName`, `role`). Default: `createdAt`.
+    - `sortOrder`: Direction (`asc` | `desc`). Default: `desc`.
+- `GET /admin/users/:id`: Get user details, including `documentsCount` and `recentDocuments`.
+- `POST /admin/users`: Create a user (hashing password, no `passwordHash` in response).
+- `PATCH /admin/users/:id`: Update user details (fullName, email, avatarUrl).
+- `PATCH /admin/users/:id/role`: Change user role. Includes safety rules to prevent demoting the last admin or changing self role.
+- `DELETE /admin/users/:id`: Delete a user. Includes safety rules to prevent self-deletion or deleting the last admin.
+
+

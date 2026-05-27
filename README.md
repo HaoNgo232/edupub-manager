@@ -15,8 +15,8 @@ docker compose up --build -d
 ```
 
 Once running, access the services:
-- Next.js Frontend: http://localhost:3001
-- NestJS API Endpoint: http://localhost:3000
+- Next.js Frontend: http://localhost:3000
+- NestJS API Endpoint: http://localhost:3001
 - PostgreSQL Database: localhost:5432
 
 ---
@@ -49,8 +49,8 @@ This command will:
 - Initialize database schemas, run migrations, and automatically seed test accounts inside the backend container.
 
 ### 2. Access the Application Services
-- Next.js Frontend: http://localhost:3001
-- NestJS API Endpoint: http://localhost:3000
+- Next.js Frontend: http://localhost:3000
+- NestJS API Endpoint: http://localhost:3001
 - PostgreSQL Database: localhost:5432
 
 ---
@@ -100,7 +100,7 @@ If you prefer to run the applications locally on your machine for development wi
    ```bash
    npm run start:dev
    ```
-   The backend will start on http://localhost:3000.
+   The backend will start on http://localhost:3001.
 
 ---
 
@@ -120,7 +120,7 @@ If you prefer to run the applications locally on your machine for development wi
    ```bash
    npm run dev
    ```
-   The frontend will start on http://localhost:3000 (or http://localhost:3001 if port 3000 is occupied by the backend).
+   The frontend will start on http://localhost:3000.
 
 ---
 

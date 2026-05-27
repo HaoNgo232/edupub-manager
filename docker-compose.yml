@@ -23,10 +23,10 @@ services:
     container_name: edupub-backend
     restart: always
     ports:
-      - "3000:3000"
+      - "3001:3001"
     command: sh -c "npx prisma migrate deploy && npx prisma db seed && node dist/src/main.js"
     environment:
-      - PORT=3000
+      - PORT=3001
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/edupub_manager?schema=public
       - JWT_SECRET=super_secret_jwt_key_change_me_in_production
       - JWT_EXPIRES_IN=1d
@@ -41,13 +41,13 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=http://localhost:3000
+        - NEXT_PUBLIC_API_URL=http://localhost:3001
     container_name: edupub-frontend
     restart: always
     ports:
-      - "3001:3001"
+      - "3000:3000"
     environment:
-      - PORT=3001
+      - PORT=3000
     networks:
       - edupub-network
 

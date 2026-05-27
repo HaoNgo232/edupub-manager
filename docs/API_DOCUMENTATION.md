@@ -692,3 +692,194 @@ Deletes a document by ID.
 ```
 - **404 Not Found**: Document doesn't exist or is not owned by the current user (if requested by a `USER`).
 ```
+
+---
+
+## Feature 03: Admin User Management & Role Management
+
+All endpoints require:
+```http
+Authorization: Bearer <accessToken>
+```
+And the authenticated user must have `role: 'ADMIN'`. Non-admin users will receive `403 Forbidden` on all routes.
+
+### GET /admin/users
+Lists all users in the system with search, filter, sorting, and pagination.
+
+#### Query Parameters
+- `q` (string): Searches keyword inside `email` and `fullName` (case-insensitive).
+- `role` (Role): Filters by role (`USER` | `ADMIN`).
+- `page` (number): Page number (default: `1`, min: `1`).
+- `limit` (number): Items per page (default: `10`, min: `1`, max: `100`).
+- `sortBy` (string): Field to sort (`createdAt` | `updatedAt` | `email` | `fullName` | `role`). Default: `createdAt`.
+- `sortOrder` (string): Direction (`asc` | `desc`). Default: `desc`.
+
+#### Response (200 OK)
+```json
+{
+  "items": [
+    {
+      "id": "uuid-string",
+      "email": "user@edupub.test",
+      "fullName": "Test User",
+      "role": "USER",
+      "avatarUrl": null,
+      "documentsCount": 5,
+      "createdAt": "2026-05-26T00:00:00.000Z",
+      "updatedAt": "2026-05-26T00:00:00.000Z"
+    }
+  ],
+  "meta": {
+    "total": 20,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 2,
+    "hasNextPage": true,
+    "hasPreviousPage": false
+  }
+}
+```
+
+---
+
+### GET /admin/users/:id
+Retrieves detailed profile of a user, including recent documents and total documents count.
+
+#### Response (200 OK)
+```json
+{
+  "id": "uuid-string",
+  "email": "user@edupub.test",
+  "fullName": "Test User",
+  "role": "USER",
+  "avatarUrl": null,
+  "documentsCount": 5,
+  "recentDocuments": [
+    {
+      "id": "document-uuid",
+      "title": "Sách Toán lớp 10",
+      "subject": "MATH",
+      "gradeLevel": 10,
+      "status": "PUBLISHED",
+      "createdAt": "2026-05-26T00:00:00.000Z",
+      "updatedAt": "2026-05-26T00:00:00.000Z"
+    }
+  ],
+  "createdAt": "2026-05-26T00:00:00.000Z",
+  "updatedAt": "2026-05-26T00:00:00.000Z"
+}
+```
+
+#### Response (404 Not Found)
+Returned if the user does not exist.
+
+---
+
+### POST /admin/users
+Creates a new user.
+
+#### Request Body
+```json
+{
+  "email": "newuser@example.com",
+  "password": "User@123456",
+  "fullName": "New User",
+  "role": "USER",
+  "avatarUrl": "https://example.com/avatar.png"
+}
+```
+
+#### Response (201 Created)
+```json
+{
+  "id": "uuid-string",
+  "email": "newuser@example.com",
+  "fullName": "New User",
+  "role": "USER",
+  "avatarUrl": "https://example.com/avatar.png",
+  "documentsCount": 0,
+  "createdAt": "2026-05-26T00:00:00.000Z",
+  "updatedAt": "2026-05-26T00:00:00.000Z"
+}
+```
+
+#### Response (409 Conflict)
+Returned if the email already exists.
+
+---
+
+### PATCH /admin/users/:id
+Updates a user's details. Only `fullName`, `email`, and `avatarUrl` are allowed.
+
+#### Request Body
+```json
+{
+  "email": "updated@example.com",
+  "fullName": "Updated User",
+  "avatarUrl": "https://example.com/new-avatar.png"
+}
+```
+
+#### Response (200 OK)
+```json
+{
+  "id": "uuid-string",
+  "email": "updated@example.com",
+  "fullName": "Updated User",
+  "role": "USER",
+  "avatarUrl": "https://example.com/new-avatar.png",
+  "documentsCount": 5,
+  "createdAt": "2026-05-26T00:00:00.000Z",
+  "updatedAt": "2026-05-26T01:00:00.000Z"
+}
+```
+
+#### Response (409 Conflict)
+Returned if the email already exists on another user.
+
+---
+
+### PATCH /admin/users/:id/role
+Updates a user's role.
+
+#### Request Body
+```json
+{
+  "role": "ADMIN"
+}
+```
+
+#### Response (200 OK)
+```json
+{
+  "id": "uuid-string",
+  "email": "user@edupub.test",
+  "fullName": "Test User",
+  "role": "ADMIN",
+  "avatarUrl": null,
+  "documentsCount": 5,
+  "createdAt": "2026-05-26T00:00:00.000Z",
+  "updatedAt": "2026-05-26T01:00:00.000Z"
+}
+```
+
+#### Safety Rules
+- Admins cannot change their own role.
+- Cannot demote/remove the last admin.
+
+---
+
+### DELETE /admin/users/:id
+Deletes a user. Note that related documents will be cascadingly deleted.
+
+#### Response (200 OK)
+```json
+{
+  "message": "User deleted successfully"
+}
+```
+
+#### Safety Rules
+- Admins cannot delete their own account.
+- Cannot delete the last admin.
+
