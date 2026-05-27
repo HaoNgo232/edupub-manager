@@ -691,6 +691,172 @@ Deletes a document by ID.
 }
 ```
 - **404 Not Found**: Document doesn't exist or is not owned by the current user (if requested by a `USER`).
+
+---
+
+## Feature 05: Backend Uploads
+
+Upload endpoints let authenticated users upload local assets before creating or updating document metadata.
+
+All upload endpoints require:
+```http
+Authorization: Bearer <accessToken>
+```
+
+Requests must use `multipart/form-data` with exactly one file field named `file`.
+
+### Upload Limits
+
+- Maximum image upload size: `2MB`.
+- Maximum document file upload size: `10MB`.
+- Missing, malformed, invalid, or expired JWT returns `401 Unauthorized`.
+- Missing file, unsupported MIME type, image size over `2MB`, or document file size over `10MB` returns `400 Bad Request`.
+- The backend returns a public URL string that can be saved into `coverImageUrl` or `fileUrl` on `/documents`.
+
+### POST /uploads/image
+
+Uploads a cover image.
+
+Auth: required.
+
+Multipart field:
+
+```txt
+file: binary
+```
+
+Allowed MIME types:
+
+- `image/jpeg`
+- `image/png`
+- `image/webp`
+- `image/gif`
+
+Success response: `201 Created`
+
+```ts
+export type UploadImageResponse = {
+  url: string;
+  path: string;
+  filename: string;
+  originalName: string;
+  mimeType: string;
+  size: number;
+};
+```
+
+Example response:
+
+```json
+{
+  "url": "http://localhost:3001/uploads/images/1779859200000-a8f2c3d4-cover.png",
+  "path": "/uploads/images/1779859200000-a8f2c3d4-cover.png",
+  "filename": "1779859200000-a8f2c3d4-cover.png",
+  "originalName": "cover.png",
+  "mimeType": "image/png",
+  "size": 123456
+}
+```
+
+Curl example:
+
+```bash
+curl -X POST "http://localhost:3001/uploads/image" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "file=@./cover.png;type=image/png"
+```
+
+### POST /uploads/file
+
+Uploads a document attachment.
+
+Auth: required.
+
+Multipart field:
+
+```txt
+file: binary
+```
+
+Allowed MIME types:
+
+- `application/pdf`
+- `application/msword`
+- `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+- `application/vnd.ms-excel`
+- `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+- `application/vnd.ms-powerpoint`
+- `application/vnd.openxmlformats-officedocument.presentationml.presentation`
+- `text/plain`
+
+Success response: `201 Created`
+
+```ts
+export type UploadFileResponse = {
+  url: string;
+  path: string;
+  filename: string;
+  originalName: string;
+  mimeType: string;
+  size: number;
+};
+```
+
+Example response:
+
+```json
+{
+  "url": "http://localhost:3001/uploads/files/1779859200000-a8f2c3d4-document.pdf",
+  "path": "/uploads/files/1779859200000-a8f2c3d4-document.pdf",
+  "filename": "1779859200000-a8f2c3d4-document.pdf",
+  "originalName": "document.pdf",
+  "mimeType": "application/pdf",
+  "size": 1048576
+}
+```
+
+Curl example:
+
+```bash
+curl -X POST "http://localhost:3001/uploads/file" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "file=@./document.pdf;type=application/pdf"
+```
+
+### Document Flow With Uploaded URLs
+
+1. Login or register to get `accessToken`.
+2. Upload a cover image with `POST /uploads/image`; keep the returned `url`.
+3. Upload the main document with `POST /uploads/file`; keep the returned `url`.
+4. Create or update a document and pass those URLs as `coverImageUrl` and `fileUrl`.
+
+Example create request after uploads:
+
+```bash
+curl -X POST "http://localhost:3001/documents" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Sách Toán lớp 10",
+    "description": "Tài liệu ôn tập chương hàm số",
+    "subject": "MATH",
+    "gradeLevel": 10,
+    "status": "DRAFT",
+    "coverImageUrl": "http://localhost:3001/uploads/images/1779859200000-cover.png",
+    "fileUrl": "http://localhost:3001/uploads/files/1779859200000-document.pdf"
+  }'
+```
+
+Example update request:
+
+```bash
+curl -X PATCH "http://localhost:3001/documents/$DOCUMENT_ID" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "coverImageUrl": "http://localhost:3001/uploads/images/1779859200000-cover.png",
+    "fileUrl": "http://localhost:3001/uploads/files/1779859200000-document.pdf"
+  }'
 ```
 
 ---
@@ -989,5 +1155,3 @@ Auth: required (`ADMIN` role).
   ]
 }
 ```
-
-

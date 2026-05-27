@@ -63,6 +63,7 @@ This command will:
 - Set up a PostgreSQL 16 database.
 - Build the NestJS backend and Next.js frontend using multi-stage Dockerfiles.
 - Initialize database schemas, run migrations, and automatically seed test accounts inside the backend container.
+- Persist backend uploads in the `backend_uploads` Docker volume mounted at `/app/uploads`.
 
 ### 2. Access the Application Services
 
@@ -170,6 +171,38 @@ EduPub Manager supports educational document creation and strict access control 
    - **Delete**: Click "Delete" on the detail page to open the custom confirmation dialog.
 3. **System Administration (ADMIN)**:
    - **Admin Console (`/admin/documents`)**: Displays all manuscripts across the entire system. Includes an **Owner column** showing creator avatar and email, along with system-wide manuscript stats cards.
+
+---
+
+## Backend Uploads (Feature 05)
+
+Authenticated users can upload local files before creating or updating document metadata.
+
+- `POST /uploads/image`: upload a cover image with `multipart/form-data`, field name `file`.
+- `POST /uploads/file`: upload a document attachment with `multipart/form-data`, field name `file`.
+- Both endpoints require `Authorization: Bearer <accessToken>`.
+- Maximum image upload size is `2MB`; maximum document file upload size is `10MB`.
+- Image MIME types: `image/jpeg`, `image/png`, `image/webp`, `image/gif`.
+- File MIME types: `application/pdf`, `application/msword`, `application/vnd.openxmlformats-officedocument.wordprocessingml.document`, `application/vnd.ms-excel`, `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`, `application/vnd.ms-powerpoint`, `application/vnd.openxmlformats-officedocument.presentationml.presentation`, `text/plain`.
+
+Typical flow:
+
+1. Login with `POST /auth/login` and keep the returned `accessToken`.
+2. Upload the cover image and use the returned URL as `coverImageUrl`.
+3. Upload the document file and use the returned URL as `fileUrl`.
+4. Send `coverImageUrl` and `fileUrl` in `POST /documents` or `PATCH /documents/:id`.
+
+```bash
+curl -X POST "http://localhost:3001/uploads/image" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "file=@./cover.png;type=image/png"
+
+curl -X POST "http://localhost:3001/uploads/file" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "file=@./document.pdf;type=application/pdf"
+```
+
+Full API details are documented in `docs/API_DOCUMENTATION.md`.
 
 ---
 

@@ -31,6 +31,8 @@ services:
       - JWT_SECRET=super_secret_jwt_key_change_me_in_production
       - JWT_EXPIRES_IN=1d
       - BCRYPT_SALT_ROUNDS=10
+    volumes:
+      - backend_uploads:/app/uploads
     depends_on:
       - postgres
     networks:
@@ -53,6 +55,8 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  backend_uploads:
     driver: local
 
 networks:

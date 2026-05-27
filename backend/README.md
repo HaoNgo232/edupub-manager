@@ -91,6 +91,44 @@ All endpoints require authentication.
 - `DELETE /documents/:id`: Delete document.
   - Access control: Users can only delete their own documents (otherwise returns 404). Admins can delete any.
 
+## Upload endpoints (Feature 05)
+
+All upload endpoints require JWT authentication:
+
+```http
+Authorization: Bearer <accessToken>
+```
+
+Requests must use `multipart/form-data` with one binary field named `file`. Maximum image upload size is `2MB`; maximum document file upload size is `10MB`.
+
+- `POST /uploads/image`: Upload a cover image.
+  - Allowed MIME types: `image/jpeg`, `image/png`, `image/webp`, `image/gif`.
+  - Response: `{ "url": "http://localhost:3001/uploads/images/<filename>" }`.
+- `POST /uploads/file`: Upload a document attachment.
+  - Allowed MIME types: `application/pdf`, `application/msword`, `application/vnd.openxmlformats-officedocument.wordprocessingml.document`, `application/vnd.ms-excel`, `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`, `application/vnd.ms-powerpoint`, `application/vnd.openxmlformats-officedocument.presentationml.presentation`, `text/plain`.
+  - Response: `{ "url": "http://localhost:3001/uploads/files/<filename>" }`.
+
+### Upload curl examples
+
+```bash
+curl -X POST "http://localhost:3001/uploads/image" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "file=@./cover.png;type=image/png"
+```
+
+```bash
+curl -X POST "http://localhost:3001/uploads/file" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -F "file=@./document.pdf;type=application/pdf"
+```
+
+### Upload to document flow
+
+1. Login through `POST /auth/login` and keep `accessToken`.
+2. Upload a cover image through `POST /uploads/image`, then save the returned URL as `coverImageUrl`.
+3. Upload a document through `POST /uploads/file`, then save the returned URL as `fileUrl`.
+4. Send `coverImageUrl` and `fileUrl` in `POST /documents` or `PATCH /documents/:id`.
+
 ### GET /documents Query Parameters
 
 - `q`: Search keyword in `title` and `description` (case-insensitive).
@@ -187,6 +225,4 @@ All endpoints require JWT token and `ADMIN` role.
     - `documentsByGradeLevel`: Breakdown by grade level, sorted ascending.
     - `recentDocuments`: Most recent documents (orderBy `createdAt` desc) with sanitized owner basic info.
     - `recentUsers`: Most recent registered users (orderBy `createdAt` desc) with `documentsCount`.
-
-
 
