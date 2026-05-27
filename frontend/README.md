@@ -89,7 +89,7 @@ Supported cover image types:
 - WEBP
 - GIF
 
-Cover image max size: `2MB`.
+Cover image max size: `20MB`.
 
 Supported document file types:
 
@@ -99,7 +99,7 @@ Supported document file types:
 - PowerPoint: PPT, PPTX
 - TXT
 
-Document file max size: `10MB`.
+Document file max size: `20MB`.
 
 The backend API must be available at `NEXT_PUBLIC_API_URL` or `http://localhost:3001` by default.
 

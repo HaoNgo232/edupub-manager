@@ -183,6 +183,24 @@ describe('DocumentsController (e2e)', () => {
       expect(body.status).toBe('DRAFT');
     });
 
+    it('should accept portable upload paths for coverImageUrl and fileUrl', async () => {
+      const uploadUrlDocument = {
+        ...validDocument,
+        coverImageUrl: '/uploads/images/1716720000000-a8f2-cover.png',
+        fileUrl: '/uploads/files/1716720000000-a8f2-document.pdf',
+      };
+
+      const response = await request(app.getHttpServer())
+        .post('/documents')
+        .set('Authorization', `Bearer ${user1Token}`)
+        .send(uploadUrlDocument)
+        .expect(201);
+
+      const body = response.body as TestDocumentResponse;
+      expect(body.coverImageUrl).toBe(uploadUrlDocument.coverImageUrl);
+      expect(body.fileUrl).toBe(uploadUrlDocument.fileUrl);
+    });
+
     it('should fail with 401 Unauthorized if token is missing', async () => {
       await request(app.getHttpServer()).post('/documents').send(validDocument).expect(401);
     });
@@ -466,6 +484,33 @@ describe('DocumentsController (e2e)', () => {
         where: { id: user1DocId },
       });
       expect(dbDoc?.title).toBe(payload.title);
+    });
+
+    it('should accept portable upload paths and allow clearing them on update', async () => {
+      const uploadUrls = {
+        coverImageUrl: '/uploads/images/1716720000000-a8f2-cover.png',
+        fileUrl: '/uploads/files/1716720000000-a8f2-document.pdf',
+      };
+
+      const response = await request(app.getHttpServer())
+        .patch(`/documents/${user1DocId}`)
+        .set('Authorization', `Bearer ${user1Token}`)
+        .send(uploadUrls)
+        .expect(200);
+
+      const body = response.body as TestDocumentResponse;
+      expect(body.coverImageUrl).toBe(uploadUrls.coverImageUrl);
+      expect(body.fileUrl).toBe(uploadUrls.fileUrl);
+
+      const clearResponse = await request(app.getHttpServer())
+        .patch(`/documents/${user1DocId}`)
+        .set('Authorization', `Bearer ${user1Token}`)
+        .send({ coverImageUrl: '', fileUrl: '' })
+        .expect(200);
+
+      const clearBody = clearResponse.body as TestDocumentResponse;
+      expect(clearBody.coverImageUrl).toBeNull();
+      expect(clearBody.fileUrl).toBeNull();
     });
 
     it('should successfully update any document for admin', async () => {

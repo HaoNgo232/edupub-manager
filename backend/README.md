@@ -99,7 +99,7 @@ All upload endpoints require JWT authentication:
 Authorization: Bearer <accessToken>
 ```
 
-Requests must use `multipart/form-data` with one binary field named `file`. Maximum image upload size is `2MB`; maximum document file upload size is `10MB`.
+Requests must use `multipart/form-data` with one binary field named `file`. Maximum image upload size is `20MB`; maximum document file upload size is `20MB`.
 
 - `POST /uploads/image`: Upload a cover image.
   - Allowed MIME types: `image/jpeg`, `image/png`, `image/webp`, `image/gif`.
@@ -225,4 +225,3 @@ All endpoints require JWT token and `ADMIN` role.
     - `documentsByGradeLevel`: Breakdown by grade level, sorted ascending.
     - `recentDocuments`: Most recent documents (orderBy `createdAt` desc) with sanitized owner basic info.
     - `recentUsers`: Most recent registered users (orderBy `createdAt` desc) with `documentsCount`.
-

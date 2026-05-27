@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getDocument, deleteDocument, DocumentResponse, ApiError } from '../../../lib/api';
+import { resolveUploadUrl } from '../../../lib/uploads/url';
 import { useAuth } from '../../context/AuthContext';
 import StatusBadge from '../../../components/StatusBadge';
 
@@ -79,6 +80,8 @@ export default function DocumentDetailPage() {
 
   const isOwner = user?.id === doc.ownerId;
   const canEdit = isOwner || user?.role === 'ADMIN';
+  const coverImageUrl = doc.coverImageUrl ? resolveUploadUrl(doc.coverImageUrl) : null;
+  const fileUrl = doc.fileUrl ? resolveUploadUrl(doc.fileUrl) : null;
 
   return (
     <>
@@ -200,9 +203,9 @@ export default function DocumentDetailPage() {
                   Files &amp; Resources
                 </h3>
                 <div className="space-y-2">
-                  {doc.fileUrl && (
+                  {doc.fileUrl && fileUrl && (
                     <a
-                      href={doc.fileUrl}
+                      href={fileUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Open File"
@@ -212,15 +215,17 @@ export default function DocumentDetailPage() {
                         picture_as_pdf
                       </span>
                       <span className="font-label-md text-[#030509]">Open File</span>
-                      <span className="font-label-md flex-1 text-[#76777b] truncate">{getResourceName(doc.fileUrl)}</span>
+                      <span className="font-label-md flex-1 text-[#76777b] truncate">
+                        {getResourceName(doc.fileUrl)}
+                      </span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
                     </a>
                   )}
-                  {doc.coverImageUrl && (
+                  {doc.coverImageUrl && coverImageUrl && (
                     <a
-                      href={doc.coverImageUrl}
+                      href={coverImageUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Open cover image"
@@ -229,7 +234,10 @@ export default function DocumentDetailPage() {
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         image
                       </span>
-                      <span className="font-label-md flex-1 text-[#030509] truncate">{doc.coverImageUrl}</span>
+                      <span className="font-label-md text-[#030509]">Open Cover Image</span>
+                      <span className="font-label-md flex-1 text-[#76777b] truncate">
+                        {getResourceName(doc.coverImageUrl)}
+                      </span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
@@ -243,10 +251,10 @@ export default function DocumentDetailPage() {
           {/* ─── Side column ───────────────────────────────────────── */}
           <aside className="lg:col-span-4 space-y-4">
             {/* Cover preview */}
-            {doc.coverImageUrl ? (
+            {coverImageUrl ? (
               <div className="border border-graphite-border overflow-hidden bg-white">
                 <div className="aspect-[3/4] bg-[#e9e8e4] relative">
-                  <Image src={doc.coverImageUrl} alt="Cover" fill className="object-cover" unoptimized />
+                  <Image src={coverImageUrl} alt="Cover" fill className="object-cover" unoptimized />
                 </div>
                 <p className="font-label-sm text-[#76777b] px-4 py-3 text-center uppercase tracking-widest">
                   Cover Image

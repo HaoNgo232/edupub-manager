@@ -7,8 +7,8 @@ export const UPLOADS_FILE_DIR = join(UPLOADS_ROOT, 'files');
 export const IMAGE_UPLOAD_PATH = '/uploads/images';
 export const FILE_UPLOAD_PATH = '/uploads/files';
 
-export const IMAGE_MAX_FILE_SIZE = 2 * 1024 * 1024;
-export const DOCUMENT_MAX_FILE_SIZE = 10 * 1024 * 1024;
+export const IMAGE_MAX_FILE_SIZE = 20 * 1024 * 1024;
+export const DOCUMENT_MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 export const ALLOWED_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 

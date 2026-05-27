@@ -172,12 +172,12 @@ describe('UploadsController (e2e)', () => {
     });
 
     it('should reject images larger than the allowed limit', async () => {
-      const largerThanTwoMb = Buffer.alloc(2 * 1024 * 1024 + 1, 'a');
+      const largerThanTwentyMb = Buffer.alloc(20 * 1024 * 1024 + 1, 'a');
 
       const response = await request(app.getHttpServer())
         .post('/uploads/image')
         .set('Authorization', `Bearer ${userToken}`)
-        .attach('file', largerThanTwoMb, {
+        .attach('file', largerThanTwentyMb, {
           filename: 'large.png',
           contentType: 'image/png',
         })
@@ -231,12 +231,12 @@ describe('UploadsController (e2e)', () => {
     });
 
     it('should reject files larger than the allowed limit', async () => {
-      const elevenMb = Buffer.alloc(10 * 1024 * 1024 + 1, 'a');
+      const largerThanTwentyMb = Buffer.alloc(20 * 1024 * 1024 + 1, 'a');
 
       const response = await request(app.getHttpServer())
         .post('/uploads/file')
         .set('Authorization', `Bearer ${userToken}`)
-        .attach('file', elevenMb, {
+        .attach('file', largerThanTwentyMb, {
           filename: 'large.pdf',
           contentType: 'application/pdf',
         })
@@ -278,14 +278,14 @@ describe('UploadsController (e2e)', () => {
           title: 'Uploaded File Document',
           subject: 'MATH',
           gradeLevel: 10,
-          coverImageUrl: imageBody.url,
-          fileUrl: fileBody.url,
+          coverImageUrl: imageBody.path,
+          fileUrl: fileBody.path,
         })
         .expect(201);
 
       const documentBody = documentResponse.body as DocumentResponse;
-      expect(documentBody.coverImageUrl).toBe(imageBody.url);
-      expect(documentBody.fileUrl).toBe(fileBody.url);
+      expect(documentBody.coverImageUrl).toBe(imageBody.path);
+      expect(documentBody.fileUrl).toBe(fileBody.path);
     });
   });
 });

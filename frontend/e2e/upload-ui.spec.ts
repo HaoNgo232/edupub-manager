@@ -110,8 +110,8 @@ test.describe('Document upload UI', () => {
     await page.click('#btn-submit-document');
     await page.waitForURL('**/documents/doc-upload-ui');
 
-    expect(createPayload?.coverImageUrl).toBe(`${apiUrl}/uploads/images/1716720000000-a8f2-cover.png`);
-    expect(createPayload?.fileUrl).toBe(`${apiUrl}/uploads/files/1716720000000-a8f2-document.pdf`);
+    expect(createPayload?.coverImageUrl).toBe('/uploads/images/1716720000000-a8f2-cover.png');
+    expect(createPayload?.fileUrl).toBe('/uploads/files/1716720000000-a8f2-document.pdf');
   });
 
   test('rejects invalid image and file on the client before upload', async ({ page }) => {

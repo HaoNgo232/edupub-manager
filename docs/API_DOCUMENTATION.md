@@ -707,10 +707,10 @@ Requests must use `multipart/form-data` with exactly one file field named `file`
 
 ### Upload Limits
 
-- Maximum image upload size: `2MB`.
-- Maximum document file upload size: `10MB`.
+- Maximum image upload size: `20MB`.
+- Maximum document file upload size: `20MB`.
 - Missing, malformed, invalid, or expired JWT returns `401 Unauthorized`.
-- Missing file, unsupported MIME type, image size over `2MB`, or document file size over `10MB` returns `400 Bad Request`.
+- Missing file, unsupported MIME type, image size over `20MB`, or document file size over `20MB` returns `400 Bad Request`.
 - The backend returns a public URL string that can be saved into `coverImageUrl` or `fileUrl` on `/documents`.
 
 ### POST /uploads/image

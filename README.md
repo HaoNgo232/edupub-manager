@@ -181,7 +181,7 @@ Authenticated users can upload local files before creating or updating document 
 - `POST /uploads/image`: upload a cover image with `multipart/form-data`, field name `file`.
 - `POST /uploads/file`: upload a document attachment with `multipart/form-data`, field name `file`.
 - Both endpoints require `Authorization: Bearer <accessToken>`.
-- Maximum image upload size is `2MB`; maximum document file upload size is `10MB`.
+- Maximum image upload size is `20MB`; maximum document file upload size is `20MB`.
 - Image MIME types: `image/jpeg`, `image/png`, `image/webp`, `image/gif`.
 - File MIME types: `application/pdf`, `application/msword`, `application/vnd.openxmlformats-officedocument.wordprocessingml.document`, `application/vnd.ms-excel`, `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`, `application/vnd.ms-powerpoint`, `application/vnd.openxmlformats-officedocument.presentationml.presentation`, `text/plain`.
 

@@ -3,6 +3,7 @@
 import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
 import { ApiError, uploadDocumentFile } from '../../lib/api';
+import { resolveUploadUrl } from '../../lib/uploads/url';
 
 const ALLOWED_FILE_TYPES = [
   'application/pdf',
@@ -14,7 +15,7 @@ const ALLOWED_FILE_TYPES = [
   'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   'text/plain',
 ];
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 interface DocumentFileUploadProps {
   value?: string | null;
@@ -37,6 +38,7 @@ export default function DocumentFileUpload({ value, onChange, disabled, onUpload
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileLabel = value ? getFileLabel(value) : null;
+  const fileUrl = value ? resolveUploadUrl(value) : null;
 
   const setUploading = (nextValue: boolean) => {
     setIsUploading(nextValue);
@@ -55,7 +57,7 @@ export default function DocumentFileUpload({ value, onChange, disabled, onUpload
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setError('File size must be less than 10MB.');
+      setError('File size must be less than 20MB.');
       return;
     }
 
@@ -64,7 +66,7 @@ export default function DocumentFileUpload({ value, onChange, disabled, onUpload
 
     try {
       const response = await uploadDocumentFile(file);
-      onChange(response.url);
+      onChange(response.path);
     } catch (err) {
       if (err instanceof ApiError && err.errors.length > 0) {
         setError(err.errors[0]);
@@ -89,15 +91,15 @@ export default function DocumentFileUpload({ value, onChange, disabled, onUpload
           Document File
         </h3>
         <p className="font-label-sm text-[#76777b] mt-1">
-          Upload a PDF, Word, Excel, PowerPoint, or TXT file. Max 10MB.
+          Upload a PDF, Word, Excel, PowerPoint, or TXT file. Max 20MB.
         </p>
       </div>
 
-      {value && fileLabel ? (
+      {fileUrl && fileLabel ? (
         <div className="flex items-center gap-3 p-4 bg-white border border-graphite-border min-w-0">
           <span className="material-symbols-outlined text-[24px] text-[#76777b]">description</span>
           <a
-            href={value}
+            href={fileUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="font-label-md text-[#030509] hover:text-[#E4554A] truncate flex-1"

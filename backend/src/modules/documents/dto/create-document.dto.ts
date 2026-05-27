@@ -7,7 +7,6 @@ import {
   IsInt,
   Min,
   Max,
-  IsUrl,
   IsEnum,
 } from 'class-validator';
 import { Subject, DocumentStatus } from '@prisma/client';
@@ -38,11 +37,13 @@ export class CreateDocumentDto {
   @IsOptional()
   status?: DocumentStatus;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
+  @MaxLength(2048)
   coverImageUrl?: string;
 
-  @IsUrl()
+  @IsString()
   @IsOptional()
+  @MaxLength(2048)
   fileUrl?: string;
 }

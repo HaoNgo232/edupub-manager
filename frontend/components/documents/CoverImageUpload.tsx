@@ -4,9 +4,10 @@ import Image from 'next/image';
 import type { ChangeEvent } from 'react';
 import { useRef, useState } from 'react';
 import { ApiError, uploadImage } from '../../lib/api';
+import { resolveUploadUrl } from '../../lib/uploads/url';
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 20 * 1024 * 1024;
 
 interface CoverImageUploadProps {
   value?: string | null;
@@ -19,6 +20,7 @@ export default function CoverImageUpload({ value, onChange, disabled, onUploadin
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const previewUrl = value ? resolveUploadUrl(value) : null;
 
   const setUploading = (nextValue: boolean) => {
     setIsUploading(nextValue);
@@ -37,7 +39,7 @@ export default function CoverImageUpload({ value, onChange, disabled, onUploadin
     }
 
     if (file.size > MAX_IMAGE_SIZE) {
-      setError('Image size must be less than 2MB.');
+      setError('Image size must be less than 20MB.');
       return;
     }
 
@@ -46,7 +48,7 @@ export default function CoverImageUpload({ value, onChange, disabled, onUploadin
 
     try {
       const response = await uploadImage(file);
-      onChange(response.url);
+      onChange(response.path);
     } catch (err) {
       if (err instanceof ApiError && err.errors.length > 0) {
         setError(err.errors[0]);
@@ -71,17 +73,17 @@ export default function CoverImageUpload({ value, onChange, disabled, onUploadin
           Cover Image
         </h3>
         <p className="font-label-sm text-[#76777b] mt-1">
-          Upload a cover image for this document. JPG, PNG, WEBP, or GIF. Max 2MB.
+          Upload a cover image for this document. JPG, PNG, WEBP, or GIF. Max 20MB.
         </p>
       </div>
 
-      {value ? (
+      {previewUrl ? (
         <div className="border border-graphite-border bg-white overflow-hidden">
           <div className="relative aspect-[16/9] bg-[#e9e8e4]">
-            <Image src={value} alt="Cover image preview" fill className="object-cover" unoptimized />
+            <Image src={previewUrl} alt="Cover image preview" fill className="object-cover" unoptimized />
           </div>
           <a
-            href={value}
+            href={previewUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="block truncate px-4 py-3 font-label-sm text-[#030509] hover:text-[#E4554A]"
