@@ -76,7 +76,7 @@ export default function MyDocumentsPage() {
         <Link
           href="/documents/new"
           id="btn-create-document"
-          className="flex items-center justify-center gap-2 bg-[#E4554A] text-white font-label-md px-5 py-2.5 rounded-sm hover:brightness-95 transition-all active:scale-[0.98] w-full sm:w-auto shrink-0"
+          className="flex items-center justify-center gap-2 bg-[#E4554A] text-white font-label-md px-5 py-2.5 rounded-none hover:brightness-95 transition-all active:scale-[0.98] w-full sm:w-auto shrink-0"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           Create Document
@@ -355,11 +355,10 @@ function Pagination({
         <button
           key={p}
           onClick={() => onPageChange(p)}
-          className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${
-            p === page
+          className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${p === page
               ? 'bg-[#460002] text-white'
               : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
-          }`}
+            }`}
         >
           {p}
         </button>
@@ -406,7 +405,7 @@ function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () 
       ) : (
         <Link
           href="/documents/new"
-          className="flex items-center gap-2 bg-[#E4554A] text-white font-label-md px-5 py-2.5 rounded-sm hover:brightness-95 transition-all"
+          className="flex items-center gap-2 bg-[#E4554A] text-white font-label-md px-5 py-2.5 rounded-none hover:brightness-95 transition-all"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
           Create First Document

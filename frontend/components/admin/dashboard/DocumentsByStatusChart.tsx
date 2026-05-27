@@ -34,7 +34,7 @@ export default function DocumentsByStatusChart({ data }: DocumentsByStatusChartP
 
   if (total === 0) {
     return (
-      <div className="bg-paper-cream border border-graphite-border rounded-lg p-6 h-[380px] flex flex-col justify-between">
+      <div className="bg-paper-cream border border-graphite-border rounded-none p-6 h-[380px] flex flex-col justify-between">
         <h3 className="text-headline-md text-ink-black">Document Status</h3>
         <div className="flex-grow">
           <DashboardEmptyState />
@@ -44,7 +44,7 @@ export default function DocumentsByStatusChart({ data }: DocumentsByStatusChartP
   }
 
   return (
-    <div className="bg-paper-cream border border-graphite-border rounded-lg p-6 h-[380px] flex flex-col justify-between">
+    <div className="bg-paper-cream border border-graphite-border rounded-none p-6 h-[380px] flex flex-col justify-between">
       <h3 className="text-headline-md text-ink-black">Document Status</h3>
       <div className="h-64 flex items-center justify-center relative mt-4">
         <ResponsiveContainer width="100%" height="100%">
@@ -66,7 +66,7 @@ export default function DocumentsByStatusChart({ data }: DocumentsByStatusChartP
               contentStyle={{
                 backgroundColor: '#1c1e24',
                 color: '#fff',
-                borderRadius: '4px',
+                borderRadius: '0px',
                 border: 'none',
                 fontFamily: 'Inter',
               }}

@@ -98,7 +98,7 @@ export default function AdminDashboardPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/documents/new"
-              className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-sm hover:brightness-95 transition-all active:scale-[0.98]"
+              className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-none hover:brightness-95 transition-all active:scale-[0.98]"
               title="New Document"
             >
               <span className="material-symbols-outlined text-[18px]">add</span>
@@ -120,21 +120,21 @@ export default function AdminDashboardPage() {
               <button
                 onClick={() => fetchStats(true)}
                 disabled={loading}
-                className="px-4 py-2 bg-white border border-[#030509] text-[#030509] font-label-md text-label-md rounded-sm flex items-center hover:bg-[#e9e8e4] transition-colors disabled:opacity-50"
+                className="px-4 py-2 bg-white border border-[#030509] text-[#030509] font-label-md text-label-md rounded-none flex items-center hover:bg-[#e9e8e4] transition-colors disabled:opacity-50"
               >
                 <span className="material-symbols-outlined mr-2 text-sm">refresh</span>
                 Refresh
               </button>
               <Link
                 href="/admin/documents"
-                className="px-4 py-2 bg-[#e5564b] text-white border border-[#e5564b] font-label-md text-label-md rounded-sm flex items-center hover:opacity-90 transition-opacity"
+                className="px-4 py-2 bg-[#e5564b] text-white border border-[#e5564b] font-label-md text-label-md rounded-none flex items-center hover:opacity-90 transition-opacity"
               >
                 <span className="material-symbols-outlined mr-2 text-sm">folder_open</span>
                 Manage Documents
               </Link>
               <Link
                 href="/admin/users"
-                className="px-4 py-2 bg-white border border-graphite-border text-[#76777b] font-label-md text-label-md rounded-sm flex items-center hover:bg-[#e9e8e4] transition-colors"
+                className="px-4 py-2 bg-white border border-graphite-border text-[#76777b] font-label-md text-label-md rounded-none flex items-center hover:bg-[#e9e8e4] transition-colors"
               >
                 <span className="material-symbols-outlined mr-2 text-sm">group</span>
                 Manage Users
@@ -172,7 +172,7 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* Tables Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+              <div className="grid grid-cols-1 gap-gutter">
                 <RecentDocumentsTable documents={data.recentDocuments} />
                 <RecentUsersTable users={data.recentUsers} />
               </div>

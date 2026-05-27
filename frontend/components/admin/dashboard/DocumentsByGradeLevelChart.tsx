@@ -22,7 +22,7 @@ export default function DocumentsByGradeLevelChart({ data }: DocumentsByGradeLev
 
   if (total === 0) {
     return (
-      <div className="bg-paper-cream border border-graphite-border rounded-lg p-6 h-[380px] flex flex-col justify-between">
+      <div className="bg-paper-cream border border-graphite-border rounded-none p-6 h-[380px] flex flex-col justify-between">
         <h3 className="text-headline-md text-ink-black">Documents by Grade</h3>
         <div className="flex-grow">
           <DashboardEmptyState />
@@ -32,7 +32,7 @@ export default function DocumentsByGradeLevelChart({ data }: DocumentsByGradeLev
   }
 
   return (
-    <div className="bg-paper-cream border border-graphite-border rounded-lg p-6 h-[380px] flex flex-col justify-between">
+    <div className="bg-paper-cream border border-graphite-border rounded-none p-6 h-[380px] flex flex-col justify-between">
       <h3 className="text-headline-md text-ink-black">Documents by Grade</h3>
       <div className="h-64 relative w-full mt-4">
         <ResponsiveContainer width="100%" height="100%">
@@ -49,14 +49,14 @@ export default function DocumentsByGradeLevelChart({ data }: DocumentsByGradeLev
               contentStyle={{
                 backgroundColor: '#1c1e24',
                 color: '#fff',
-                borderRadius: '4px',
+                borderRadius: '0px',
                 border: 'none',
                 fontFamily: 'Inter',
               }}
               labelStyle={{ fontWeight: 'bold', color: '#fff' }}
               itemStyle={{ color: '#fff' }}
             />
-            <Bar dataKey="count" fill="#e5564b" radius={[0, 2, 2, 0]} barSize={24} />
+            <Bar dataKey="count" fill="#e5564b" barSize={24} />
           </BarChart>
         </ResponsiveContainer>
       </div>

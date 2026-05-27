@@ -56,6 +56,17 @@ async function main() {
   // Clear existing documents to ensure idempotent seeding
   await prisma.document.deleteMany({});
 
+  // Clear extra users (created by previous E2E test runs) to prevent test database pollution
+  await prisma.user.deleteMany({
+    where: {
+      NOT: {
+        email: {
+          in: ['admin@edupub.test', 'user@edupub.test'],
+        },
+      },
+    },
+  });
+
   // Seed Admin's documents (at least 10)
   await prisma.document.createMany({
     data: [

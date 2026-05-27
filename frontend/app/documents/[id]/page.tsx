@@ -125,7 +125,7 @@ export default function DocumentDetailPage() {
                   <Link
                     href={`/documents/${doc.id}/edit`}
                     id="btn-edit-document"
-                    className="flex items-center gap-2 bg-[#460002] text-white font-label-md px-5 py-2.5 rounded-sm hover:opacity-90 transition-all active:scale-[0.98]"
+                    className="flex items-center gap-2 bg-[#460002] text-white font-label-md px-5 py-2.5 rounded-none hover:opacity-90 transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[18px]">edit</span>
                     Edit Document
@@ -133,7 +133,7 @@ export default function DocumentDetailPage() {
                   <button
                     id="btn-delete-document"
                     onClick={() => setShowDeleteModal(true)}
-                    className="flex items-center gap-2 border border-[#ba1a1a] text-[#ba1a1a] bg-white font-label-md px-5 py-2.5 rounded-sm hover:bg-[#ffdad6] transition-all active:scale-[0.98]"
+                    className="flex items-center gap-2 border border-[#ba1a1a] text-[#ba1a1a] bg-white font-label-md px-5 py-2.5 rounded-none hover:bg-[#ffdad6] transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
                     Delete
@@ -205,7 +205,7 @@ export default function DocumentDetailPage() {
                       href={doc.fileUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-3 p-3 bg-white border border-graphite-border rounded-sm hover:border-[#460002] transition-all group"
+                      className="flex items-center gap-3 p-3 bg-white border border-graphite-border rounded-none hover:border-[#460002] transition-all group"
                     >
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         picture_as_pdf
@@ -221,7 +221,7 @@ export default function DocumentDetailPage() {
                       href={doc.coverImageUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex items-center gap-3 p-3 bg-white border border-graphite-border rounded-sm hover:border-[#460002] transition-all group"
+                      className="flex items-center gap-3 p-3 bg-white border border-graphite-border rounded-none hover:border-[#460002] transition-all group"
                     >
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         image

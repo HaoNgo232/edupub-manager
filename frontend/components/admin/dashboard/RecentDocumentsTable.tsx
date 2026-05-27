@@ -12,7 +12,7 @@ interface RecentDocumentsTableProps {
 export default function RecentDocumentsTable({ documents }: RecentDocumentsTableProps) {
   if (documents.length === 0) {
     return (
-      <div className="bg-paper-cream border border-graphite-border rounded-lg overflow-hidden flex flex-col h-full">
+      <div className="bg-paper-cream border border-graphite-border rounded-none overflow-hidden flex flex-col h-full">
         <div className="p-6 border-b border-graphite-border bg-[#f4f4f0] flex justify-between items-center">
           <h3 className="text-headline-md text-ink-black">Recent Documents</h3>
           <Link
@@ -57,7 +57,7 @@ export default function RecentDocumentsTable({ documents }: RecentDocumentsTable
   };
 
   return (
-    <div className="bg-paper-cream border border-graphite-border rounded-lg overflow-hidden flex flex-col h-full">
+    <div className="bg-paper-cream border border-graphite-border rounded-none overflow-hidden flex flex-col h-full">
       <div className="p-6 border-b border-graphite-border bg-[#f4f4f0] flex justify-between items-center">
         <h3 className="text-headline-md text-ink-black">Recent Documents</h3>
         <Link

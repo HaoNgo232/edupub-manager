@@ -290,7 +290,7 @@ function AdminUsersListContent() {
           </div>
           <Link
             href="/admin/users/new"
-            className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-sm hover:brightness-95 transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-none hover:brightness-95 transition-all active:scale-[0.98]"
             title="Create User"
           >
             <span className="material-symbols-outlined text-[18px]">person_add</span>
@@ -422,13 +422,13 @@ function AdminUsersListContent() {
                 <div className="flex gap-2 mt-2">
                   <button
                     onClick={handleResetFilters}
-                    className="px-4 py-2 border border-graphite-border bg-white text-[#76777b] hover:bg-[#e9e8e4] font-label-md transition-all rounded-sm"
+                    className="px-4 py-2 border border-graphite-border bg-white text-[#76777b] hover:bg-[#e9e8e4] font-label-md transition-all rounded-none"
                   >
                     Clear Filters
                   </button>
                   <Link
                     href="/admin/users/new"
-                    className="px-4 py-2 bg-[#E4554A] text-white hover:opacity-90 font-label-md transition-all rounded-sm"
+                    className="px-4 py-2 bg-[#E4554A] text-white hover:opacity-90 font-label-md transition-all rounded-none"
                   >
                     Create User
                   </Link>

@@ -55,7 +55,7 @@ export default function DocumentsLayout({ children }: { children: React.ReactNod
           <div className="flex items-center gap-4">
             <Link
               href="/documents/new"
-              className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-sm hover:brightness-95 transition-all active:scale-[0.98]"
+              className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-none hover:brightness-95 transition-all active:scale-[0.98]"
               title="New Document"
             >
               <span className="material-symbols-outlined text-[18px]">add</span>

@@ -95,7 +95,7 @@ export default function AdminDocumentsPage() {
           </div>
           <Link
             href="/documents/new"
-            className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-sm hover:brightness-95 transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 bg-[#E4554A] text-white font-label-md px-3 py-2 sm:px-4 rounded-none hover:brightness-95 transition-all active:scale-[0.98]"
             title="New Document"
           >
             <span className="material-symbols-outlined text-[18px]">add</span>
@@ -399,7 +399,7 @@ function AdminDocumentCard({ doc }: { doc: DocumentResponse }) {
       </div>
 
       {/* Owner info */}
-      <div className="flex items-center gap-2.5 py-2 px-3 bg-[#f5f5f0] border border-graphite-border rounded-sm">
+      <div className="flex items-center gap-2.5 py-2 px-3 bg-[#f5f5f0] border border-graphite-border rounded-none">
         <div className="w-8 h-8 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
           {doc.owner.avatarUrl ? (
             <Image
@@ -476,11 +476,10 @@ function AdminPagination({
         <button
           key={p}
           onClick={() => onPageChange(p)}
-          className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${
-            p === page
+          className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${p === page
               ? 'bg-[#460002] text-white'
               : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
-          }`}
+            }`}
         >
           {p}
         </button>

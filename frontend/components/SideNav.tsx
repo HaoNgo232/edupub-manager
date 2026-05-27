@@ -32,7 +32,7 @@ export default function SideNav() {
       {/* Floating Mobile Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-3.5 left-4 z-50 p-2 bg-[#f4f4f0] border border-graphite-border rounded-sm text-[#030509] hover:bg-[#e9e8e4] md:hidden flex items-center justify-center active:scale-[0.98]"
+        className="fixed top-3.5 left-4 z-50 p-2 bg-[#f4f4f0] border border-graphite-border rounded-none text-[#030509] hover:bg-[#e9e8e4] md:hidden flex items-center justify-center active:scale-[0.98]"
         aria-label="Toggle Navigation"
       >
         <span className="material-symbols-outlined text-[20px]">{isOpen ? 'close' : 'menu'}</span>
@@ -76,7 +76,7 @@ export default function SideNav() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 font-label-md transition-all rounded-sm ${
+                className={`flex items-center gap-3 px-4 py-3 font-label-md transition-all rounded-none ${
                   active
                     ? 'bg-[#e9e8e4] text-[#030509] font-bold border-r-2 border-[#460002]'
                     : 'text-[#5d636f] hover:bg-[#e9e8e4] hover:text-[#030509]'
@@ -95,7 +95,7 @@ export default function SideNav() {
           <Link
             href="/"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 font-label-md text-[#5d636f] hover:bg-[#e9e8e4] hover:text-[#030509] transition-all rounded-sm"
+            className="flex items-center gap-3 px-4 py-3 font-label-md text-[#5d636f] hover:bg-[#e9e8e4] hover:text-[#030509] transition-all rounded-none"
           >
             <span className="material-symbols-outlined text-[20px]">account_circle</span>
             <div className="flex-1 min-w-0">
@@ -108,7 +108,7 @@ export default function SideNav() {
               setIsOpen(false);
               logout();
             }}
-            className="w-full flex items-center gap-3 px-4 py-3 font-label-md text-[#5d636f] hover:bg-[#e9e8e4] hover:text-[#030509] transition-all rounded-sm"
+            className="w-full flex items-center gap-3 px-4 py-3 font-label-md text-[#5d636f] hover:bg-[#e9e8e4] hover:text-[#030509] transition-all rounded-none"
           >
             <span className="material-symbols-outlined text-[20px]">logout</span>
             <span>Log out</span>

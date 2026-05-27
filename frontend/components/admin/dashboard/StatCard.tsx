@@ -16,7 +16,7 @@ export default function StatCard({
   iconColorClass = 'text-[#76777b]',
 }: StatCardProps) {
   return (
-    <div className="bg-paper-cream border border-graphite-border rounded-lg p-6 flex flex-col">
+    <div className="bg-paper-cream border border-graphite-border rounded-none p-6 flex flex-col">
       <div className="flex justify-between items-start mb-4">
         <span className="font-label-md text-label-md text-[#76777b] uppercase tracking-wider">
           {title}

@@ -184,7 +184,7 @@ export default function UserDetailPage() {
                   <Link
                     href={`/admin/users/${userDetail.id}/edit`}
                     id="btn-edit-user"
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#E4554A] text-white font-label-md px-5 py-2.5 rounded-sm hover:brightness-95 transition-all active:scale-[0.98]"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#E4554A] text-white font-label-md px-5 py-2.5 rounded-none hover:brightness-95 transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[18px]">edit</span>
                     Edit User
@@ -194,7 +194,7 @@ export default function UserDetailPage() {
                     onClick={() => setShowRoleDialog(true)}
                     disabled={isSelf}
                     title={isSelf ? 'You cannot change your own role.' : 'Change User Role'}
-                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 border border-graphite-border bg-white text-[#030509] font-label-md px-5 py-2.5 rounded-sm hover:bg-[#e9e8e4] disabled:opacity-40 disabled:hover:bg-white transition-all active:scale-[0.98]"
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 border border-graphite-border bg-white text-[#030509] font-label-md px-5 py-2.5 rounded-none hover:bg-[#e9e8e4] disabled:opacity-40 disabled:hover:bg-white transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[18px]">manage_accounts</span>
                     Change Role
@@ -204,7 +204,7 @@ export default function UserDetailPage() {
                     onClick={() => setShowDeleteDialog(true)}
                     disabled={isSelf}
                     title={isSelf ? 'You cannot delete your own account.' : 'Delete User'}
-                    className="flex-grow sm:flex-none flex items-center justify-center gap-2 border border-[#ba1a1a] text-[#ba1a1a] bg-white font-label-md px-5 py-2.5 rounded-sm hover:bg-[#ffdad6] disabled:opacity-40 disabled:hover:bg-white transition-all active:scale-[0.98]"
+                    className="flex-grow sm:flex-none flex items-center justify-center gap-2 border border-[#ba1a1a] text-[#ba1a1a] bg-white font-label-md px-5 py-2.5 rounded-none hover:bg-[#ffdad6] disabled:opacity-40 disabled:hover:bg-white transition-all active:scale-[0.98]"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
                     Delete User

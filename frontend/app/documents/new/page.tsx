@@ -60,7 +60,7 @@ export default function NewDocumentPage() {
 
       {/* Error banner */}
       {errors.length > 0 && (
-        <div className="p-4 border border-[#ba1a1a] bg-[#ffdad6] rounded-sm">
+        <div className="p-4 border border-[#ba1a1a] bg-[#ffdad6] rounded-none">
           <p className="font-label-md font-bold text-[#ba1a1a] mb-1">Please fix the following errors:</p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((e, i) => (
@@ -154,11 +154,10 @@ export default function NewDocumentPage() {
                 type="button"
                 id={`status-${s.value.toLowerCase()}`}
                 onClick={() => update('status', s.value)}
-                className={`border p-3 text-left transition-all rounded-sm ${
-                  form.status === s.value
+                className={`border p-3 text-left transition-all rounded-none ${form.status === s.value
                     ? 'border-[#460002] bg-white shadow-sm'
                     : 'border-graphite-border bg-white hover:border-[#76777b]'
-                }`}
+                  }`}
               >
                 <p className="font-label-md font-bold text-[#030509]">{s.label}</p>
                 <p className="font-label-sm text-[#76777b] mt-0.5">{s.description}</p>
