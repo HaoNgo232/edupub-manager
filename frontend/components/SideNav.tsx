@@ -7,10 +7,11 @@ import { useAuth } from '../app/context/AuthContext';
 
 const NAV_ITEMS = [
   { href: '/documents', icon: 'description', label: 'My Documents', roles: ['USER', 'ADMIN'] },
+  { href: '/admin', icon: 'dashboard', label: 'Dashboard', roles: ['ADMIN'] },
   {
     href: '/admin/documents',
     icon: 'admin_panel_settings',
-    label: 'All Documents',
+    label: 'Documents',
     roles: ['ADMIN'],
   },
   {
@@ -69,7 +70,7 @@ export default function SideNav() {
         {/* Nav Links */}
         <div className="flex-1 px-3 space-y-1">
           {NAV_ITEMS.filter((item) => user && item.roles.includes(user.role)).map((item) => {
-            const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+            const active = item.href === '/admin' ? pathname === '/admin' : pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
             return (
               <Link
                 key={item.href}

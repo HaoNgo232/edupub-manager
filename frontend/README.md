@@ -35,22 +35,42 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## Admin User Management
+## Admin Management & Dashboard
 
-This project includes a complete **Admin User Management** and **Role Management** module.
+This project includes a complete **Admin Dashboard & Basic Statistics** module alongside the **Admin User Management** and **Role Management** modules.
 
 ### Admin Routes
 
+- `/admin`: Landing page containing the system-wide overview statistics, document status distribution charts, documents by subject/grade metrics, and lists of recent documents/users.
 - `/admin/users`: Users list with search, role filters, sorting, and pagination.
 - `/admin/users/new`: Create a new user form.
 - `/admin/users/[id]`: User details view displaying user profile, documents count, and a list of their recent documents.
 - `/admin/users/[id]/edit`: Edit user information.
+- `/admin/documents`: Manage all educational documents in the system.
+
+### Admin Dashboard Features
+
+- **Summary Cards**: Displays Total Users, Total Documents, Published Documents, and Draft Documents.
+- **Visualizations (Charts)**:
+  - Documents by Status (DRAFT, PUBLISHED, ARCHIVED) doughnut/pie chart.
+  - Documents by Subject bar chart.
+  - Documents by Grade Level horizontal bar chart.
+  - Users by Role summary block.
+- **Recent Activity Tables**: Live list of the 5 newest documents and newly registered users.
+- **State Control**: Real-time refetching via the Refresh CTA, skeleton loaders, and localized empty/error fallbacks.
+- **API Dependency**: `GET /admin/stats`.
+
+### Credentials
+
+- To test admin features, use the default admin credentials seeded in the system:
+  - **Email**: `admin@edupub.test`
+  - **Password**: `Admin@123456`
 
 ### Role Protection
 
 - Route access is restricted to authenticated users with the `ADMIN` role.
-- Unauthenticated users trying to access any `/admin/*` route will be redirected to `/login`.
-- Authenticated users with the `USER` role attempting to access `/admin/*` will be redirected to `/documents`.
+- Unauthenticated users trying to access any `/admin*` route will be redirected to `/login`.
+- Authenticated users with the `USER` role attempting to access `/admin*` will be redirected to `/documents`.
 
 ### Testing
 
@@ -60,8 +80,12 @@ We use Playwright for end-to-end (E2E) testing. To run all E2E tests:
 npx playwright test
 ```
 
-To run the admin user management test suite specifically:
+To run specific E2E test suites:
 
 ```bash
+# Admin Users Management E2E Flow
 npx playwright test e2e/admin-users.spec.ts
+
+# Admin Dashboard E2E Flow
+npx playwright test e2e/admin-dashboard.spec.ts
 ```
