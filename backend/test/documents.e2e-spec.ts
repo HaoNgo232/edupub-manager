@@ -289,7 +289,8 @@ describe('DocumentsController (e2e)', () => {
       });
     });
 
-    it('should return all documents for admin user', async () => {
+    it('should return only own documents for admin user on GET /documents (My Documents)', async () => {
+      // Admin visits My Documents — should only see docs they own (0 in this test setup)
       const response = await request(app.getHttpServer())
         .get('/documents')
         .set('Authorization', `Bearer ${adminToken}`)
@@ -299,8 +300,32 @@ describe('DocumentsController (e2e)', () => {
         items: TestDocumentResponse[];
         meta: { total: number };
       };
+      // Admin owns 0 documents in this test setup
+      expect(body.meta.total).toBe(0);
+      body.items.forEach((item: TestDocumentResponse) => {
+        expect(item.ownerId).toBe(adminId);
+      });
+    });
+
+    it('should return ALL system documents for admin user on GET /admin/documents', async () => {
+      const response = await request(app.getHttpServer())
+        .get('/admin/documents')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .expect(200);
+
+      const body = response.body as {
+        items: TestDocumentResponse[];
+        meta: { total: number };
+      };
       expect(body.items).toHaveLength(3);
       expect(body.meta.total).toBe(3);
+    });
+
+    it('should deny GET /admin/documents for regular user', async () => {
+      await request(app.getHttpServer())
+        .get('/admin/documents')
+        .set('Authorization', `Bearer ${user1Token}`)
+        .expect(403);
     });
 
     it('should filter by subject', async () => {

@@ -119,10 +119,9 @@ export class DocumentsService {
   buildWhereClause(currentUser: JwtPayload, queryDto: QueryDocumentsDto): Prisma.DocumentWhereInput {
     const where: Prisma.DocumentWhereInput = {};
 
-    // Ownership rule
-    if (currentUser.role !== 'ADMIN') {
-      where.ownerId = currentUser.sub;
-    }
+    // Always scope to the current user's own documents regardless of role.
+    // Admin wanting to see all documents must use the dedicated admin endpoint.
+    where.ownerId = currentUser.sub;
 
     // Filters
     if (queryDto.subject) {
@@ -145,6 +144,77 @@ export class DocumentsService {
     }
 
     return where;
+  }
+
+  buildAdminWhereClause(queryDto: QueryDocumentsDto): Prisma.DocumentWhereInput {
+    const where: Prisma.DocumentWhereInput = {};
+
+    // No ownership filter — admin can see all documents.
+    if (queryDto.subject) {
+      where.subject = queryDto.subject;
+    }
+    if (queryDto.status) {
+      where.status = queryDto.status;
+    }
+    if (queryDto.gradeLevel !== undefined) {
+      where.gradeLevel = queryDto.gradeLevel;
+    }
+
+    if (queryDto.q && queryDto.q.trim()) {
+      const searchPattern = queryDto.q.trim();
+      where.OR = [
+        { title: { contains: searchPattern, mode: 'insensitive' } },
+        { description: { contains: searchPattern, mode: 'insensitive' } },
+      ];
+    }
+
+    return where;
+  }
+
+  async findAllForAdmin(queryDto: QueryDocumentsDto) {
+    const where = this.buildAdminWhereClause(queryDto);
+    const orderBy = this.buildOrderBy(queryDto);
+
+    const page = queryDto.page || 1;
+    const limit = queryDto.limit || 10;
+    const skip = (page - 1) * limit;
+
+    const [items, total] = await Promise.all([
+      this.prisma.document.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+        include: {
+          owner: {
+            select: {
+              id: true,
+              email: true,
+              fullName: true,
+              role: true,
+              avatarUrl: true,
+            },
+          },
+        },
+      }),
+      this.prisma.document.count({ where }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+    const hasNextPage = page < totalPages;
+    const hasPreviousPage = page > 1;
+
+    return {
+      items,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    };
   }
 
   buildOrderBy(queryDto: QueryDocumentsDto): Prisma.DocumentOrderByWithRelationInput {

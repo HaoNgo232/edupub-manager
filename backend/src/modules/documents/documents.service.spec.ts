@@ -93,14 +93,14 @@ describe('DocumentsService', () => {
   });
 
   describe('buildWhereClause', () => {
-    it('should restrict to ownerId for non-admin users', () => {
+    it('should restrict to ownerId for regular users', () => {
       const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockUserPayload, {});
       expect(where.ownerId).toBe(mockUserPayload.sub);
     });
 
-    it('should not restrict to ownerId for admin users', () => {
+    it('should ALSO restrict to ownerId for admin users (My Documents scoped to own)', () => {
       const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockAdminPayload, {});
-      expect(where.ownerId).toBeUndefined();
+      expect(where.ownerId).toBe(mockAdminPayload.sub);
     });
 
     it('should include filters for subject, status, gradeLevel and search query q', () => {
@@ -129,6 +129,32 @@ describe('DocumentsService', () => {
 
       const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockAdminPayload, query);
 
+      expect(where.OR).toEqual([
+        { title: { contains: 'calculus', mode: 'insensitive' } },
+        { description: { contains: 'calculus', mode: 'insensitive' } },
+      ]);
+    });
+  });
+
+  describe('buildAdminWhereClause', () => {
+    it('should NOT restrict to any ownerId — returns all documents', () => {
+      const where: Prisma.DocumentWhereInput = service.buildAdminWhereClause({});
+      expect(where.ownerId).toBeUndefined();
+    });
+
+    it('should apply subject/status/gradeLevel filters and case-insensitive search', () => {
+      const query = {
+        subject: Subject.MATH,
+        status: DocumentStatus.PUBLISHED,
+        gradeLevel: 10,
+        q: 'calculus',
+      };
+
+      const where: Prisma.DocumentWhereInput = service.buildAdminWhereClause(query);
+
+      expect(where.subject).toBe(Subject.MATH);
+      expect(where.status).toBe(DocumentStatus.PUBLISHED);
+      expect(where.gradeLevel).toBe(10);
       expect(where.OR).toEqual([
         { title: { contains: 'calculus', mode: 'insensitive' } },
         { description: { contains: 'calculus', mode: 'insensitive' } },

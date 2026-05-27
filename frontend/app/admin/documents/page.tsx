@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import {
-  listDocuments,
+  listAllDocuments,
   DocumentResponse,
   DocumentListResponse,
   DocumentStatus,
@@ -43,7 +43,7 @@ export default function AdminDocumentsPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await listDocuments({
+      const res = await listAllDocuments({
         q: search || undefined,
         subject: subject || undefined,
         status: status || undefined,
