@@ -267,10 +267,11 @@ export class UsersService {
       where.role = queryDto.role;
     }
 
-    if (queryDto.q) {
+    if (queryDto.q && queryDto.q.trim()) {
+      const searchPattern = queryDto.q.trim();
       where.OR = [
-        { email: { contains: queryDto.q, mode: 'insensitive' } },
-        { fullName: { contains: queryDto.q, mode: 'insensitive' } },
+        { email: { contains: searchPattern, mode: 'insensitive' } },
+        { fullName: { contains: searchPattern, mode: 'insensitive' } },
       ];
     }
 

@@ -57,6 +57,34 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
+  describe('buildUserWhereClause', () => {
+    it('should filter by role when provided', () => {
+      const where = service.buildUserWhereClause({ role: Role.ADMIN });
+      expect(where.role).toBe(Role.ADMIN);
+    });
+
+    it('should add OR clause for case-insensitive search on email and fullName', () => {
+      const where = service.buildUserWhereClause({ q: 'nguyen' });
+      expect(where.OR).toEqual([
+        { email: { contains: 'nguyen', mode: 'insensitive' } },
+        { fullName: { contains: 'nguyen', mode: 'insensitive' } },
+      ]);
+    });
+
+    it('should trim whitespace from search query q', () => {
+      const where = service.buildUserWhereClause({ q: '  nguyen  ' });
+      expect(where.OR).toEqual([
+        { email: { contains: 'nguyen', mode: 'insensitive' } },
+        { fullName: { contains: 'nguyen', mode: 'insensitive' } },
+      ]);
+    });
+
+    it('should not add OR clause when q is only whitespace', () => {
+      const where = service.buildUserWhereClause({ q: '   ' });
+      expect(where.OR).toBeUndefined();
+    });
+  });
+
   describe('findAllForAdmin', () => {
     it('should return a paginated list of users with documentsCount', async () => {
       const mockUsers = [
