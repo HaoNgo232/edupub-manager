@@ -83,7 +83,7 @@ export default function AvatarImageUpload({
       </div>
 
       <div className="flex items-center gap-4">
-        {previewUrl ? (
+        {previewUrl && (
           <Image
             src={previewUrl}
             alt={`${fullName || 'User'} avatar preview`}
@@ -92,14 +92,9 @@ export default function AvatarImageUpload({
             className="w-[72px] h-[72px] rounded-full object-cover border border-graphite-border bg-white"
             unoptimized
           />
-        ) : (
-          <div className="w-[72px] h-[72px] rounded-full border border-graphite-border bg-white flex items-center justify-center">
-            <span className="material-symbols-outlined text-[34px] text-on-surface-variant">account_circle</span>
-          </div>
         )}
 
         <div className="flex-1 min-w-0">
-          <p className="font-label-md text-[#030509] truncate">{value ? 'Avatar selected' : 'No avatar uploaded'}</p>
           {isUploading && <p className="font-label-md text-on-surface-variant">Uploading image...</p>}
         </div>
       </div>
@@ -116,9 +111,8 @@ export default function AvatarImageUpload({
         />
         <label
           htmlFor="profile-avatar-upload"
-          className={`inline-flex justify-center items-center gap-2 border border-[#460002] bg-white px-4 py-2.5 font-label-md text-[#460002] transition-all sm:w-auto w-full ${
-            disabled || isUploading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-[#fff1ef] active:scale-[0.98]'
-          }`}
+          className={`inline-flex justify-center items-center gap-2 border border-[#460002] bg-white px-4 py-2.5 font-label-md text-[#460002] transition-all sm:w-auto w-full ${disabled || isUploading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-[#fff1ef] active:scale-[0.98]'
+            }`}
         >
           <span className="material-symbols-outlined text-[18px]">upload</span>
           Choose Image

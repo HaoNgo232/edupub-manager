@@ -136,10 +136,11 @@ export class DocumentsService {
     }
 
     // Search query q
-    if (queryDto.q) {
+    if (queryDto.q && queryDto.q.trim()) {
+      const searchPattern = queryDto.q.trim();
       where.OR = [
-        { title: { contains: queryDto.q, mode: 'insensitive' } },
-        { description: { contains: queryDto.q, mode: 'insensitive' } },
+        { title: { contains: searchPattern, mode: 'insensitive' } },
+        { description: { contains: searchPattern, mode: 'insensitive' } },
       ];
     }
 

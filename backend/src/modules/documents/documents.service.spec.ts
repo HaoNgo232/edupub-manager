@@ -121,6 +121,19 @@ describe('DocumentsService', () => {
         { description: { contains: 'calculus', mode: 'insensitive' } },
       ]);
     });
+
+    it('should trim the search query q before searching', () => {
+      const query = {
+        q: '  calculus  ',
+      };
+
+      const where: Prisma.DocumentWhereInput = service.buildWhereClause(mockAdminPayload, query);
+
+      expect(where.OR).toEqual([
+        { title: { contains: 'calculus', mode: 'insensitive' } },
+        { description: { contains: 'calculus', mode: 'insensitive' } },
+      ]);
+    });
   });
 
   describe('ensureDocumentAccessible', () => {
