@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '../app/context/AuthContext';
+import { resolveUploadUrl } from '../lib/uploads/url';
 
 const NAV_ITEMS = [
   { href: '/documents', icon: 'description', label: 'My Documents', roles: ['USER', 'ADMIN'] },
@@ -97,7 +99,20 @@ export default function SideNav() {
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 px-4 py-3 font-label-md text-[#5d636f] hover:bg-[#e9e8e4] hover:text-[#030509] transition-all rounded-none"
           >
-            <span className="material-symbols-outlined text-[20px]">account_circle</span>
+            <div className="w-8 h-8 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
+              {user?.avatarUrl ? (
+                <Image
+                  src={resolveUploadUrl(user.avatarUrl)}
+                  alt={user.fullName || 'User'}
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                  unoptimized
+                />
+              ) : (
+                <span className="material-symbols-outlined text-[18px] text-[#76777b]">person</span>
+              )}
+            </div>
             <div className="flex-1 min-w-0">
               <p className="font-label-md text-[#030509] truncate">{user?.fullName}</p>
               <p className="font-label-sm text-[#76777b] truncate">{user?.role}</p>
