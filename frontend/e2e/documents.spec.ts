@@ -60,10 +60,7 @@ test.describe('Document CRUD + Ownership E2E UI Flow', () => {
 
     // Fill Create Document Form
     await page.fill('#doc-title', 'Playwright Test Book');
-    await page.fill(
-      '#doc-description',
-      'Educational resources compiled by playwright E2E test runner.',
-    );
+    await page.fill('#doc-description', 'Educational resources compiled by playwright E2E test runner.');
     await page.selectOption('#doc-subject', 'MATH');
     await page.fill('#doc-grade', '10');
     await page.click('button#status-published');

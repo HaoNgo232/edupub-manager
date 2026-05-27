@@ -15,11 +15,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import SideNav from '../../../components/SideNav';
 import StatusBadge from '../../../components/StatusBadge';
-import {
-  SUBJECT_FILTER_OPTIONS,
-  STATUS_FILTER_OPTIONS,
-  SUBJECT_ICONS,
-} from '../../lib/constants/documents.constants';
+import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../../lib/constants/documents.constants';
 
 export default function AdminDocumentsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -79,9 +75,7 @@ export default function AdminDocumentsPage() {
   if (authLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf9f5]">
-        <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">
-          progress_activity
-        </span>
+        <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">progress_activity</span>
       </div>
     );
   }
@@ -94,9 +88,7 @@ export default function AdminDocumentsPage() {
         {/* Top header */}
         <header className="sticky top-0 z-30 flex items-center justify-between px-4 md:px-8 py-4 bg-[#faf9f5] border-b border-graphite-border">
           <div className="flex items-center gap-2 font-label-md text-[#76777b] pl-12 md:pl-0">
-            <span className="material-symbols-outlined text-[18px] text-[#E4554A]">
-              admin_panel_settings
-            </span>
+            <span className="material-symbols-outlined text-[18px] text-[#E4554A]">admin_panel_settings</span>
             <span className="text-[#030509] font-semibold truncate max-w-[150px] sm:max-w-none">
               Admin — All Documents
             </span>
@@ -153,14 +145,10 @@ export default function AdminDocumentsPage() {
                   key={s.label}
                   className="bg-[#f5f5f0] border border-graphite-border px-5 py-4 flex items-center gap-3"
                 >
-                  <span className="material-symbols-outlined text-[24px] text-[#76777b]">
-                    {s.icon}
-                  </span>
+                  <span className="material-symbols-outlined text-[24px] text-[#76777b]">{s.icon}</span>
                   <div>
                     <p className={`font-label-md font-bold ${s.color}`}>{s.value}</p>
-                    <p className="font-label-sm text-[#76777b] uppercase tracking-widest">
-                      {s.label}
-                    </p>
+                    <p className="font-label-sm text-[#76777b] uppercase tracking-widest">{s.label}</p>
                   </div>
                 </div>
               ))}
@@ -178,9 +166,7 @@ export default function AdminDocumentsPage() {
               className="flex flex-col lg:flex-row lg:items-end gap-4"
             >
               <div className="flex flex-col gap-1.5 w-full lg:max-w-[550px] lg:flex-grow">
-                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
-                  Search
-                </label>
+                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Search</label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#76777b]">
                     search
@@ -196,9 +182,7 @@ export default function AdminDocumentsPage() {
                 </div>
               </div>
               <div className="flex flex-col gap-1.5 w-full lg:w-[220px]">
-                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
-                  Subject
-                </label>
+                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Subject</label>
                 <select
                   id="admin-filter-subject"
                   value={subject}
@@ -217,9 +201,7 @@ export default function AdminDocumentsPage() {
               </div>
 
               <div className="flex flex-col gap-1.5 w-full lg:w-[200px]">
-                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
-                  Status
-                </label>
+                <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Status</label>
                 <select
                   id="admin-filter-status"
                   value={status}
@@ -275,9 +257,7 @@ export default function AdminDocumentsPage() {
 
             {!loading && !error && data?.items.length === 0 && (
               <div className="py-16 text-center">
-                <span className="material-symbols-outlined block text-[40px] text-[#c7c6cb] mb-3">
-                  search_off
-                </span>
+                <span className="material-symbols-outlined block text-[40px] text-[#c7c6cb] mb-3">search_off</span>
                 <p className="font-label-md text-[#76777b]">No documents match your filters.</p>
               </div>
             )}
@@ -289,16 +269,14 @@ export default function AdminDocumentsPage() {
                   <table className="w-full text-left border-collapse" id="admin-documents-table">
                     <thead>
                       <tr className="border-b border-graphite-border bg-[#f4f4f0]">
-                        {['Title', 'Owner', 'Subject', 'Grade', 'Status', 'Updated', 'Actions'].map(
-                          (h) => (
-                            <th
-                              key={h}
-                              className="px-6 py-4 font-label-sm text-[#76777b] uppercase tracking-widest whitespace-nowrap"
-                            >
-                              {h}
-                            </th>
-                          ),
-                        )}
+                        {['Title', 'Owner', 'Subject', 'Grade', 'Status', 'Updated', 'Actions'].map((h) => (
+                          <th
+                            key={h}
+                            className="px-6 py-4 font-label-sm text-[#76777b] uppercase tracking-widest whitespace-nowrap"
+                          >
+                            {h}
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-graphite-border">
@@ -310,10 +288,7 @@ export default function AdminDocumentsPage() {
                 </div>
 
                 {/* Mobile Card List */}
-                <div
-                  className="md:hidden divide-y divide-graphite-border"
-                  id="admin-documents-mobile-list"
-                >
+                <div className="md:hidden divide-y divide-graphite-border" id="admin-documents-mobile-list">
                   {data.items.map((doc) => (
                     <AdminDocumentCard key={doc.id} doc={doc} />
                   ))}
@@ -322,8 +297,8 @@ export default function AdminDocumentsPage() {
                 {/* Pagination */}
                 <div className="px-6 py-4 bg-[#f4f4f0] border-t border-graphite-border flex flex-col sm:flex-row items-center justify-between gap-3">
                   <span className="font-label-md text-[#76777b]">
-                    Showing {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, data.meta.total)} of{' '}
-                    {data.meta.total} results
+                    Showing {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, data.meta.total)} of {data.meta.total}{' '}
+                    results
                   </span>
                   <AdminPagination meta={data.meta} page={page} onPageChange={setPage} />
                 </div>
@@ -372,9 +347,7 @@ function AdminDocumentRow({ doc }: { doc: DocumentResponse }) {
         </div>
       </td>
       <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">{doc.subject}</td>
-      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
-        Grade {doc.gradeLevel}
-      </td>
+      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">Grade {doc.gradeLevel}</td>
       <td className="px-6 py-4">
         <StatusBadge status={doc.status} />
       </td>
@@ -442,9 +415,7 @@ function AdminDocumentCard({ doc }: { doc: DocumentResponse }) {
           )}
         </div>
         <div className="min-w-0">
-          <p className="font-label-md font-semibold text-[#030509] truncate text-xs">
-            {doc.owner.fullName}
-          </p>
+          <p className="font-label-md font-semibold text-[#030509] truncate text-xs">{doc.owner.fullName}</p>
           <p className="font-label-sm text-[#76777b] truncate text-[11px]">{doc.owner.email}</p>
         </div>
       </div>
@@ -497,17 +468,10 @@ function AdminPagination({
   page: number;
   onPageChange: (p: number) => void;
 }) {
-  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1).slice(
-    Math.max(0, page - 3),
-    page + 2,
-  );
+  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1).slice(Math.max(0, page - 3), page + 2);
   return (
     <div className="flex items-center gap-1">
-      <PBtn
-        disabled={!meta.hasPreviousPage}
-        onClick={() => onPageChange(page - 1)}
-        icon="chevron_left"
-      />
+      <PBtn disabled={!meta.hasPreviousPage} onClick={() => onPageChange(page - 1)} icon="chevron_left" />
       {pages.map((p) => (
         <button
           key={p}
@@ -521,24 +485,12 @@ function AdminPagination({
           {p}
         </button>
       ))}
-      <PBtn
-        disabled={!meta.hasNextPage}
-        onClick={() => onPageChange(page + 1)}
-        icon="chevron_right"
-      />
+      <PBtn disabled={!meta.hasNextPage} onClick={() => onPageChange(page + 1)} icon="chevron_right" />
     </div>
   );
 }
 
-function PBtn({
-  onClick,
-  disabled,
-  icon,
-}: {
-  onClick: () => void;
-  disabled: boolean;
-  icon: string;
-}) {
+function PBtn({ onClick, disabled, icon }: { onClick: () => void; disabled: boolean; icon: string }) {
   return (
     <button
       onClick={onClick}

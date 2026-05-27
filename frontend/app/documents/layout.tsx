@@ -21,9 +21,7 @@ export default function DocumentsLayout({ children }: { children: React.ReactNod
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf9f5]">
         <div className="flex flex-col items-center gap-3">
-          <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">
-            progress_activity
-          </span>
+          <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">progress_activity</span>
           <span className="font-label-md text-[#76777b]">Loading...</span>
         </div>
       </div>
@@ -47,11 +45,7 @@ export default function DocumentsLayout({ children }: { children: React.ReactNod
               <>
                 <span className="material-symbols-outlined text-[16px]">chevron_right</span>
                 <span className="text-[#030509] truncate max-w-[100px] sm:max-w-none">
-                  {pathname.endsWith('/edit')
-                    ? 'Edit'
-                    : pathname.endsWith('/new')
-                      ? 'New Document'
-                      : 'Detail'}
+                  {pathname.endsWith('/edit') ? 'Edit' : pathname.endsWith('/new') ? 'New Document' : 'Detail'}
                 </span>
               </>
             )}

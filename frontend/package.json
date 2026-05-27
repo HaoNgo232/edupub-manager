@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint \"app/**/*.{ts,tsx,js,jsx}\" --fix",
-    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,css,md}\""
+    "lint": "eslint \"{app,components,lib,e2e}/**/*.{ts,tsx,js,jsx}\" --fix",
+    "format": "prettier --config ../.prettierrc --write \"**/*.{js,ts,jsx,tsx,json,css,md}\"",
+    "format:check": "prettier --config ../.prettierrc --check \"**/*.{js,ts,jsx,tsx,json,css,md}\""
   },
   "dependencies": {
     "next": "16.2.6",

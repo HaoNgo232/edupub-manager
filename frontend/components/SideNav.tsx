@@ -13,6 +13,12 @@ const NAV_ITEMS = [
     label: 'All Documents',
     roles: ['ADMIN'],
   },
+  {
+    href: '/admin/users',
+    icon: 'group',
+    label: 'Users',
+    roles: ['ADMIN'],
+  },
 ];
 
 export default function SideNav() {
@@ -33,10 +39,7 @@ export default function SideNav() {
 
       {/* Mobile Backdrop Overlay */}
       {isOpen && (
-        <div
-          onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black/40 backdrop-blur-xs z-35 md:hidden"
-        />
+        <div onClick={() => setIsOpen(false)} className="fixed inset-0 bg-black/40 backdrop-blur-xs z-35 md:hidden" />
       )}
 
       {/* Navigation Drawer */}
@@ -57,12 +60,8 @@ export default function SideNav() {
               </span>
             </div>
             <div>
-              <h1 className="font-label-md font-bold text-[#030509] leading-none">
-                EduPub Manager
-              </h1>
-              <p className="font-label-sm text-[#76777b] uppercase tracking-widest mt-0.5">
-                Scholarly Ed.
-              </p>
+              <h1 className="font-label-md font-bold text-[#030509] leading-none">EduPub Manager</h1>
+              <p className="font-label-sm text-[#76777b] uppercase tracking-widest mt-0.5">Scholarly Ed.</p>
             </div>
           </div>
         </div>
@@ -70,8 +69,7 @@ export default function SideNav() {
         {/* Nav Links */}
         <div className="flex-1 px-3 space-y-1">
           {NAV_ITEMS.filter((item) => user && item.roles.includes(user.role)).map((item) => {
-            const active =
-              pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+            const active = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
             return (
               <Link
                 key={item.href}

@@ -34,3 +34,34 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Admin User Management
+
+This project includes a complete **Admin User Management** and **Role Management** module.
+
+### Admin Routes
+
+- `/admin/users`: Users list with search, role filters, sorting, and pagination.
+- `/admin/users/new`: Create a new user form.
+- `/admin/users/[id]`: User details view displaying user profile, documents count, and a list of their recent documents.
+- `/admin/users/[id]/edit`: Edit user information.
+
+### Role Protection
+
+- Route access is restricted to authenticated users with the `ADMIN` role.
+- Unauthenticated users trying to access any `/admin/*` route will be redirected to `/login`.
+- Authenticated users with the `USER` role attempting to access `/admin/*` will be redirected to `/documents`.
+
+### Testing
+
+We use Playwright for end-to-end (E2E) testing. To run all E2E tests:
+
+```bash
+npx playwright test
+```
+
+To run the admin user management test suite specifically:
+
+```bash
+npx playwright test e2e/admin-users.spec.ts
+```

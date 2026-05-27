@@ -35,9 +35,7 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf9f5] paper-texture">
         <div className="flex flex-col items-center gap-3">
-          <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">
-            progress_activity
-          </span>
+          <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">progress_activity</span>
           <span className="font-scholarly text-[20px] text-on-surface-variant">
             Opening your manuscript notebook...
           </span>
@@ -74,18 +72,13 @@ export default function Home() {
       <header className="w-full bg-[#faf9f5] border-b border-graphite-border z-10">
         <div className="flex justify-between items-center px-margin-edge py-4 max-w-page-max-width mx-auto">
           <div className="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
-            <span
-              className="material-symbols-outlined text-[#e5564b]"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
+            <span className="material-symbols-outlined text-[#e5564b]" style={{ fontVariationSettings: "'FILL' 1" }}>
               auto_stories
             </span>
             <span className="font-scholarly tracking-wide text-[#030509]">EduPub Manager</span>
           </div>
           <div className="flex items-center gap-6">
-            <span className="hidden md:block font-label-md text-on-surface-variant italic">
-              Scholarly Excellence.
-            </span>
+            <span className="hidden md:block font-label-md text-on-surface-variant italic">Scholarly Excellence.</span>
             <button
               onClick={logout}
               className="font-label-sm border border-graphite-border px-4 py-2 hover:bg-surface-container active:scale-[0.98] transition-all text-primary"
@@ -100,12 +93,8 @@ export default function Home() {
       <main className="flex-grow w-full max-w-page-max-width px-margin-edge py-12 mx-auto relative z-10">
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="font-scholarly text-headline-xl text-[#0f1115] mb-2">
-              Welcome back, {firstName}
-            </h1>
-            <p className="font-body-md text-on-surface-variant">
-              Manage your credentials and academic details.
-            </p>
+            <h1 className="font-scholarly text-headline-xl text-[#0f1115] mb-2">Welcome back, {firstName}</h1>
+            <p className="font-body-md text-on-surface-variant">Manage your credentials and academic details.</p>
           </div>
           <div className="flex gap-4">
             <button
@@ -148,9 +137,7 @@ export default function Home() {
                 />
               ) : (
                 <div className="w-24 h-24 rounded-full border border-graphite-border bg-white flex items-center justify-center">
-                  <span className="material-symbols-outlined text-[48px] text-on-surface-variant">
-                    account_circle
-                  </span>
+                  <span className="material-symbols-outlined text-[48px] text-on-surface-variant">account_circle</span>
                 </div>
               )}
             </div>
@@ -191,9 +178,7 @@ export default function Home() {
 
           {/* Edit Profile Column */}
           <div className="bg-[#f5f5f0] border border-graphite-border p-8 relative">
-            <h3 className="font-scholarly text-headline-md text-primary mb-6">
-              Update Codex Details
-            </h3>
+            <h3 className="font-scholarly text-headline-md text-primary mb-6">Update Codex Details</h3>
 
             {errorMsg && (
               <div className="mb-6 p-4 border border-[#ba1a1a] bg-[#ffdad6] text-[#ba1a1a] font-label-md">
@@ -253,9 +238,7 @@ export default function Home() {
               >
                 {updating ? (
                   <>
-                    <span className="material-symbols-outlined animate-spin text-[20px]">
-                      progress_activity
-                    </span>
+                    <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
                     Saving Changes...
                   </>
                 ) : (
@@ -276,33 +259,19 @@ export default function Home() {
           <div className="mb-4 md:mb-0">
             <span className="font-label-md font-bold text-primary">EduPub Manager</span>
             <span className="mx-2 text-outline">|</span>
-            <span className="font-label-sm text-on-surface-variant font-sans">
-              © 2024. Scholarly Excellence.
-            </span>
+            <span className="font-label-sm text-on-surface-variant font-sans">© 2024. Scholarly Excellence.</span>
           </div>
           <div className="flex flex-wrap justify-center gap-gutter font-sans">
-            <a
-              className="font-label-sm text-on-surface-variant hover:underline transition-all"
-              href="#"
-            >
+            <a className="font-label-sm text-on-surface-variant hover:underline transition-all" href="#">
               Terms of Service
             </a>
-            <a
-              className="font-label-sm text-on-surface-variant hover:underline transition-all"
-              href="#"
-            >
+            <a className="font-label-sm text-on-surface-variant hover:underline transition-all" href="#">
               Privacy Policy
             </a>
-            <a
-              className="font-label-sm text-on-surface-variant hover:underline transition-all"
-              href="#"
-            >
+            <a className="font-label-sm text-on-surface-variant hover:underline transition-all" href="#">
               Accessibility
             </a>
-            <a
-              className="font-label-sm text-on-surface-variant hover:underline transition-all"
-              href="#"
-            >
+            <a className="font-label-sm text-on-surface-variant hover:underline transition-all" href="#">
               Contact Support
             </a>
           </div>

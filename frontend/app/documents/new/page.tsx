@@ -55,17 +55,13 @@ export default function NewDocumentPage() {
       {/* Page header */}
       <div>
         <h2 className="text-headline-lg text-[#030509]">New Document</h2>
-        <p className="font-label-md text-[#76777b] mt-1">
-          Fill in the details to create a new educational document.
-        </p>
+        <p className="font-label-md text-[#76777b] mt-1">Fill in the details to create a new educational document.</p>
       </div>
 
       {/* Error banner */}
       {errors.length > 0 && (
         <div className="p-4 border border-[#ba1a1a] bg-[#ffdad6] rounded-sm">
-          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">
-            Please fix the following errors:
-          </p>
+          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">Please fix the following errors:</p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((e, i) => (
               <li key={i} className="font-label-md text-[#ba1a1a]">
@@ -204,9 +200,7 @@ export default function NewDocumentPage() {
           >
             {submitting ? (
               <>
-                <span className="material-symbols-outlined animate-spin text-[18px]">
-                  progress_activity
-                </span>
+                <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
                 Creating...
               </>
             ) : (
@@ -234,21 +228,10 @@ export default function NewDocumentPage() {
 const inputClass =
   'w-full bg-white border border-graphite-border px-4 py-2.5 font-label-md focus:border-[#030509] focus:ring-0 outline-none transition-all placeholder:text-[#c7c6cb]';
 
-function FormField({
-  label,
-  htmlFor,
-  children,
-}: {
-  label: string;
-  htmlFor: string;
-  children: React.ReactNode;
-}) {
+function FormField({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <label
-        htmlFor={htmlFor}
-        className="font-label-sm text-[#76777b] uppercase tracking-widest block"
-      >
+      <label htmlFor={htmlFor} className="font-label-sm text-[#76777b] uppercase tracking-widest block">
         {label}
       </label>
       {children}

@@ -3,13 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  getDocument,
-  updateDocument,
-  UpdateDocumentRequest,
-  Subject,
-  ApiError,
-} from '../../../../lib/api';
+import { getDocument, updateDocument, UpdateDocumentRequest, Subject, ApiError } from '../../../../lib/api';
 import { SUBJECT_OPTIONS, STATUS_OPTIONS } from '../../../lib/constants/documents.constants';
 
 type FormState = Required<UpdateDocumentRequest>;
@@ -90,9 +84,7 @@ export default function EditDocumentPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
-        <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">
-          progress_activity
-        </span>
+        <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">progress_activity</span>
         <span className="font-label-md text-[#76777b]">Loading document...</span>
       </div>
     );
@@ -105,10 +97,7 @@ export default function EditDocumentPage() {
           <span className="material-symbols-outlined text-[32px] text-[#ba1a1a]">error</span>
         </div>
         <p className="font-label-md text-[#ba1a1a] max-w-sm">{fetchError}</p>
-        <Link
-          href="/documents"
-          className="font-label-md text-[#E4554A] hover:underline flex items-center gap-1"
-        >
+        <Link href="/documents" className="font-label-md text-[#E4554A] hover:underline flex items-center gap-1">
           <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           Back to Documents
         </Link>
@@ -127,9 +116,7 @@ export default function EditDocumentPage() {
       {/* Error banner */}
       {errors.length > 0 && (
         <div className="p-4 border border-[#ba1a1a] bg-[#ffdad6] rounded-sm">
-          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">
-            Please fix the following errors:
-          </p>
+          <p className="font-label-md font-bold text-[#ba1a1a] mb-1">Please fix the following errors:</p>
           <ul className="list-disc list-inside space-y-0.5">
             {errors.map((e, i) => (
               <li key={i} className="font-label-md text-[#ba1a1a]">
@@ -265,9 +252,7 @@ export default function EditDocumentPage() {
           >
             {submitting ? (
               <>
-                <span className="material-symbols-outlined animate-spin text-[18px]">
-                  progress_activity
-                </span>
+                <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
                 Saving...
               </>
             ) : (
@@ -294,21 +279,10 @@ export default function EditDocumentPage() {
 const inputClass =
   'w-full bg-white border border-graphite-border px-4 py-2.5 font-label-md focus:border-[#030509] focus:ring-0 outline-none transition-all placeholder:text-[#c7c6cb]';
 
-function FormField({
-  label,
-  htmlFor,
-  children,
-}: {
-  label: string;
-  htmlFor: string;
-  children: React.ReactNode;
-}) {
+function FormField({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (
     <div className="space-y-1.5">
-      <label
-        htmlFor={htmlFor}
-        className="font-label-sm text-[#76777b] uppercase tracking-widest block"
-      >
+      <label htmlFor={htmlFor} className="font-label-sm text-[#76777b] uppercase tracking-widest block">
         {label}
       </label>
       {children}

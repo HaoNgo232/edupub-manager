@@ -49,18 +49,13 @@ export default function Login() {
       <header className="w-full top-0 sticky bg-surface border-b border-graphite-border z-50">
         <div className="flex justify-between items-center px-margin-edge py-4 max-w-page-max-width mx-auto">
           <div className="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
-            <span
-              className="material-symbols-outlined text-[#e5564b]"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
+            <span className="material-symbols-outlined text-[#e5564b]" style={{ fontVariationSettings: "'FILL' 1" }}>
               auto_stories
             </span>
             <span className="font-scholarly tracking-wide text-[#030509]">EduPub Manager</span>
           </div>
           <div className="hidden md:block">
-            <span className="font-label-md text-on-surface-variant italic">
-              Scholarly Excellence.
-            </span>
+            <span className="font-label-md text-on-surface-variant italic">Scholarly Excellence.</span>
           </div>
         </div>
       </header>
@@ -84,9 +79,7 @@ export default function Login() {
             >
               Welcome Back
             </h1>
-            <p className="text-[16px] leading-[24px] text-[#46464b]">
-              Access your manuscript and reviews.
-            </p>
+            <p className="text-[16px] leading-[24px] text-[#46464b]">Access your manuscript and reviews.</p>
           </div>
 
           {/* Error Message Display */}
@@ -158,10 +151,7 @@ export default function Login() {
                 onChange={(e) => setRemember(e.target.checked)}
                 className="w-4 h-4 border-[#d1d5db] text-[#e5564b] focus:ring-0"
               />
-              <label
-                className="text-[14px] font-medium text-[#46464b] cursor-pointer select-none"
-                htmlFor="remember"
-              >
+              <label className="text-[14px] font-medium text-[#46464b] cursor-pointer select-none" htmlFor="remember">
                 Keep me signed in
               </label>
             </div>
@@ -175,9 +165,7 @@ export default function Login() {
             >
               {submitting ? (
                 <>
-                  <span className="material-symbols-outlined animate-spin text-[20px]">
-                    progress_activity
-                  </span>
+                  <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
                   Authenticating...
                 </>
               ) : (
@@ -193,10 +181,7 @@ export default function Login() {
           <div className="mt-8 text-center">
             <p className="text-[16px] text-[#46464b]">
               New to EduPub?{' '}
-              <Link
-                href="/register"
-                className="text-[#030509] font-bold hover:underline transition-all"
-              >
+              <Link href="/register" className="text-[#030509] font-bold hover:underline transition-all">
                 Submit a Manuscript
               </Link>
             </p>

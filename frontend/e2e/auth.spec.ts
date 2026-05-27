@@ -40,12 +40,8 @@ test.describe('Authentication and Profile E2E Flow', () => {
     const errorTexts = await errorList.allTextContents();
 
     expect(errorTexts.length).toBeGreaterThan(0);
-    expect(
-      errorTexts.some((text) => text.includes('email') || text.includes('Email')),
-    ).toBeTruthy();
-    expect(
-      errorTexts.some((text) => text.includes('fullName') || text.includes('name')),
-    ).toBeTruthy();
+    expect(errorTexts.some((text) => text.includes('email') || text.includes('Email'))).toBeTruthy();
+    expect(errorTexts.some((text) => text.includes('fullName') || text.includes('name'))).toBeTruthy();
     expect(errorTexts.some((text) => text.includes('password'))).toBeTruthy();
   });
 
@@ -162,8 +158,7 @@ test.describe('Authentication and Profile E2E Flow', () => {
 
     // Edit details
     const updatedName = 'Test User Updated';
-    const validAvatarUrl =
-      'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150';
+    const validAvatarUrl = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150';
 
     const nameInput = page.locator('form >> input[type="text"]');
     await nameInput.clear();
@@ -183,9 +178,7 @@ test.describe('Authentication and Profile E2E Flow', () => {
     await expect(avatarImg).toHaveAttribute('src', validAvatarUrl);
   });
 
-  test('should display validation errors when updating profile with invalid fields', async ({
-    page,
-  }) => {
+  test('should display validation errors when updating profile with invalid fields', async ({ page }) => {
     // Log in
     await page.goto('/login');
     await page.fill('input[type="email"]', testEmail);
@@ -207,9 +200,7 @@ test.describe('Authentication and Profile E2E Flow', () => {
     await page.click('form >> button[type="submit"]');
 
     // Verify error message from backend is shown
-    await expect(
-      page.getByText('fullName must be longer than or equal to 2 characters'),
-    ).toBeVisible();
+    await expect(page.getByText('fullName must be longer than or equal to 2 characters')).toBeVisible();
   });
 
   test('should log out successfully', async ({ page }) => {

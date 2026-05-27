@@ -7,9 +7,7 @@ import type {
   UpdateDocumentRequest,
 } from '../types/document.types';
 
-export async function listDocuments(
-  params: ListDocumentsParams = {},
-): Promise<DocumentListResponse> {
+export async function listDocuments(params: ListDocumentsParams = {}): Promise<DocumentListResponse> {
   const query = new URLSearchParams();
   if (params.q) query.set('q', params.q);
   if (params.subject) query.set('subject', params.subject);
@@ -35,10 +33,7 @@ export async function createDocument(data: CreateDocumentRequest): Promise<Docum
   });
 }
 
-export async function updateDocument(
-  id: string,
-  data: UpdateDocumentRequest,
-): Promise<DocumentResponse> {
+export async function updateDocument(id: string, data: UpdateDocumentRequest): Promise<DocumentResponse> {
   return apiFetch<DocumentResponse>(`/documents/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(data),

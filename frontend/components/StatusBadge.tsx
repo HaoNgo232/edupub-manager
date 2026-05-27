@@ -3,10 +3,7 @@
 import React from 'react';
 import { DocumentStatus } from '../lib/api';
 
-const STATUS_CONFIG: Record<
-  DocumentStatus,
-  { label: string; bg: string; text: string; dot: string }
-> = {
+const STATUS_CONFIG: Record<DocumentStatus, { label: string; bg: string; text: string; dot: string }> = {
   DRAFT: {
     label: 'DRAFT',
     bg: 'bg-[#e9e8e4]',

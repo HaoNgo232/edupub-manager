@@ -11,11 +11,7 @@ import {
   ApiError,
 } from '../../lib/api';
 import StatusBadge from '../../components/StatusBadge';
-import {
-  SUBJECT_FILTER_OPTIONS,
-  STATUS_FILTER_OPTIONS,
-  SUBJECT_ICONS,
-} from '../lib/constants/documents.constants';
+import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../lib/constants/documents.constants';
 
 export default function MyDocumentsPage() {
   const [data, setData] = useState<DocumentListResponse | null>(null);
@@ -75,9 +71,7 @@ export default function MyDocumentsPage() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h2 className="text-headline-lg text-[#030509]">My Documents</h2>
-          <p className="font-label-md text-[#76777b] mt-1">
-            Manage your educational documents and learning resources.
-          </p>
+          <p className="font-label-md text-[#76777b] mt-1">Manage your educational documents and learning resources.</p>
         </div>
         <Link
           href="/documents/new"
@@ -112,9 +106,7 @@ export default function MyDocumentsPage() {
 
           {/* Subject */}
           <div className="flex flex-col gap-1.5 w-full lg:w-[220px]">
-            <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
-              Subject
-            </label>
+            <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Subject</label>
             <select
               id="filter-subject"
               value={subject}
@@ -182,9 +174,7 @@ export default function MyDocumentsPage() {
 
         {loading && !error && (
           <div className="p-12 flex flex-col items-center gap-3">
-            <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">
-              progress_activity
-            </span>
+            <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">progress_activity</span>
             <span className="font-label-md text-[#76777b]">Loading documents...</span>
           </div>
         )}
@@ -228,8 +218,7 @@ export default function MyDocumentsPage() {
             {/* Pagination */}
             <div className="px-6 py-4 bg-[#f4f4f0] border-t border-graphite-border flex flex-col sm:flex-row items-center justify-between gap-3">
               <span className="font-label-md text-[#76777b]">
-                Showing {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, data.meta.total)} of{' '}
-                {data.meta.total} results
+                Showing {(page - 1) * LIMIT + 1}–{Math.min(page * LIMIT, data.meta.total)} of {data.meta.total} results
               </span>
               <Pagination meta={data.meta} page={page} onPageChange={setPage} />
             </div>
@@ -259,9 +248,7 @@ function DocumentRow({ doc }: { doc: DocumentResponse }) {
         </div>
       </td>
       <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">{doc.subject}</td>
-      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">
-        Grade {doc.gradeLevel}
-      </td>
+      <td className="px-6 py-4 font-label-md text-[#76777b] whitespace-nowrap">Grade {doc.gradeLevel}</td>
       <td className="px-6 py-4">
         <StatusBadge status={doc.status} />
       </td>
@@ -360,17 +347,10 @@ function Pagination({
   page: number;
   onPageChange: (p: number) => void;
 }) {
-  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1).slice(
-    Math.max(0, page - 3),
-    page + 2,
-  );
+  const pages = Array.from({ length: meta.totalPages }, (_, i) => i + 1).slice(Math.max(0, page - 3), page + 2);
   return (
     <div className="flex items-center gap-1">
-      <PageBtn
-        disabled={!meta.hasPreviousPage}
-        onClick={() => onPageChange(page - 1)}
-        icon="chevron_left"
-      />
+      <PageBtn disabled={!meta.hasPreviousPage} onClick={() => onPageChange(page - 1)} icon="chevron_left" />
       {pages.map((p) => (
         <button
           key={p}
@@ -384,24 +364,12 @@ function Pagination({
           {p}
         </button>
       ))}
-      <PageBtn
-        disabled={!meta.hasNextPage}
-        onClick={() => onPageChange(page + 1)}
-        icon="chevron_right"
-      />
+      <PageBtn disabled={!meta.hasNextPage} onClick={() => onPageChange(page + 1)} icon="chevron_right" />
     </div>
   );
 }
 
-function PageBtn({
-  onClick,
-  disabled,
-  icon,
-}: {
-  onClick: () => void;
-  disabled: boolean;
-  icon: string;
-}) {
+function PageBtn({ onClick, disabled, icon }: { onClick: () => void; disabled: boolean; icon: string }) {
   return (
     <button
       onClick={onClick}
@@ -432,10 +400,7 @@ function EmptyState({ hasFilters, onReset }: { hasFilters: boolean; onReset: () 
         </p>
       </div>
       {hasFilters ? (
-        <button
-          onClick={onReset}
-          className="font-label-md text-[#E4554A] hover:underline transition-all"
-        >
+        <button onClick={onReset} className="font-label-md text-[#E4554A] hover:underline transition-all">
           Reset filters
         </button>
       ) : (

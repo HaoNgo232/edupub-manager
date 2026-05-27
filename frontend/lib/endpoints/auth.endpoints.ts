@@ -1,10 +1,5 @@
 import { apiFetch } from '../http/client';
-import type {
-  AuthResponse,
-  LoginRequest,
-  RegisterRequest,
-  UserResponse,
-} from '../types/auth.types';
+import type { AuthResponse, LoginRequest, RegisterRequest, UserResponse } from '../types/auth.types';
 
 export async function register(data: RegisterRequest): Promise<AuthResponse> {
   return apiFetch<AuthResponse>('/auth/register', {

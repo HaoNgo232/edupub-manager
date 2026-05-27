@@ -56,9 +56,7 @@ export default function Register() {
             >
               EduPub Manager
             </h1>
-            <p className="text-[16px] leading-[24px] text-[#46464b] mt-1">
-              New Academic Manuscript Account
-            </p>
+            <p className="text-[16px] leading-[24px] text-[#46464b] mt-1">New Academic Manuscript Account</p>
           </div>
 
           {/* Form */}
@@ -70,9 +68,7 @@ export default function Register() {
                   <p className="text-[16px]">{errors[0]}</p>
                 ) : (
                   <>
-                    <div className="font-semibold text-[14px] mb-2">
-                      Please correct the following errors:
-                    </div>
+                    <div className="font-semibold text-[14px] mb-2">Please correct the following errors:</div>
                     <ul className="list-disc list-inside space-y-1">
                       {errors.map((err, idx) => (
                         <li key={idx} className="text-[14px]">
@@ -143,9 +139,7 @@ export default function Register() {
                 required
                 className="w-full bg-white border border-[#d1d5db] px-4 py-3 text-[16px] text-[#0f1115] placeholder:text-[#76777b] focus:border-[#030509] focus:ring-1 focus:ring-[#030509] outline-none transition-all"
               />
-              <p className="text-[12px] text-[#46464b] opacity-70 mt-1">
-                Min. 6 characters with scholarly rigor.
-              </p>
+              <p className="text-[12px] text-[#46464b] opacity-70 mt-1">Min. 6 characters with scholarly rigor.</p>
             </div>
 
             {/* Terms Checkbox */}
@@ -158,10 +152,7 @@ export default function Register() {
                 onChange={(e) => setAgreeTerms(e.target.checked)}
                 className="mt-0.5 h-4 w-4 border-[#d1d5db] text-[#e5564b] focus:ring-0 focus:ring-offset-0 flex-shrink-0"
               />
-              <label
-                className="text-[14px] leading-[20px] text-[#46464b] select-none cursor-pointer"
-                htmlFor="terms"
-              >
+              <label className="text-[14px] leading-[20px] text-[#46464b] select-none cursor-pointer" htmlFor="terms">
                 I agree to the{' '}
                 <a
                   className="text-[#030509] underline underline-offset-4 hover:text-[#e5564b] transition-colors"
@@ -183,9 +174,7 @@ export default function Register() {
             >
               {submitting ? (
                 <>
-                  <span className="material-symbols-outlined animate-spin text-[18px]">
-                    progress_activity
-                  </span>
+                  <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
                   Registering Account...
                 </>
               ) : (
@@ -197,10 +186,7 @@ export default function Register() {
             <div className="text-center pt-2">
               <p className="text-[16px] text-[#46464b]">
                 Already registered?{' '}
-                <Link
-                  href="/login"
-                  className="text-[#030509] font-bold hover:underline underline-offset-4"
-                >
+                <Link href="/login" className="text-[#030509] font-bold hover:underline underline-offset-4">
                   Sign in to Dashboard
                 </Link>
               </p>
@@ -214,9 +200,7 @@ export default function Register() {
         <div className="flex flex-col md:flex-row justify-between items-center py-6 px-8 max-w-[1140px] mx-auto">
           <div className="mb-3 md:mb-0">
             <span className="text-[14px] font-bold text-[#030509]">EduPub Manager</span>
-            <p className="text-[12px] text-[#46464b] mt-0.5">
-              © 2026 EduPub Manager. Scholarly Excellence.
-            </p>
+            <p className="text-[12px] text-[#46464b] mt-0.5">© 2026 EduPub Manager. Scholarly Excellence.</p>
           </div>
           <div className="flex gap-6">
             <a className="text-[12px] text-[#46464b] hover:underline transition-all" href="#">

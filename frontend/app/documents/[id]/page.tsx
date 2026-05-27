@@ -54,9 +54,7 @@ export default function DocumentDetailPage() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-3">
-        <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">
-          progress_activity
-        </span>
+        <span className="material-symbols-outlined animate-spin text-[32px] text-[#e5564b]">progress_activity</span>
         <span className="font-label-md text-[#76777b]">Loading document...</span>
       </div>
     );
@@ -69,10 +67,7 @@ export default function DocumentDetailPage() {
           <span className="material-symbols-outlined text-[32px] text-[#ba1a1a]">error</span>
         </div>
         <p className="font-label-md text-[#ba1a1a] max-w-sm">{error}</p>
-        <Link
-          href="/documents"
-          className="font-label-md text-[#E4554A] hover:underline flex items-center gap-1"
-        >
+        <Link href="/documents" className="font-label-md text-[#E4554A] hover:underline flex items-center gap-1">
           <span className="material-symbols-outlined text-[16px]">arrow_back</span>
           Back to Documents
         </Link>
@@ -122,11 +117,7 @@ export default function DocumentDetailPage() {
                 </h1>
               </div>
 
-              {doc.description && (
-                <p className="font-body-lg text-[#76777b] leading-relaxed mb-6">
-                  {doc.description}
-                </p>
-              )}
+              {doc.description && <p className="font-body-lg text-[#76777b] leading-relaxed mb-6">{doc.description}</p>}
 
               {/* Actions */}
               {canEdit && (
@@ -187,15 +178,11 @@ export default function DocumentDetailPage() {
                         unoptimized
                       />
                     ) : (
-                      <span className="material-symbols-outlined text-[20px] text-[#76777b]">
-                        account_circle
-                      </span>
+                      <span className="material-symbols-outlined text-[20px] text-[#76777b]">account_circle</span>
                     )}
                   </div>
                   <div>
-                    <p className="font-label-md font-semibold text-[#030509]">
-                      {doc.owner.fullName}
-                    </p>
+                    <p className="font-label-md font-semibold text-[#030509]">{doc.owner.fullName}</p>
                     <p className="font-label-sm text-[#76777b]">{doc.owner.email}</p>
                     <span className="font-label-sm bg-[#e9e8e4] text-[#46464b] px-2 py-0.5 rounded mt-1 inline-block uppercase">
                       {doc.owner.role}
@@ -223,9 +210,7 @@ export default function DocumentDetailPage() {
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         picture_as_pdf
                       </span>
-                      <span className="font-label-md flex-1 text-[#030509] truncate">
-                        {doc.fileUrl}
-                      </span>
+                      <span className="font-label-md flex-1 text-[#030509] truncate">{doc.fileUrl}</span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
@@ -241,9 +226,7 @@ export default function DocumentDetailPage() {
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         image
                       </span>
-                      <span className="font-label-md flex-1 text-[#030509] truncate">
-                        {doc.coverImageUrl}
-                      </span>
+                      <span className="font-label-md flex-1 text-[#030509] truncate">{doc.coverImageUrl}</span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
@@ -260,13 +243,7 @@ export default function DocumentDetailPage() {
             {doc.coverImageUrl ? (
               <div className="border border-graphite-border overflow-hidden bg-white">
                 <div className="aspect-[3/4] bg-[#e9e8e4] relative">
-                  <Image
-                    src={doc.coverImageUrl}
-                    alt="Cover"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
+                  <Image src={doc.coverImageUrl} alt="Cover" fill className="object-cover" unoptimized />
                 </div>
                 <p className="font-label-sm text-[#76777b] px-4 py-3 text-center uppercase tracking-widest">
                   Cover Image
@@ -281,9 +258,7 @@ export default function DocumentDetailPage() {
 
             {/* Quick info card */}
             <div className="bg-[#f5f5f0] border border-graphite-border p-5 paper-texture">
-              <h3 className="font-label-sm text-[#76777b] uppercase tracking-widest mb-4">
-                Quick Info
-              </h3>
+              <h3 className="font-label-sm text-[#76777b] uppercase tracking-widest mb-4">Quick Info</h3>
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="font-label-md text-[#76777b]">Status</span>
@@ -291,9 +266,7 @@ export default function DocumentDetailPage() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="font-label-md text-[#76777b]">Grade</span>
-                  <span className="font-label-md font-bold text-[#030509]">
-                    Grade {doc.gradeLevel}
-                  </span>
+                  <span className="font-label-md font-bold text-[#030509]">Grade {doc.gradeLevel}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="font-label-md text-[#76777b]">Subject</span>
@@ -310,15 +283,7 @@ export default function DocumentDetailPage() {
 
 /* ─── Sub-components ─────────────────────────────────────────────────────── */
 
-function MetaCard({
-  title,
-  icon,
-  children,
-}: {
-  title: string;
-  icon: string;
-  children: React.ReactNode;
-}) {
+function MetaCard({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
   return (
     <div className="bg-[#f5f5f0] border border-graphite-border p-6">
       <h3 className="font-label-sm text-[#76777b] uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -360,9 +325,8 @@ function DeleteModal({
           <div>
             <h3 className="font-label-md font-bold text-[#030509] mb-1">Delete Document?</h3>
             <p className="font-label-md text-[#76777b]">
-              Are you sure you want to delete{' '}
-              <strong className="text-[#030509]">&quot;{title}&quot;</strong>? This action cannot be
-              undone.
+              Are you sure you want to delete <strong className="text-[#030509]">&quot;{title}&quot;</strong>? This
+              action cannot be undone.
             </p>
           </div>
         </div>
@@ -375,9 +339,7 @@ function DeleteModal({
           >
             {deleting ? (
               <>
-                <span className="material-symbols-outlined animate-spin text-[18px]">
-                  progress_activity
-                </span>
+                <span className="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>
                 Deleting...
               </>
             ) : (
