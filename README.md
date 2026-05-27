@@ -13,7 +13,121 @@ Người dùng có thể tạo và quản lý tài liệu của chính mình. Qu
 
 ---
 
-## 1. Giới thiệu chủ đề
+## 1. Hướng dẫn cài đặt
+
+### 1.1. Cài đặt nhanh bằng Docker Compose
+
+Cách này được khuyến nghị để chạy toàn bộ hệ thống nhanh nhất.
+
+Yêu cầu:
+
+- Đã cài Docker
+- Đã cài Docker Compose
+
+Copy và chạy các lệnh sau:
+
+```bash
+git clone https://github.com/HaoNgo232/edupub-manager.git
+cd edupub-manager
+docker compose up --build -d
+```
+
+Sau khi chạy thành công, truy cập:
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:3001
+- PostgreSQL: localhost:5432
+
+Lệnh trên sẽ tự động:
+
+- Khởi động PostgreSQL 16
+- Build backend NestJS
+- Build frontend Next.js
+- Chạy Prisma migration
+- Seed dữ liệu mẫu
+- Tạo tài khoản USER và ADMIN mặc định
+- Mount volume cho file upload
+
+---
+
+### 1.2. Dừng hệ thống
+
+```bash
+docker compose down
+```
+
+Nếu muốn xóa cả database volume:
+
+```bash
+docker compose down -v
+```
+
+---
+
+### 1.3. Chạy local thủ công không dùng docker
+
+#### Bước 1: Chạy PostgreSQL thủ công
+
+Tại thư mục root:
+
+```bash
+docker compose up postgres -d
+```
+
+---
+
+#### Bước 2: Chạy backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+npx prisma migrate dev
+npx prisma generate
+npx prisma db seed
+npm run start:dev
+```
+
+Backend chạy tại:
+
+```txt
+http://localhost:3001
+```
+
+---
+
+#### Bước 3: Chạy frontend
+
+Mở terminal khác:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend chạy tại:
+
+```txt
+http://localhost:3000
+```
+
+---
+
+## 2. Thông tin tài khoản test
+
+Hệ thống tạo sẵn 2 tài khoản để kiểm thử:
+
+| Loại tài khoản | Email             | Password     | Role  |
+| -------------- | ----------------- | ------------ | ----- |
+| User           | user@edupub.test  | User@123456  | USER  |
+| Administrator  | admin@edupub.test | Admin@123456 | ADMIN |
+
+> Nếu quá trình đăng nhập gặp lỗi **Internal Server Error**, hãy di chuyển vào thư mục `backend` và chạy lệnh `npm run seed` để thiết lập lại dữ liệu mẫu, sau đó thử đăng nhập lại.
+
+---
+
+## 3. Giới thiệu chủ đề
 
 **EduPub Manager** là ứng dụng web giúp quản lý tài liệu giáo dục như sách, giáo trình, tài liệu học tập hoặc tài nguyên tham khảo.
 
@@ -57,7 +171,7 @@ Quản trị viên có thể:
 
 ---
 
-## 2. Các tính năng đã hoàn thành theo yêu cầu đề bài
+## 4. Các tính năng đã hoàn thành theo yêu cầu đề bài
 
 ### Authentication
 
@@ -144,122 +258,6 @@ Quản trị viên có thể:
 - Có tài khoản test USER và ADMIN
 - Có README hướng dẫn cài đặt và kiểm thử
 - Có API documentation trong `docs/API_DOCUMENTATION.md`
-
----
-
-## 3. Hướng dẫn cài đặt
-
-### 3.1. Cài đặt nhanh bằng Docker Compose
-
-Cách này được khuyến nghị để chạy toàn bộ hệ thống nhanh nhất.
-
-Yêu cầu:
-
-- Đã cài Docker
-- Đã cài Docker Compose
-
-Copy và chạy các lệnh sau:
-
-```bash
-git clone https://github.com/HaoNgo232/edupub-manager.git
-cd edupub-manager
-docker compose up --build -d
-```
-
-Sau khi chạy thành công, truy cập:
-
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:3001
-- PostgreSQL: localhost:5432
-
-Lệnh trên sẽ tự động:
-
-- Khởi động PostgreSQL 16
-- Build backend NestJS
-- Build frontend Next.js
-- Chạy Prisma migration
-- Seed dữ liệu mẫu
-- Tạo tài khoản USER và ADMIN mặc định
-- Mount volume cho file upload
-
----
-
-### 3.2. Dừng hệ thống
-
-```bash
-docker compose down
-```
-
-Nếu muốn xóa cả database volume:
-
-```bash
-docker compose down -v
-```
-
----
-
-### 3.3. Chạy local thủ công cho development
-
-Cách này dùng khi muốn phát triển frontend/backend riêng với hot reload.
-
-#### Bước 1: Chạy PostgreSQL bằng Docker
-
-Tại thư mục root:
-
-```bash
-docker compose up postgres -d
-```
-
----
-
-#### Bước 2: Chạy backend
-
-```bash
-cd backend
-npm install
-cp .env.example .env
-npx prisma migrate dev
-npx prisma generate
-npx prisma db seed
-npm run start:dev
-```
-
-Backend chạy tại:
-
-```txt
-http://localhost:3001
-```
-
----
-
-#### Bước 3: Chạy frontend
-
-Mở terminal khác:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Frontend chạy tại:
-
-```txt
-http://localhost:3000
-```
-
----
-
-## 4. Thông tin tài khoản test
-
-Hệ thống tạo sẵn 2 tài khoản để kiểm thử:
-
-| Loại tài khoản | Email             | Password     | Role  |
-| -------------- | ----------------- | ------------ | ----- |
-| User           | user@edupub.test  | User@123456  | USER  |
-| Administrator  | admin@edupub.test | Admin@123456 | ADMIN |
-
-> Nếu quá trình đăng nhập gặp lỗi **Internal Server Error**, hãy di chuyển vào thư mục `backend` và chạy lệnh `npm run seed` để thiết lập lại dữ liệu mẫu, sau đó thử đăng nhập lại.
 
 ---
 
