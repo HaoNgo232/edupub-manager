@@ -37,7 +37,10 @@ export class UsersService {
   async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
     return this.prisma.user.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        ...(data.avatarUrl === '' ? { avatarUrl: null } : {}),
+      },
     });
   }
 
@@ -168,7 +171,10 @@ export class UsersService {
 
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },
-      data: dto,
+      data: {
+        ...dto,
+        ...(dto.avatarUrl === '' ? { avatarUrl: null } : {}),
+      },
       include: {
         _count: {
           select: { documents: true },

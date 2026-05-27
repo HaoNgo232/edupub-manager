@@ -11,6 +11,7 @@ import RoleBadge from '../../../../components/admin/users/RoleBadge';
 import StatusBadge from '../../../../components/StatusBadge';
 import ChangeUserRoleDialog from '../../../../components/admin/users/ChangeUserRoleDialog';
 import DeleteUserDialog from '../../../../components/admin/users/DeleteUserDialog';
+import { resolveUploadUrl } from '../../../../lib/uploads/url';
 
 export default function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -243,7 +244,7 @@ export default function UserDetailPage() {
                       <div className="w-24 h-24 rounded-full bg-white border border-graphite-border flex items-center justify-center overflow-hidden">
                         {userDetail.avatarUrl ? (
                           <Image
-                            src={userDetail.avatarUrl}
+                            src={resolveUploadUrl(userDetail.avatarUrl)}
                             alt=""
                             width={96}
                             height={96}

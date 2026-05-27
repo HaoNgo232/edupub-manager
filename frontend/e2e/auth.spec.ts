@@ -158,15 +158,21 @@ test.describe('Authentication and Profile E2E Flow', () => {
 
     // Edit details
     const updatedName = 'Test User Updated';
-    const validAvatarUrl = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150';
-
     const nameInput = page.locator('form >> input[type="text"]');
     await nameInput.clear();
     await nameInput.fill(updatedName);
 
-    const avatarInput = page.locator('form >> input[type="url"]');
-    await avatarInput.clear();
-    await avatarInput.fill(validAvatarUrl);
+    await Promise.all([
+      page.waitForResponse((response) => response.url().includes('/uploads/image') && response.status() === 201),
+      page.locator('#profile-avatar-upload').setInputFiles({
+        name: 'avatar.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=',
+          'base64',
+        ),
+      }),
+    ]);
 
     await page.click('form >> button[type="submit"]');
 
@@ -175,7 +181,7 @@ test.describe('Authentication and Profile E2E Flow', () => {
 
     // Verify avatar image has updated src
     const avatarImg = profileCard.locator('img');
-    await expect(avatarImg).toHaveAttribute('src', validAvatarUrl);
+    await expect(avatarImg).toHaveAttribute('src', /\/uploads\/images\/.*avatar\.png/);
   });
 
   test('should display validation errors when updating profile with invalid fields', async ({ page }) => {

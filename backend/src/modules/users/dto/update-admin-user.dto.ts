@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength, MaxLength, IsUrl, IsOptional } from 'class-validator';
+import { IsEmail, IsString, MinLength, MaxLength, IsOptional, ValidateIf } from 'class-validator';
 
 export class UpdateAdminUserDto {
   @IsEmail()
@@ -12,7 +12,7 @@ export class UpdateAdminUserDto {
   fullName?: string;
 
   @IsString()
-  @IsUrl()
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined && value !== null && value !== '')
+  @MaxLength(2048)
   avatarUrl?: string;
 }

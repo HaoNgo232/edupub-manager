@@ -1,4 +1,4 @@
-import { IsString, IsOptional, MinLength, MaxLength, IsUrl } from 'class-validator';
+import { IsString, IsOptional, MinLength, MaxLength, ValidateIf } from 'class-validator';
 
 export class UpdateUserDto {
   @IsString()
@@ -8,7 +8,7 @@ export class UpdateUserDto {
   fullName?: string;
 
   @IsString()
-  @IsUrl()
-  @IsOptional()
+  @ValidateIf((_, value) => value !== undefined && value !== null && value !== '')
+  @MaxLength(2048)
   avatarUrl?: string;
 }

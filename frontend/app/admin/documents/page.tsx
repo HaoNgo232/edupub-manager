@@ -16,6 +16,7 @@ import { useAuth } from '../../context/AuthContext';
 import SideNav from '../../../components/SideNav';
 import StatusBadge from '../../../components/StatusBadge';
 import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../../lib/constants/documents.constants';
+import { resolveUploadUrl } from '../../../lib/uploads/url';
 
 export default function AdminDocumentsPage() {
   const { user, loading: authLoading } = useAuth();
@@ -329,7 +330,7 @@ function AdminDocumentRow({ doc }: { doc: DocumentResponse }) {
           <div className="w-7 h-7 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
             {doc.owner.avatarUrl ? (
               <Image
-                src={doc.owner.avatarUrl}
+                src={resolveUploadUrl(doc.owner.avatarUrl)}
                 alt=""
                 width={28}
                 height={28}
@@ -403,7 +404,7 @@ function AdminDocumentCard({ doc }: { doc: DocumentResponse }) {
         <div className="w-8 h-8 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
           {doc.owner.avatarUrl ? (
             <Image
-              src={doc.owner.avatarUrl}
+              src={resolveUploadUrl(doc.owner.avatarUrl)}
               alt=""
               width={32}
               height={32}

@@ -173,7 +173,7 @@ export default function DocumentDetailPage() {
                   <div className="w-10 h-10 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden">
                     {doc.owner.avatarUrl ? (
                       <Image
-                        src={doc.owner.avatarUrl}
+                        src={resolveUploadUrl(doc.owner.avatarUrl)}
                         alt={doc.owner.fullName}
                         width={40}
                         height={40}

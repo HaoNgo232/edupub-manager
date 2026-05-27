@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { RecentUserItem } from '../../../lib/types/admin-stats.types';
+import { resolveUploadUrl } from '../../../lib/uploads/url';
 import RoleBadge from '../users/RoleBadge';
 import DashboardEmptyState from './DashboardEmptyState';
 
@@ -72,7 +73,7 @@ export default function RecentUsersTable({ users }: RecentUsersProps) {
                     <div className="w-8 h-8 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
                       {u.avatarUrl ? (
                         <Image
-                          src={u.avatarUrl}
+                          src={resolveUploadUrl(u.avatarUrl)}
                           alt=""
                           width={32}
                           height={32}
@@ -111,7 +112,7 @@ export default function RecentUsersTable({ users }: RecentUsersProps) {
                 <div className="w-7 h-7 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
                   {u.avatarUrl ? (
                     <Image
-                      src={u.avatarUrl}
+                      src={resolveUploadUrl(u.avatarUrl)}
                       alt=""
                       width={28}
                       height={28}

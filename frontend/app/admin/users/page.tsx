@@ -10,6 +10,7 @@ import SideNav from '../../../components/SideNav';
 import RoleBadge from '../../../components/admin/users/RoleBadge';
 import ChangeUserRoleDialog from '../../../components/admin/users/ChangeUserRoleDialog';
 import DeleteUserDialog from '../../../components/admin/users/DeleteUserDialog';
+import { resolveUploadUrl } from '../../../lib/uploads/url';
 
 function AdminUsersListContent() {
   const { user: currentUser, loading: authLoading } = useAuth();
@@ -461,7 +462,7 @@ function AdminUsersListContent() {
                               <div className="w-9 h-9 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
                                 {item.avatarUrl ? (
                                   <Image
-                                    src={item.avatarUrl}
+                                    src={resolveUploadUrl(item.avatarUrl)}
                                     alt=""
                                     width={36}
                                     height={36}
@@ -539,7 +540,7 @@ function AdminUsersListContent() {
                         <div className="w-10 h-10 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
                           {item.avatarUrl ? (
                             <Image
-                              src={item.avatarUrl}
+                              src={resolveUploadUrl(item.avatarUrl)}
                               alt=""
                               width={40}
                               height={40}

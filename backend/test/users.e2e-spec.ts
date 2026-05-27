@@ -118,7 +118,7 @@ describe('UsersController (e2e)', () => {
   describe('PATCH /users/me', () => {
     const updatePayload = {
       fullName: 'Updated Profile User',
-      avatarUrl: 'https://example.com/avatar.png',
+      avatarUrl: '/uploads/images/1716720000000-a8f2-avatar.png',
     };
 
     it('should successfully update the user profile and return the updated user (without passwordHash)', async () => {
@@ -185,10 +185,20 @@ describe('UsersController (e2e)', () => {
       expect(dbUserAfter?.createdAt.toISOString()).toBe(dbUserBefore?.createdAt.toISOString());
     });
 
-    it('should fail with 400 Bad Request on validation errors (invalid avatarUrl format, short fullName)', async () => {
+    it('should clear avatarUrl when empty string is submitted', async () => {
+      const response = await request(app.getHttpServer())
+        .patch('/users/me')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({ avatarUrl: '' })
+        .expect(200);
+
+      const body = response.body as TestUserResponse;
+      expect(body.avatarUrl).toBeNull();
+    });
+
+    it('should fail with 400 Bad Request on validation errors (short fullName)', async () => {
       const invalidPayload = {
         fullName: 'a', // too short
-        avatarUrl: 'not-a-url', // not a valid URL
       };
 
       const response = await request(app.getHttpServer())
@@ -202,7 +212,7 @@ describe('UsersController (e2e)', () => {
       expect(body).toHaveProperty('error', 'Bad Request');
       expect(body.message).toBeInstanceOf(Array);
       if (Array.isArray(body.message)) {
-        expect(body.message.length).toBeGreaterThanOrEqual(2);
+        expect(body.message.length).toBeGreaterThanOrEqual(1);
       }
     });
 

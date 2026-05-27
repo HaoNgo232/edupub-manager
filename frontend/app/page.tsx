@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from './context/AuthContext';
 import { ApiError } from '../lib/api';
+import { resolveUploadUrl } from '../lib/uploads/url';
+import AvatarImageUpload from '../components/profile/AvatarImageUpload';
 
 export default function Home() {
   const { user, loading, logout, updateProfile } = useAuth();
@@ -16,6 +18,7 @@ export default function Home() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
 
   // Sync profile data once loaded
   useEffect(() => {
@@ -50,6 +53,10 @@ export default function Home() {
     e.preventDefault();
     setErrorMsg(null);
     setSuccessMsg(null);
+    if (isUploadingAvatar) {
+      setErrorMsg('Please wait for the avatar upload to finish before saving.');
+      return;
+    }
     setUpdating(true);
 
     try {
@@ -128,7 +135,7 @@ export default function Home() {
             <div className="flex-shrink-0">
               {user.avatarUrl ? (
                 <Image
-                  src={user.avatarUrl}
+                  src={resolveUploadUrl(user.avatarUrl)}
                   alt={user.fullName}
                   width={96}
                   height={96}
@@ -178,7 +185,7 @@ export default function Home() {
 
           {/* Edit Profile Column */}
           <div className="bg-[#f5f5f0] border border-graphite-border p-8 relative">
-            <h3 className="font-scholarly text-headline-md text-primary mb-6">Update Codex Details</h3>
+            <h3 className="font-scholarly text-headline-md text-primary mb-6">Update Profile</h3>
 
             {errorMsg && (
               <div className="mb-6 p-4 border border-[#ba1a1a] bg-[#ffdad6] text-[#ba1a1a] font-label-md">
@@ -213,27 +220,17 @@ export default function Home() {
                 />
               </div>
 
-              {/* Note: Avatar URL Input (must match form >> input[type="url"]) */}
-              <div className="space-y-2">
-                <label
-                  className="font-label-sm text-on-surface-variant uppercase tracking-widest block"
-                  htmlFor="edit_avatar"
-                >
-                  Avatar URL
-                </label>
-                <input
-                  id="edit_avatar"
-                  type="url"
-                  value={avatarUrl}
-                  onChange={(e) => setAvatarUrl(e.target.value)}
-                  placeholder="https://example.com/avatar.jpg"
-                  className="w-full bg-white border border-graphite-border px-4 py-3 focus:border-[#030509] focus:ring-2 focus:ring-inset focus:ring-[#030509]/5 outline-none transition-all placeholder:text-outline-variant font-body-md"
-                />
-              </div>
+              <AvatarImageUpload
+                value={avatarUrl}
+                fullName={fullName}
+                disabled={updating}
+                onChange={(url) => setAvatarUrl(url ?? '')}
+                onUploadingChange={setIsUploadingAvatar}
+              />
 
               <button
                 type="submit"
-                disabled={updating}
+                disabled={updating || isUploadingAvatar}
                 className="w-full bg-[#E4554A] text-white font-label-md py-4 px-6 hover:brightness-95 transition-all active:scale-[0.99] flex justify-center items-center gap-2"
               >
                 {updating ? (

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { RecentDocumentItem } from '../../../lib/types/admin-stats.types';
+import { resolveUploadUrl } from '../../../lib/uploads/url';
 import StatusBadge from '../../StatusBadge';
 import DashboardEmptyState from './DashboardEmptyState';
 
@@ -94,7 +95,7 @@ export default function RecentDocumentsTable({ documents }: RecentDocumentsTable
                     <div className="w-6 h-6 rounded-full bg-[#e9e8e4] border border-graphite-border flex items-center justify-center overflow-hidden shrink-0">
                       {doc.owner.avatarUrl ? (
                         <Image
-                          src={doc.owner.avatarUrl}
+                          src={resolveUploadUrl(doc.owner.avatarUrl)}
                           alt=""
                           width={24}
                           height={24}
