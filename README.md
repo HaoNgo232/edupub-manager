@@ -15,9 +15,21 @@ docker compose up --build -d
 ```
 
 Once running, access the services:
+
 - Next.js Frontend: http://localhost:3000
 - NestJS API Endpoint: http://localhost:3001
 - PostgreSQL Database: localhost:5432
+
+---
+
+## Default Test Accounts
+
+The container startup script and seeding script create two default accounts for testing:
+
+| Account Type  | Email             | Password     | Role  |
+| :------------ | :---------------- | :----------- | :---: |
+| User          | user@edupub.test  | User@123456  | USER  |
+| Administrator | admin@edupub.test | Admin@123456 | ADMIN |
 
 ---
 
@@ -34,21 +46,26 @@ Once running, access the services:
 The easiest way to run the entire stack (Database, Backend, and Frontend) is using Docker Compose.
 
 ### Prerequisites
+
 - Docker installed.
 - Docker Compose installed.
 
 ### 1. Build and Start the Services
+
 Run the following command at the root of the project:
+
 ```bash
 docker compose up --build -d
 ```
 
 This command will:
+
 - Set up a PostgreSQL 16 database.
 - Build the NestJS backend and Next.js frontend using multi-stage Dockerfiles.
 - Initialize database schemas, run migrations, and automatically seed test accounts inside the backend container.
 
 ### 2. Access the Application Services
+
 - Next.js Frontend: http://localhost:3000
 - NestJS API Endpoint: http://localhost:3001
 - PostgreSQL Database: localhost:5432
@@ -60,6 +77,7 @@ This command will:
 If you prefer to run the applications locally on your machine for development with hot-reloading:
 
 ### Prerequisites
+
 - Node.js (v20+ recommended)
 - npm installed
 - A running PostgreSQL database (You can run "docker compose up postgres -d" to only start the database container).
@@ -69,29 +87,35 @@ If you prefer to run the applications locally on your machine for development wi
 ### 1. Backend Setup
 
 1. Navigate to the backend directory:
+
    ```bash
    cd backend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Configure Environment Variables:
    Copy .env.example to .env:
+
    ```bash
    cp .env.example .env
    ```
+
    Ensure DATABASE_URL matches your local database credentials (e.g. host, port, username, password, and database name edupub_manager).
 
 4. Sync Schema & Migrate Database:
+
    ```bash
    npx prisma migrate dev --name init
    npx prisma generate
    ```
 
 5. Seed Default Accounts:
+
    ```bash
    npx prisma db seed
    ```
@@ -107,11 +131,13 @@ If you prefer to run the applications locally on your machine for development wi
 ### 2. Frontend Setup
 
 1. Navigate to the frontend directory:
+
    ```bash
    cd ../frontend
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -124,24 +150,15 @@ If you prefer to run the applications locally on your machine for development wi
 
 ---
 
-## Default Test Accounts
-
-The container startup script and seeding script create two default accounts for testing:
-
-| Account Type | Email | Password | Role |
-| :--- | :--- | :--- | :---: |
-| User | user@edupub.test | User@123456 | USER |
-| Administrator | admin@edupub.test | Admin@123456 | ADMIN |
-
----
-
 ## Features & User Guide (Feature 02)
 
 EduPub Manager supports educational document creation and strict access control rules (Ownership separation):
+
 - **User Role (USER)**: Can view, create, edit, and delete only their own documents. Any attempt to read or modify other users' documents will be rejected with a `404 Not Found` response.
 - **Admin Role (ADMIN)**: Full administrative access. Admins can view, edit, or delete any document in the system.
 
 ### Interactive UI Guide
+
 1. **Accessing the Dashboard**:
    - Log in using a test account above. You will be redirected to the Home Profile page (`/`).
    - Click the **My Documents** button (or **Admin Panel** if logged in as an administrator) to open the manuscript workspace.
@@ -159,7 +176,9 @@ EduPub Manager supports educational document creation and strict access control 
 ## Code Quality & Verification
 
 ### 1. Backend Verification
+
 From the `backend/` directory, you can run:
+
 - **Lint Check**:
   ```bash
   npm run lint
@@ -178,8 +197,11 @@ From the `backend/` directory, you can run:
   ```
 
 ### 2. Frontend UI Verification (Playwright E2E)
+
 From the `frontend/` directory, ensure both local dev servers are active and execute:
+
 ```bash
 PLAYWRIGHT_BASE_URL=http://localhost:3000 npx playwright test
 ```
-*Note: If running inside Docker, target the frontend mapped port instead (e.g. `http://localhost:3001`).*
+
+_Note: If running inside Docker, target the frontend mapped port instead (e.g. `http://localhost:3001`)._

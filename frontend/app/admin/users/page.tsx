@@ -495,14 +495,14 @@ function AdminUsersListContent() {
                               <Link
                                 href={`/admin/users/${item.id}`}
                                 title="View"
-                                className="p-1.5 text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded transition-all"
+                                className="w-8 h-8 flex items-center justify-center text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded transition-all"
                               >
                                 <span className="material-symbols-outlined text-[18px]">visibility</span>
                               </Link>
                               <Link
                                 href={`/admin/users/${item.id}/edit`}
                                 title="Edit"
-                                className="p-1.5 text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded transition-all"
+                                className="w-8 h-8 flex items-center justify-center text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded transition-all"
                               >
                                 <span className="material-symbols-outlined text-[18px]">edit</span>
                               </Link>
@@ -510,7 +510,7 @@ function AdminUsersListContent() {
                                 onClick={() => setRoleChangeUser(item)}
                                 disabled={isCurrentAdmin(item.id)}
                                 title={isCurrentAdmin(item.id) ? 'Cannot change your own role' : 'Change Role'}
-                                className="p-1.5 text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                                className="w-8 h-8 flex items-center justify-center text-[#76777b] hover:text-[#030509] hover:bg-[#e9e8e4] rounded disabled:opacity-30 disabled:hover:bg-transparent transition-all"
                               >
                                 <span className="material-symbols-outlined text-[18px]">manage_accounts</span>
                               </button>
@@ -518,7 +518,7 @@ function AdminUsersListContent() {
                                 onClick={() => setDeleteUser(item)}
                                 disabled={isCurrentAdmin(item.id)}
                                 title={isCurrentAdmin(item.id) ? 'Cannot delete your own account' : 'Delete User'}
-                                className="p-1.5 text-[#ba1a1a] hover:bg-[#ffdad6] rounded disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                                className="w-8 h-8 flex items-center justify-center text-[#ba1a1a] hover:bg-[#ffdad6] rounded disabled:opacity-30 disabled:hover:bg-transparent transition-all"
                               >
                                 <span className="material-symbols-outlined text-[18px]">delete</span>
                               </button>
