@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createDocument, CreateDocumentRequest, Subject, ApiError } from '../../../lib/api';
 import { SUBJECT_OPTIONS, STATUS_OPTIONS } from '../../lib/constants/documents.constants';
+import CoverImageUpload from '../../../components/documents/CoverImageUpload';
+import DocumentFileUpload from '../../../components/documents/DocumentFileUpload';
 
 const initialForm: CreateDocumentRequest = {
   title: '',
@@ -20,6 +22,10 @@ export default function NewDocumentPage() {
   const [form, setForm] = useState<CreateDocumentRequest>(initialForm);
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
+
+  const isBusy = submitting || isUploadingImage || isUploadingFile;
 
   const update = <K extends keyof CreateDocumentRequest>(key: K, value: CreateDocumentRequest[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -27,6 +33,10 @@ export default function NewDocumentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors([]);
+    if (isUploadingImage || isUploadingFile) {
+      setErrors(['Please wait for uploads to finish before submitting.']);
+      return;
+    }
     setSubmitting(true);
 
     // Build clean payload
@@ -154,10 +164,11 @@ export default function NewDocumentPage() {
                 type="button"
                 id={`status-${s.value.toLowerCase()}`}
                 onClick={() => update('status', s.value)}
-                className={`border p-3 text-left transition-all rounded-none ${form.status === s.value
+                className={`border p-3 text-left transition-all rounded-none ${
+                  form.status === s.value
                     ? 'border-[#460002] bg-white shadow-sm'
                     : 'border-graphite-border bg-white hover:border-[#76777b]'
-                  }`}
+                }`}
               >
                 <p className="font-label-md font-bold text-[#030509]">{s.label}</p>
                 <p className="font-label-sm text-[#76777b] mt-0.5">{s.description}</p>
@@ -166,35 +177,27 @@ export default function NewDocumentPage() {
           </div>
         </FormField>
 
-        {/* Optional URLs */}
-        <FormField label="Cover Image URL" htmlFor="doc-cover">
-          <input
-            id="doc-cover"
-            type="url"
-            value={form.coverImageUrl ?? ''}
-            onChange={(e) => update('coverImageUrl', e.target.value)}
-            placeholder="https://example.com/cover.png"
-            className={inputClass}
-          />
-        </FormField>
+        {/* Uploads */}
+        <CoverImageUpload
+          value={form.coverImageUrl ?? ''}
+          onChange={(url) => update('coverImageUrl', url ?? '')}
+          disabled={submitting}
+          onUploadingChange={setIsUploadingImage}
+        />
 
-        <FormField label="File URL" htmlFor="doc-file">
-          <input
-            id="doc-file"
-            type="url"
-            value={form.fileUrl ?? ''}
-            onChange={(e) => update('fileUrl', e.target.value)}
-            placeholder="https://example.com/document.pdf"
-            className={inputClass}
-          />
-        </FormField>
+        <DocumentFileUpload
+          value={form.fileUrl ?? ''}
+          onChange={(url) => update('fileUrl', url ?? '')}
+          disabled={submitting}
+          onUploadingChange={setIsUploadingFile}
+        />
 
         {/* Actions */}
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
             id="btn-submit-document"
-            disabled={submitting}
+            disabled={isBusy}
             className="flex items-center gap-2 bg-[#E4554A] text-white font-label-md px-6 py-3 hover:brightness-95 transition-all active:scale-[0.98] disabled:opacity-60"
           >
             {submitting ? (

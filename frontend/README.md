@@ -72,6 +72,37 @@ This project includes a complete **Admin Dashboard & Basic Statistics** module a
 - Unauthenticated users trying to access any `/admin*` route will be redirected to `/login`.
 - Authenticated users with the `USER` role attempting to access `/admin*` will be redirected to `/documents`.
 
+## Document Uploads
+
+Document Management includes optional upload UI for cover images and document files on the create and edit forms.
+
+- Cover images upload through `POST /uploads/image`.
+- Document files upload through `POST /uploads/file`.
+- Both upload requests use `multipart/form-data` field `file` and require the backend JWT auth token.
+- Successful uploads return a public URL that is saved into `coverImageUrl` or `fileUrl` when the document form is submitted.
+- The document create/update request remains JSON-only; binary files are uploaded before submit.
+
+Supported cover image types:
+
+- JPG/JPEG
+- PNG
+- WEBP
+- GIF
+
+Cover image max size: `2MB`.
+
+Supported document file types:
+
+- PDF
+- Word: DOC, DOCX
+- Excel: XLS, XLSX
+- PowerPoint: PPT, PPTX
+- TXT
+
+Document file max size: `10MB`.
+
+The backend API must be available at `NEXT_PUBLIC_API_URL` or `http://localhost:3001` by default.
+
 ### Testing
 
 We use Playwright for end-to-end (E2E) testing. To run all E2E tests:

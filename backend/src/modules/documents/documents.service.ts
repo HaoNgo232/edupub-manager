@@ -83,9 +83,15 @@ export class DocumentsService {
   async update(currentUser: JwtPayload, documentId: string, updateDocumentDto: UpdateDocumentDto) {
     await this.ensureDocumentAccessible(documentId, currentUser);
 
+    const data = {
+      ...updateDocumentDto,
+      ...(updateDocumentDto.coverImageUrl === '' ? { coverImageUrl: null } : {}),
+      ...(updateDocumentDto.fileUrl === '' ? { fileUrl: null } : {}),
+    };
+
     return this.prisma.document.update({
       where: { id: documentId },
-      data: updateDocumentDto,
+      data,
       include: {
         owner: {
           select: {

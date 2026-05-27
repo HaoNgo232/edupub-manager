@@ -64,8 +64,30 @@ test.describe('Document CRUD + Ownership E2E UI Flow', () => {
     await page.selectOption('#doc-subject', 'MATH');
     await page.fill('#doc-grade', '10');
     await page.click('button#status-published');
-    await page.fill('#doc-cover', 'https://example.com/cover.png');
-    await page.fill('#doc-file', 'https://example.com/book.pdf');
+
+    await Promise.all([
+      page.waitForResponse((response) => response.url().includes('/uploads/image') && response.status() === 201),
+      page.locator('#doc-cover-upload').setInputFiles({
+        name: 'cover.png',
+        mimeType: 'image/png',
+        buffer: Buffer.from(
+          'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=',
+          'base64',
+        ),
+      }),
+    ]);
+
+    await Promise.all([
+      page.waitForResponse((response) => response.url().includes('/uploads/file') && response.status() === 201),
+      page.locator('#doc-file-upload').setInputFiles({
+        name: 'book.pdf',
+        mimeType: 'application/pdf',
+        buffer: Buffer.from('%PDF-1.4\n% EduPub Playwright fixture\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF\n'),
+      }),
+    ]);
+
+    await expect(page.getByAltText('Cover image preview')).toBeVisible();
+    await expect(page.getByRole('link', { name: /open file/i })).toBeVisible();
 
     // Submit
     await page.click('#btn-submit-document');
@@ -75,6 +97,7 @@ test.describe('Document CRUD + Ownership E2E UI Flow', () => {
 
     // Verify document details
     await expect(page.locator('#document-title')).toContainText('Playwright Test Book');
+    await expect(page.getByRole('link', { name: 'Open File' })).toBeVisible();
 
     // Save document ID from the URL
     const url = page.url();

@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getDocument, updateDocument, UpdateDocumentRequest, Subject, ApiError } from '../../../../lib/api';
 import { SUBJECT_OPTIONS, STATUS_OPTIONS } from '../../../lib/constants/documents.constants';
+import CoverImageUpload from '../../../../components/documents/CoverImageUpload';
+import DocumentFileUpload from '../../../../components/documents/DocumentFileUpload';
 
 type FormState = Required<UpdateDocumentRequest>;
 
@@ -25,6 +27,10 @@ export default function EditDocumentPage() {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
+
+  const isBusy = submitting || isUploadingImage || isUploadingFile;
 
   useEffect(() => {
     if (!id) return;
@@ -59,6 +65,10 @@ export default function EditDocumentPage() {
     e.preventDefault();
     if (!id) return;
     setErrors([]);
+    if (isUploadingImage || isUploadingFile) {
+      setErrors(['Please wait for uploads to finish before submitting.']);
+      return;
+    }
     setSubmitting(true);
 
     const payload: UpdateDocumentRequest = {
@@ -68,8 +78,8 @@ export default function EditDocumentPage() {
       status: form.status,
     };
     if (form.description !== undefined) payload.description = form.description || undefined;
-    if (form.coverImageUrl !== undefined) payload.coverImageUrl = form.coverImageUrl || undefined;
-    if (form.fileUrl !== undefined) payload.fileUrl = form.fileUrl || undefined;
+    payload.coverImageUrl = form.coverImageUrl || '';
+    payload.fileUrl = form.fileUrl || '';
 
     try {
       await updateDocument(id, payload);
@@ -206,10 +216,11 @@ export default function EditDocumentPage() {
                 type="button"
                 id={`status-${s.value.toLowerCase()}`}
                 onClick={() => update('status', s.value)}
-                className={`border p-3 text-left transition-all rounded-none ${form.status === s.value
+                className={`border p-3 text-left transition-all rounded-none ${
+                  form.status === s.value
                     ? 'border-[#460002] bg-white shadow-sm'
                     : 'border-graphite-border bg-white hover:border-[#76777b]'
-                  }`}
+                }`}
               >
                 <p className="font-label-md font-bold text-[#030509]">{s.label}</p>
                 <p className="font-label-sm text-[#76777b] mt-0.5">{s.description}</p>
@@ -218,35 +229,27 @@ export default function EditDocumentPage() {
           </div>
         </FormField>
 
-        {/* URLs */}
-        <FormField label="Cover Image URL" htmlFor="doc-cover">
-          <input
-            id="doc-cover"
-            type="url"
-            value={form.coverImageUrl}
-            onChange={(e) => update('coverImageUrl', e.target.value)}
-            placeholder="https://example.com/cover.png"
-            className={inputClass}
-          />
-        </FormField>
+        {/* Uploads */}
+        <CoverImageUpload
+          value={form.coverImageUrl}
+          onChange={(url) => update('coverImageUrl', url ?? '')}
+          disabled={submitting}
+          onUploadingChange={setIsUploadingImage}
+        />
 
-        <FormField label="File URL" htmlFor="doc-file">
-          <input
-            id="doc-file"
-            type="url"
-            value={form.fileUrl}
-            onChange={(e) => update('fileUrl', e.target.value)}
-            placeholder="https://example.com/document.pdf"
-            className={inputClass}
-          />
-        </FormField>
+        <DocumentFileUpload
+          value={form.fileUrl}
+          onChange={(url) => update('fileUrl', url ?? '')}
+          disabled={submitting}
+          onUploadingChange={setIsUploadingFile}
+        />
 
         {/* Actions */}
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
             id="btn-submit-edit"
-            disabled={submitting}
+            disabled={isBusy}
             className="flex items-center gap-2 bg-[#E4554A] text-white font-label-md px-6 py-3 hover:brightness-95 transition-all active:scale-[0.98] disabled:opacity-60"
           >
             {submitting ? (

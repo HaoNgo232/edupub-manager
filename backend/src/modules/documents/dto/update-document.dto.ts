@@ -1,4 +1,4 @@
-import { IsString, MinLength, MaxLength, IsOptional, IsInt, Min, Max, IsUrl, IsEnum } from 'class-validator';
+import { IsString, MinLength, MaxLength, IsOptional, IsInt, Min, Max, IsUrl, IsEnum, ValidateIf } from 'class-validator';
 import { Subject, DocumentStatus } from '@prisma/client';
 
 export class UpdateDocumentDto {
@@ -27,11 +27,11 @@ export class UpdateDocumentDto {
   @IsOptional()
   status?: DocumentStatus;
 
+  @ValidateIf((_, value) => value !== undefined && value !== null && value !== '')
   @IsUrl()
-  @IsOptional()
   coverImageUrl?: string;
 
+  @ValidateIf((_, value) => value !== undefined && value !== null && value !== '')
   @IsUrl()
-  @IsOptional()
   fileUrl?: string;
 }

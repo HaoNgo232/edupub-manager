@@ -204,13 +204,15 @@ export default function DocumentDetailPage() {
                     <a
                       href={doc.fileUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
+                      aria-label="Open File"
                       className="flex items-center gap-3 p-3 bg-white border border-graphite-border rounded-none hover:border-[#460002] transition-all group"
                     >
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
                         picture_as_pdf
                       </span>
-                      <span className="font-label-md flex-1 text-[#030509] truncate">{doc.fileUrl}</span>
+                      <span className="font-label-md text-[#030509]">Open File</span>
+                      <span className="font-label-md flex-1 text-[#76777b] truncate">{getResourceName(doc.fileUrl)}</span>
                       <span className="material-symbols-outlined text-[18px] text-[#76777b] group-hover:text-[#460002]">
                         open_in_new
                       </span>
@@ -220,7 +222,8 @@ export default function DocumentDetailPage() {
                     <a
                       href={doc.coverImageUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
+                      aria-label="Open cover image"
                       className="flex items-center gap-3 p-3 bg-white border border-graphite-border rounded-none hover:border-[#460002] transition-all group"
                     >
                       <span className="material-symbols-outlined text-[20px] text-[#76777b] group-hover:text-[#460002]">
@@ -302,6 +305,15 @@ function MetaRow({ label, value }: { label: string; value: string }) {
       <span className="font-label-md font-semibold text-[#030509]">{value}</span>
     </div>
   );
+}
+
+function getResourceName(value: string): string {
+  try {
+    const url = new URL(value);
+    return decodeURIComponent(url.pathname.split('/').pop() || value);
+  } catch {
+    return value.split('/').pop() || value;
+  }
 }
 
 function DeleteModal({
