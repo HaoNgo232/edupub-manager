@@ -1,14 +1,4 @@
-import {
-  IsString,
-  MinLength,
-  MaxLength,
-  IsOptional,
-  IsInt,
-  Min,
-  Max,
-  IsUrl,
-  IsEnum,
-} from 'class-validator';
+import { IsString, MinLength, MaxLength, IsOptional, IsInt, Min, Max, IsUrl, IsEnum } from 'class-validator';
 import { Subject, DocumentStatus } from '@prisma/client';
 
 export class UpdateDocumentDto {

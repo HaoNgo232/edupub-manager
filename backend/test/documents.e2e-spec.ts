@@ -95,10 +95,7 @@ describe('DocumentsController (e2e)', () => {
     await prisma.user.deleteMany({});
 
     // Create Admin
-    const adminRes = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(adminCredentials)
-      .expect(201);
+    const adminRes = await request(app.getHttpServer()).post('/auth/register').send(adminCredentials).expect(201);
     const adminBody = adminRes.body as TestLoginResponse;
     adminToken = adminBody.accessToken;
     adminId = adminBody.user.id;
@@ -121,19 +118,13 @@ describe('DocumentsController (e2e)', () => {
     adminToken = adminLoginBody.accessToken;
 
     // Create User 1
-    const user1Res = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(user1Credentials)
-      .expect(201);
+    const user1Res = await request(app.getHttpServer()).post('/auth/register').send(user1Credentials).expect(201);
     const user1Body = user1Res.body as TestLoginResponse;
     user1Token = user1Body.accessToken;
     user1Id = user1Body.user.id;
 
     // Create User 2
-    const user2Res = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(user2Credentials)
-      .expect(201);
+    const user2Res = await request(app.getHttpServer()).post('/auth/register').send(user2Credentials).expect(201);
     const user2Body = user2Res.body as TestLoginResponse;
     user2Id = user2Body.user.id;
   });

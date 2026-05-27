@@ -60,10 +60,7 @@ describe('AuthController (e2e)', () => {
     };
 
     it('should successfully register a new user and return user info (without passwordHash) and accessToken', async () => {
-      const response = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(validUser)
-        .expect(201);
+      const response = await request(app.getHttpServer()).post('/auth/register').send(validUser).expect(201);
 
       const body = response.body as TestResponse;
       expect(body).toHaveProperty('accessToken');
@@ -102,10 +99,7 @@ describe('AuthController (e2e)', () => {
         fullName: 'a', // less than 2 characters
       };
 
-      const response = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(invalidData)
-        .expect(400);
+      const response = await request(app.getHttpServer()).post('/auth/register').send(invalidData).expect(400);
 
       const body = response.body as TestResponse;
       expect(body).toHaveProperty('statusCode', 400);
@@ -121,10 +115,7 @@ describe('AuthController (e2e)', () => {
       await request(app.getHttpServer()).post('/auth/register').send(validUser).expect(201);
 
       // Duplicate registration
-      const response = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(validUser)
-        .expect(409);
+      const response = await request(app.getHttpServer()).post('/auth/register').send(validUser).expect(409);
 
       const body = response.body as TestResponse;
       expect(body).toEqual({
@@ -230,10 +221,7 @@ describe('AuthController (e2e)', () => {
     let accessToken = '';
 
     beforeEach(async () => {
-      const registerRes = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send(testUser)
-        .expect(201);
+      const registerRes = await request(app.getHttpServer()).post('/auth/register').send(testUser).expect(201);
       const registerBody = registerRes.body as TestResponse;
       accessToken = registerBody.accessToken ?? '';
     });

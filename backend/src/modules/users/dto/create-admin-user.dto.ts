@@ -1,13 +1,4 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  MinLength,
-  MaxLength,
-  IsEnum,
-  IsUrl,
-  IsOptional,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength, MaxLength, IsEnum, IsUrl, IsOptional } from 'class-validator';
 import { Role } from '@prisma/client';
 
 export class CreateAdminUserDto {

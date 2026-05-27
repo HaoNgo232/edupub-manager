@@ -210,13 +210,11 @@ describe('UsersService', () => {
 
       mockPrismaService.user.findUnique.mockResolvedValue(mockExistingUser);
       // Mock findOneByEmail for the new email to return null (no duplicate)
-      mockPrismaService.user.findUnique.mockImplementation(
-        (args: { where: { id?: string; email?: string } }) => {
-          if (args.where.id === 'user-1') return mockExistingUser;
-          if (args.where.email === 'updated@example.com') return null;
-          return null;
-        },
-      );
+      mockPrismaService.user.findUnique.mockImplementation((args: { where: { id?: string; email?: string } }) => {
+        if (args.where.id === 'user-1') return mockExistingUser;
+        if (args.where.email === 'updated@example.com') return null;
+        return null;
+      });
 
       const mockUpdatedUser = {
         ...mockExistingUser,
@@ -250,14 +248,11 @@ describe('UsersService', () => {
       };
 
       // Mock findUnique to return the user when query is by id, and return another user when query is by email
-      mockPrismaService.user.findUnique.mockImplementation(
-        (args: { where: { id?: string; email?: string } }) => {
-          if (args.where.id === 'user-1') return mockExistingUser;
-          if (args.where.email === 'taken@example.com')
-            return { id: 'user-2', email: 'taken@example.com' };
-          return null;
-        },
-      );
+      mockPrismaService.user.findUnique.mockImplementation((args: { where: { id?: string; email?: string } }) => {
+        if (args.where.id === 'user-1') return mockExistingUser;
+        if (args.where.email === 'taken@example.com') return { id: 'user-2', email: 'taken@example.com' };
+        return null;
+      });
 
       await expect(service.updateByAdmin('user-1', updateDto)).rejects.toThrow(ConflictException);
     });
@@ -279,11 +274,7 @@ describe('UsersService', () => {
         _count: { documents: 2 },
       });
 
-      const result = (await service.updateRoleByAdmin(
-        'user-1',
-        updateRoleDto,
-        mockAdminPayload,
-      )) as {
+      const result = (await service.updateRoleByAdmin('user-1', updateRoleDto, mockAdminPayload)) as {
         role: Role;
         documentsCount: number;
       };
@@ -295,9 +286,9 @@ describe('UsersService', () => {
     it('should prevent an admin from changing their own role', async () => {
       const updateRoleDto = { role: Role.USER };
 
-      await expect(
-        service.updateRoleByAdmin(mockAdminPayload.sub, updateRoleDto, mockAdminPayload),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.updateRoleByAdmin(mockAdminPayload.sub, updateRoleDto, mockAdminPayload)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should prevent demoting the last admin', async () => {
@@ -312,9 +303,9 @@ describe('UsersService', () => {
       // Mock count to return 1 admin left in the system
       mockPrismaService.user.count.mockResolvedValue(1);
 
-      await expect(
-        service.updateRoleByAdmin('admin-2', updateRoleDto, mockAdminPayload),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.updateRoleByAdmin('admin-2', updateRoleDto, mockAdminPayload)).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
@@ -336,9 +327,7 @@ describe('UsersService', () => {
     });
 
     it('should prevent an admin from deleting their own account', async () => {
-      await expect(service.deleteByAdmin(mockAdminPayload.sub, mockAdminPayload)).rejects.toThrow(
-        BadRequestException,
-      );
+      await expect(service.deleteByAdmin(mockAdminPayload.sub, mockAdminPayload)).rejects.toThrow(BadRequestException);
     });
 
     it('should prevent deleting the last admin', async () => {
@@ -351,9 +340,7 @@ describe('UsersService', () => {
       mockPrismaService.user.findUnique.mockResolvedValue(mockUser);
       mockPrismaService.user.count.mockResolvedValue(1);
 
-      await expect(service.deleteByAdmin('admin-2', mockAdminPayload)).rejects.toThrow(
-        BadRequestException,
-      );
+      await expect(service.deleteByAdmin('admin-2', mockAdminPayload)).rejects.toThrow(BadRequestException);
     });
   });
 });

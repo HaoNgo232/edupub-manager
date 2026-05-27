@@ -170,7 +170,23 @@ All endpoints require JWT token and `ADMIN` role.
 - `GET /admin/users/:id`: Get user details, including `documentsCount` and `recentDocuments`.
 - `POST /admin/users`: Create a user (hashing password, no `passwordHash` in response).
 - `PATCH /admin/users/:id`: Update user details (fullName, email, avatarUrl).
-- `PATCH /admin/users/:id/role`: Change user role. Includes safety rules to prevent demoting the last admin or changing self role.
 - `DELETE /admin/users/:id`: Delete a user. Includes safety rules to prevent self-deletion or deleting the last admin.
+
+## Admin Dashboard + Basic Statistics Endpoints (Feature 04)
+
+All endpoints require JWT token and `ADMIN` role.
+
+- `GET /admin/stats`: Get overview statistics for the Admin Dashboard.
+  - Query parameters:
+    - `recentLimit`: optional, limit for recent items (default: 5, min: 1, max: 20).
+  - Response fields:
+    - `summary`: Object containing `totalUsers`, `totalAdmins`, `totalRegularUsers`, `totalDocuments`, `totalDraftDocuments`, `totalPublishedDocuments`, `totalArchivedDocuments`.
+    - `usersByRole`: Breakdown by role, normalized to always contain both `ADMIN` and `USER` entries.
+    - `documentsByStatus`: Breakdown by status, normalized to always contain `DRAFT`, `PUBLISHED`, and `ARCHIVED` entries.
+    - `documentsBySubject`: Breakdown by subject, only including subjects with documents.
+    - `documentsByGradeLevel`: Breakdown by grade level, sorted ascending.
+    - `recentDocuments`: Most recent documents (orderBy `createdAt` desc) with sanitized owner basic info.
+    - `recentUsers`: Most recent registered users (orderBy `createdAt` desc) with `documentsCount`.
+
 
 

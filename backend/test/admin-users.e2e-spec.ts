@@ -82,10 +82,7 @@ describe('AdminUsersController (e2e)', () => {
     adminToken = (adminLoginRes.body as { accessToken: string }).accessToken;
 
     // Register a normal user and get token
-    const userRegisterRes = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(normalUser)
-      .expect(201);
+    const userRegisterRes = await request(app.getHttpServer()).post('/auth/register').send(normalUser).expect(201);
     userToken = (userRegisterRes.body as { accessToken: string }).accessToken;
     normalUserId = (userRegisterRes.body as { user: TestUserResponse }).user.id ?? '';
   });
@@ -109,10 +106,7 @@ describe('AdminUsersController (e2e)', () => {
     });
 
     it('should block non-admin users with 403 Forbidden', async () => {
-      await request(app.getHttpServer())
-        .get('/admin/users')
-        .set('Authorization', `Bearer ${userToken}`)
-        .expect(403);
+      await request(app.getHttpServer()).get('/admin/users').set('Authorization', `Bearer ${userToken}`).expect(403);
     });
 
     it('should fail with 401 Unauthorized if token is missing', async () => {
@@ -126,9 +120,7 @@ describe('AdminUsersController (e2e)', () => {
         .expect(200);
 
       const body = response.body as { items: TestUserResponse[] };
-      expect(
-        body.items.every((u) => u.fullName?.includes('Admin') || u.email?.includes('Admin')),
-      ).toBe(true);
+      expect(body.items.every((u) => u.fullName?.includes('Admin') || u.email?.includes('Admin'))).toBe(true);
     });
 
     it('should filter users by role', async () => {

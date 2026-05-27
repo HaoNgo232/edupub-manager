@@ -61,10 +61,7 @@ describe('UsersController (e2e)', () => {
     await prisma.user.deleteMany({});
 
     // Register a user and save their token/id
-    const registerRes = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send(testUser)
-      .expect(201);
+    const registerRes = await request(app.getHttpServer()).post('/auth/register').send(testUser).expect(201);
 
     const registerBody = registerRes.body as TestRegisterResponse;
     accessToken = registerBody.accessToken ?? '';
@@ -210,10 +207,7 @@ describe('UsersController (e2e)', () => {
     });
 
     it('should fail with 401 Unauthorized if token is missing', async () => {
-      const response = await request(app.getHttpServer())
-        .patch('/users/me')
-        .send(updatePayload)
-        .expect(401);
+      const response = await request(app.getHttpServer()).patch('/users/me').send(updatePayload).expect(401);
 
       const body = response.body as TestErrorResponse;
       expect(body).toEqual({

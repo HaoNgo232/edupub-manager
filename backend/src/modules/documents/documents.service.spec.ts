@@ -143,18 +143,16 @@ describe('DocumentsService', () => {
     it('should throw NotFoundException if document does not exist', async () => {
       mockPrismaService.document.findUnique.mockResolvedValue(null);
 
-      await expect(
-        service.ensureDocumentAccessible('non-existent', mockUserPayload),
-      ).rejects.toThrow(NotFoundException);
+      await expect(service.ensureDocumentAccessible('non-existent', mockUserPayload)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('should throw NotFoundException if document belongs to another user and requester is not ADMIN', async () => {
       const mockDoc = { id: 'doc-1', ownerId: 'other-user-uuid' };
       mockPrismaService.document.findUnique.mockResolvedValue(mockDoc);
 
-      await expect(service.ensureDocumentAccessible('doc-1', mockUserPayload)).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(service.ensureDocumentAccessible('doc-1', mockUserPayload)).rejects.toThrow(NotFoundException);
     });
   });
 });

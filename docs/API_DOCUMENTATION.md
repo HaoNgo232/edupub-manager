@@ -883,3 +883,111 @@ Deletes a user. Note that related documents will be cascadingly deleted.
 - Admins cannot delete their own account.
 - Cannot delete the last admin.
 
+---
+
+### GET /admin/stats
+Retrieves basic statistics and data summaries for the admin dashboard.
+
+Auth: required (`ADMIN` role).
+
+#### Query Parameters
+- `recentLimit` (number): Optional, number of items to return in `recentDocuments` and `recentUsers` lists. Default: `5` (min: 1, max: 20).
+
+#### Response (200 OK)
+```json
+{
+  "summary": {
+    "totalUsers": 12,
+    "totalAdmins": 2,
+    "totalRegularUsers": 10,
+    "totalDocuments": 48,
+    "totalDraftDocuments": 10,
+    "totalPublishedDocuments": 30,
+    "totalArchivedDocuments": 8
+  },
+  "usersByRole": [
+    {
+      "role": "ADMIN",
+      "count": 2
+    },
+    {
+      "role": "USER",
+      "count": 10
+    }
+  ],
+  "documentsByStatus": [
+    {
+      "status": "DRAFT",
+      "count": 10
+    },
+    {
+      "status": "PUBLISHED",
+      "count": 30
+    },
+    {
+      "status": "ARCHIVED",
+      "count": 8
+    }
+  ],
+  "documentsBySubject": [
+    {
+      "subject": "MATH",
+      "count": 12
+    },
+    {
+      "subject": "ENGLISH",
+      "count": 9
+    },
+    {
+      "subject": "LITERATURE",
+      "count": 7
+    }
+  ],
+  "documentsByGradeLevel": [
+    {
+      "gradeLevel": 6,
+      "count": 5
+    },
+    {
+      "gradeLevel": 9,
+      "count": 8
+    },
+    {
+      "gradeLevel": 10,
+      "count": 14
+    }
+  ],
+  "recentDocuments": [
+    {
+      "id": "document-uuid",
+      "title": "Sách Toán lớp 10",
+      "subject": "MATH",
+      "gradeLevel": 10,
+      "status": "PUBLISHED",
+      "owner": {
+        "id": "user-uuid",
+        "email": "user@edupub.test",
+        "fullName": "Test User",
+        "role": "USER",
+        "avatarUrl": null
+      },
+      "createdAt": "2026-05-26T00:00:00.000Z",
+      "updatedAt": "2026-05-26T00:00:00.000Z"
+    }
+  ],
+  "recentUsers": [
+    {
+      "id": "user-uuid",
+      "email": "newuser@example.com",
+      "fullName": "New User",
+      "role": "USER",
+      "avatarUrl": null,
+      "documentsCount": 3,
+      "createdAt": "2026-05-26T00:00:00.000Z",
+      "updatedAt": "2026-05-26T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+

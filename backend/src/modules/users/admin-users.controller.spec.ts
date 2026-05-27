@@ -45,9 +45,7 @@ describe('AdminUsersController', () => {
       .overrideGuard(JwtAuthGuard)
       .useValue({
         canActivate: (context: ExecutionContext) => {
-          const req = context
-            .switchToHttp()
-            .getRequest<Request & { user?: typeof mockAdminPayload }>();
+          const req = context.switchToHttp().getRequest<Request & { user?: typeof mockAdminPayload }>();
           req.user = mockAdminPayload;
           return true;
         },
@@ -152,10 +150,7 @@ describe('AdminUsersController', () => {
       };
       mockUsersService.updateByAdmin.mockResolvedValue(expectedResult);
 
-      const result = (await controller.update(
-        userId,
-        updateDto,
-      )) as unknown as typeof expectedResult;
+      const result = (await controller.update(userId, updateDto)) as unknown as typeof expectedResult;
 
       expect(mockUsersService.updateByAdmin).toHaveBeenCalledWith(userId, updateDto);
       expect(result).toEqual(expectedResult);
@@ -182,11 +177,7 @@ describe('AdminUsersController', () => {
         mockAdminPayload,
       )) as unknown as typeof expectedResult;
 
-      expect(mockUsersService.updateRoleByAdmin).toHaveBeenCalledWith(
-        userId,
-        updateRoleDto,
-        mockAdminPayload,
-      );
+      expect(mockUsersService.updateRoleByAdmin).toHaveBeenCalledWith(userId, updateRoleDto, mockAdminPayload);
       expect(result).toEqual(expectedResult);
     });
   });

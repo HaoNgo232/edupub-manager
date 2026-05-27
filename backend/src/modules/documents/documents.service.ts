@@ -110,10 +110,7 @@ export class DocumentsService {
     return { message: 'Document deleted successfully' };
   }
 
-  buildWhereClause(
-    currentUser: JwtPayload,
-    queryDto: QueryDocumentsDto,
-  ): Prisma.DocumentWhereInput {
+  buildWhereClause(currentUser: JwtPayload, queryDto: QueryDocumentsDto): Prisma.DocumentWhereInput {
     const where: Prisma.DocumentWhereInput = {};
 
     // Ownership rule
