@@ -93,7 +93,7 @@ export default function MyDocumentsPage() {
       <div className="bg-[#f5f5f0] border border-graphite-border p-5">
         <form onSubmit={handleSearch} className="flex flex-col lg:flex-row lg:items-end gap-4">
           {/* Search */}
-          <div className="flex flex-col gap-1.5 flex-grow w-full">
+          <div className="flex flex-col gap-1.5 w-full lg:max-w-[550px] lg:flex-grow">
             <label className="font-label-sm text-[#76777b] uppercase tracking-widest">Search</label>
             <div className="relative">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-[#76777b]">

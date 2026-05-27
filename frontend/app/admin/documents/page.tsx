@@ -177,7 +177,7 @@ export default function AdminDocumentsPage() {
               }}
               className="flex flex-col lg:flex-row lg:items-end gap-4"
             >
-              <div className="flex flex-col gap-1.5 flex-grow w-full">
+              <div className="flex flex-col gap-1.5 w-full lg:max-w-[550px] lg:flex-grow">
                 <label className="font-label-sm text-[#76777b] uppercase tracking-widest">
                   Search
                 </label>
