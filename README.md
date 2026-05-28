@@ -64,7 +64,7 @@ docker compose down -v
 
 ---
 
-### 1.3. Chạy local thủ công không dùng docker
+### 1.3. Chạy local thủ công
 
 #### Bước 1: Chạy PostgreSQL thủ công
 
@@ -573,6 +573,12 @@ POST   /documents
 GET    /documents/:id
 PATCH  /documents/:id
 DELETE /documents/:id
+```
+
+### Admin Documents
+
+```txt
+GET /admin/documents
 ```
 
 ### Admin Users
