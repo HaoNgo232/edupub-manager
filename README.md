@@ -123,7 +123,7 @@ Hệ thống tạo sẵn 2 tài khoản để kiểm thử:
 | User           | user@edupub.test  | User@123456  | USER  |
 | Administrator  | admin@edupub.test | Admin@123456 | ADMIN |
 
-> Nếu quá trình đăng nhập gặp lỗi **Internal Server Error**, hãy di chuyển vào thư mục `backend` và chạy lệnh `npm run seed` để thiết lập lại dữ liệu mẫu, sau đó thử đăng nhập lại.
+> Nếu quá trình đăng nhập gặp lỗi **Invalid email or password**, hãy di chuyển vào thư mục `backend` và chạy lệnh `npm run seed` để thiết lập lại dữ liệu mẫu, sau đó thử đăng nhập lại.
 
 ---
 
