@@ -1,4 +1,4 @@
-import { Subject, DocumentStatus } from '../../../lib/api';
+import { Subject, DocumentStatus } from '../api';
 
 export const SUBJECT_ICONS: Record<Subject, string> = {
   MATH: 'calculate',

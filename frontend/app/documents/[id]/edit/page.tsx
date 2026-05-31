@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getDocument, updateDocument, UpdateDocumentRequest, Subject, ApiError } from '../../../../lib/api';
-import { SUBJECT_OPTIONS, STATUS_OPTIONS } from '../../../lib/constants/documents.constants';
+import { SUBJECT_OPTIONS, STATUS_OPTIONS } from '../../../../lib/constants/documents.constants';
 import CoverImageUpload from '../../../../components/documents/CoverImageUpload';
 import DocumentFileUpload from '../../../../components/documents/DocumentFileUpload';
 
@@ -216,11 +216,10 @@ export default function EditDocumentPage() {
                 type="button"
                 id={`status-${s.value.toLowerCase()}`}
                 onClick={() => update('status', s.value)}
-                className={`border p-3 text-left transition-all rounded-none ${
-                  form.status === s.value
+                className={`border p-3 text-left transition-all rounded-none ${form.status === s.value
                     ? 'border-[#460002] bg-white shadow-sm'
                     : 'border-graphite-border bg-white hover:border-[#76777b]'
-                }`}
+                  }`}
               >
                 <p className="font-label-md font-bold text-[#030509]">{s.label}</p>
                 <p className="font-label-sm text-[#76777b] mt-0.5">{s.description}</p>

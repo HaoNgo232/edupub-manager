@@ -11,7 +11,7 @@ import {
   ApiError,
 } from '../../lib/api';
 import StatusBadge from '../../components/StatusBadge';
-import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../lib/constants/documents.constants';
+import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../../lib/constants/documents.constants';
 
 export default function MyDocumentsPage() {
   const [data, setData] = useState<DocumentListResponse | null>(null);
@@ -356,8 +356,8 @@ function Pagination({
           key={p}
           onClick={() => onPageChange(p)}
           className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${p === page
-              ? 'bg-[#460002] text-white'
-              : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
+            ? 'bg-[#460002] text-white'
+            : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
             }`}
         >
           {p}

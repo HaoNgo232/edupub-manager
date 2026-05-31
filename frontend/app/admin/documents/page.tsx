@@ -15,7 +15,7 @@ import {
 import { useAuth } from '../../context/AuthContext';
 import SideNav from '../../../components/SideNav';
 import StatusBadge from '../../../components/StatusBadge';
-import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../../lib/constants/documents.constants';
+import { SUBJECT_FILTER_OPTIONS, STATUS_FILTER_OPTIONS, SUBJECT_ICONS } from '../../../lib/constants/documents.constants';
 import { resolveUploadUrl } from '../../../lib/uploads/url';
 
 export default function AdminDocumentsPage() {
@@ -478,8 +478,8 @@ function AdminPagination({
           key={p}
           onClick={() => onPageChange(p)}
           className={`w-9 h-9 flex items-center justify-center font-label-md transition-all ${p === page
-              ? 'bg-[#460002] text-white'
-              : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
+            ? 'bg-[#460002] text-white'
+            : 'border border-graphite-border bg-white text-[#76777b] hover:bg-[#f4f4f0]'
             }`}
         >
           {p}
